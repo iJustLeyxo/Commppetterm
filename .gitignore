@@ -16,6 +16,7 @@ target/
 
 # JavaFX
 !*.fxml
+!*.xml
 !*.css
 !*.svg
 
@@ -24,6 +25,7 @@ target/
 .idea/jarRepositories.xml
 .idea/compiler.xml
 .idea/libraries/
+!.idea/runConfigurations/
 *.iws
 *.iml
 *.ipr
