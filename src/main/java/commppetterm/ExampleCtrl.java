@@ -1,9 +1,9 @@
-package project;
+package commppetterm;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class HelloController {
+public class ExampleCtrl {
     @FXML
     private Label welcomeText;
     

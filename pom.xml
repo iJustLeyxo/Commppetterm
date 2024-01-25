@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
-    <groupId>project</groupId>
-    <artifactId>Project</artifactId>
+    <groupId>commppetterm</groupId>
+    <artifactId>Commppetterm</artifactId>
     <version>0.0.0</version>
-    <name>Project</name>
+    <name>Commppetterm</name>
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -68,7 +68,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>project/project.HelloApplication</mainClass>
+                    <mainClass>commppetterm/commppetterm.Commppetterm</mainClass>
                 </configuration>
                 <executions>
                     <execution>

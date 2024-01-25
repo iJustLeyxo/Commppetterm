@@ -1,7 +1,7 @@
-module project {
+module commppetterm {
     requires javafx.fxml;
     requires javafx.controls;
     
-    opens project to javafx.fxml;
-    exports project;
+    opens commppetterm to javafx.fxml;
+    exports commppetterm;
 }
