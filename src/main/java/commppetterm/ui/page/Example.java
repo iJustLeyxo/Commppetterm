@@ -1,6 +1,5 @@
 package commppetterm.ui.page;
 
-import commppetterm.ui.Loadable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.jetbrains.annotations.NotNull;
@@ -8,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Example scene controller
  */
-public final class ExampleCtrl implements Loadable {
+public final class Example implements Controller {
     @FXML
     private Label welcomeText;
     

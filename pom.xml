@@ -91,7 +91,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>commppetterm/commppetterm.ui.Loader</mainClass>
+                    <mainClass>commppetterm/commppetterm.ui.page.Loader</mainClass>
                 </configuration>
                 <executions>
                     <execution>

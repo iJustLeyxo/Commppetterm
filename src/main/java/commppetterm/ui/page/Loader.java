@@ -1,12 +1,14 @@
-package commppetterm.ui;
+package commppetterm.ui.page;
 
 import com.gluonhq.charm.glisten.control.ProgressBar;
+import commppetterm.ui.Util;
+import commppetterm.ui.page.Controller;
 import javafx.application.Preloader;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
-public final class Loader extends Preloader implements Loadable {
+public final class Loader extends Preloader implements Controller {
     @FXML
     private ProgressBar bar;
     
@@ -25,6 +27,6 @@ public final class Loader extends Preloader implements Loadable {
     
     @Override
     public @NotNull String path() {
-        return "page/loader.fxml";
+        return "loader.fxml";
     }
 }
