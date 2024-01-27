@@ -1,9 +1,13 @@
 package commppetterm.ui;
 
+import com.gluonhq.charm.glisten.visual.Swatch;
+import com.gluonhq.charm.glisten.visual.Theme;
 import commppetterm.Commppetterm;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
@@ -12,24 +16,23 @@ import java.io.IOException;
  */
 public final class Util {
     /**
-     * Prepares a stage
-     * @param stage The stage to prepare
-     * @param scene The scene to show
+     * Loads a scene from fxml file
+     * @param file File to load scene from
      */
-    public static void prepStage(Stage stage, Scene scene) {
-        stage.setTitle(Commppetterm.name);
-        stage.setScene(scene);
-        // TODO: Set icon
-        stage.show();
+    public static Scene load(@NotNull String file) throws IOException {
+        FXMLLoader loader = new FXMLLoader(Interface.class.getResource(file + ".fxml"));
+        return loader.load();
     }
     
     /**
-     * Loads a scene from fxml file
-     * @param clazz Class to load from
-     * @param file File to load
+     * Prepares a stage
+     * @param stage The stage to prepare
+     * @param file The file to load scene from
      */
-    public static Scene loadScene(Class clazz, String file) throws IOException {
-        FXMLLoader loader = new FXMLLoader(clazz.getResource(file + ".fxml"));
-        return new Scene(loader.load(), 320, 240);
+    public static void prepare(@NotNull Stage stage, @NotNull String file) throws IOException {
+        stage.setScene(Util.load(file));
+        stage.setTitle(Commppetterm.name);
+        // TODO: Set icon
+        stage.show();
     }
 }

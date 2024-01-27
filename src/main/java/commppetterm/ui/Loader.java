@@ -1,15 +1,17 @@
 package commppetterm.ui;
 
-import javafx.application.Application;
+import com.gluonhq.charm.glisten.control.ProgressBar;
+import javafx.application.Preloader;
+import javafx.fxml.FXML;
 import javafx.stage.Stage;
 
-/**
- * User interface class
- */
-public final class UserInterface extends Application {
+public final class Loader extends Preloader {
+    @FXML
+    private ProgressBar bar;
+    
     @Override
     public void start(Stage stage) throws Exception {
-        Util.prepStage(stage, Util.loadScene(this.getClass(), "example"));
+        Util.prepare(stage, "loader");
     }
     
     /**

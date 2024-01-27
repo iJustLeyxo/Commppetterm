@@ -27,14 +27,24 @@
             <version>19</version>
         </dependency>
         <dependency>
-            <groupId>com.gluon</groupId>
-            <artifactId>charm</artifactId>
+            <groupId>com.gluonhq</groupId>
+            <artifactId>charm-glisten</artifactId>
             <version>6.2.3</version>
         </dependency>
         <dependency>
-            <groupId>com.gluon</groupId>
+            <groupId>com.gluonhq.attach</groupId>
             <artifactId>util</artifactId>
-            <version>4.0.6</version>
+            <version>4.0.19</version>
+        </dependency>
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-javafx</artifactId>
+            <version>12.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-material2-pack</artifactId>
+            <version>12.3.1</version>
         </dependency>
         
         <!-- Junit -->
@@ -50,7 +60,20 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>24.0.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
+    
+    <repositories>
+        <repository>
+            <id>Gluon</id>
+            <url>https://nexus.gluonhq.com/nexus/content/repositories/releases</url>
+        </repository>
+    </repositories>
     
     <build>
         <plugins>
@@ -68,7 +91,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>commppetterm/commppetterm.ui.UserInterface</mainClass>
+                    <mainClass>commppetterm/commppetterm.ui.Loader</mainClass>
                 </configuration>
                 <executions>
                     <execution>

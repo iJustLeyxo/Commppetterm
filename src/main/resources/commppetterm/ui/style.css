@@ -1,0 +1,30 @@
+*{
+    /* Color */
+    -fx-color: #1460c9;
+	-fx-background: #202020;
+
+	/* Text */
+	-fx-fill: #d0d0d0;
+	-fx-prompt-text-fill: #d0d0d0;
+	-fx-highlight-fill: #d0d0d0;
+	-fx-highlight-text-fill: #202020;
+
+	/* Shapes */
+	-fx-focus-color: transparent;
+	-fx-faint-focus-color: transparent;
+	-fx-body-color: -fx-color;
+}
+
+.button{
+    -fx-background-insets: 0;
+    -fx-background-radius: 2.5;
+}
+
+.button:focused{
+    -fx-background-insets: 0;
+}
+
+.text-field{
+    -fx-background-color: #303030;
+    -fx-background-radius: 2.5;
+}
