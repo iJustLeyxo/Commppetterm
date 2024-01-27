@@ -8,6 +8,6 @@ module commppetterm {
     exports commppetterm;
     exports commppetterm.ui;
     opens commppetterm.ui to javafx.fxml;
-    exports commppetterm.ui.ctrl;
-    opens commppetterm.ui.ctrl to javafx.fxml;
+    exports commppetterm.ui.page;
+    opens commppetterm.ui.page to javafx.fxml;
 }
