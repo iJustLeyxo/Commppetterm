@@ -8,4 +8,14 @@ public interface Controller {
      * @return the path to the scene of the controller
      */
     @NotNull String path();
+    
+    /**
+     * Called before the controller is assigned to the fxml loader
+     */
+    public default void preInit() {};
+    
+    /**
+     * Called after the controller is assigned to the fxml loader;
+     */
+    public default void postInit() {};
 }
