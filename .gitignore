@@ -3,6 +3,9 @@
 !*/
 !.gitignore
 
+# Die
+!*.dia
+
 # Java
 !*.java
 !*.jar
