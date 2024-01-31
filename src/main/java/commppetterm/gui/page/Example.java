@@ -1,4 +1,4 @@
-package commppetterm.ui.page;
+package commppetterm.gui.page;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

@@ -1,7 +1,7 @@
-package commppetterm.ui;
+package commppetterm.gui;
 
 import commppetterm.Commppetterm;
-import commppetterm.ui.page.Controller;
+import commppetterm.gui.page.Controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -36,7 +36,7 @@ public final class Util {
     public static void prepare(@NotNull Stage stage, @NotNull Controller controller) throws IOException {
         stage.setScene(new Scene(Util.load(controller)));
         stage.setTitle(Commppetterm.name);
-        Image icon = new Image(Interface.class.getResource("icon.png").toString());
+        Image icon = new Image(Gui.class.getResource("icon.png").toString());
         stage.getIcons().add(icon);
         stage.show();
     }
