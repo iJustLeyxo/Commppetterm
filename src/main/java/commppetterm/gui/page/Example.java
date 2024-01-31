@@ -13,7 +13,7 @@ public final class Example implements Controller {
     
     @FXML
     private void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
+        welcomeText.setText("Hello world!");
     }
     
     @Override
