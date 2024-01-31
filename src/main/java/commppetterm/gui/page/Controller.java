@@ -2,6 +2,9 @@ package commppetterm.gui.page;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Scene controller interface
+ */
 public interface Controller {
     /**
      * Returns the path to the scene of the controller

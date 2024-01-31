@@ -1,7 +1,7 @@
 package commppetterm;
 
 /**
- * Class for configs
+ * Root class for configs
  */
 public final class Commppetterm {
     /**
