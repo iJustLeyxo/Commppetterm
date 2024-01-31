@@ -1,6 +1,7 @@
 package commppetterm.gui;
 
 import commppetterm.gui.page.Example;
+import commppetterm.util.GuiTools;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -10,6 +11,6 @@ import javafx.stage.Stage;
 public final class Gui extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        Util.prepare(stage, new Example());
+        GuiTools.prepare(stage, new Example());
     }
 }

@@ -1,6 +1,7 @@
-package commppetterm.gui;
+package commppetterm.util;
 
 import commppetterm.Commppetterm;
+import commppetterm.gui.Gui;
 import commppetterm.gui.page.Controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,7 +15,7 @@ import java.io.IOException;
 /**
  * User interface utility functions
  */
-public final class Util {
+public final class GuiTools {
     /**
      * Loads a scene from fxml file
      * @param controller The class to load the scene from
@@ -34,7 +35,7 @@ public final class Util {
      * @param controller The class to load the scene from
      */
     public static void prepare(@NotNull Stage stage, @NotNull Controller controller) throws IOException {
-        stage.setScene(new Scene(Util.load(controller)));
+        stage.setScene(new Scene(GuiTools.load(controller)));
         stage.setTitle(Commppetterm.name);
         Image icon = new Image(Gui.class.getResource("icon.png").toString());
         stage.getIcons().add(icon);

@@ -10,4 +10,6 @@ module commppetterm {
     opens commppetterm.gui to javafx.fxml;
     exports commppetterm.gui.page;
     opens commppetterm.gui.page to javafx.fxml;
+    exports commppetterm.util;
+    opens commppetterm.util to javafx.fxml;
 }
