@@ -46,3 +46,31 @@
     -fx-background-color: #303030;
     -fx-background-radius: 2.5;
 }
+
+
+.month-label {
+    font-size: 12;
+    font-weight: 100;
+    padding: 0%;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-padding: 5px;
+    -fx-text-alignment: center;
+}
+
+.day-of-week {
+    font-weight: 100;
+    padding: 0%;
+    background-color: #1460c9;
+    -fx-font-weight: bold;
+    -fx-padding: 5px;
+    -fx-background-color: #f0f0f0;
+}
+
+.day-cell {
+    padding: 0%;
+    border-color: #1460c9;
+    -fx-padding: 10px;
+    -fx-border-color: #d0d0d0;
+    -fx-text-alignment: center;
+}
