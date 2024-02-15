@@ -46,9 +46,6 @@ public class Calendar implements Controller{
         int dayOfWeekOfFirst = calendarDate.getDayOfWeek().getValue();
         int daysInMonth = yearMonth.lengthOfMonth();
         
-        // Bereinigen des GridPane vor dem Befüllen
-        // calendarGrid.getChildren().clear();
-        
         for (int i = 0, dayOfMonth = 1; dayOfMonth <= daysInMonth; i++) {
             int col = (i + dayOfWeekOfFirst - 1) % 7;
             int row = (i + dayOfWeekOfFirst - 1) / 7;
@@ -59,6 +56,5 @@ public class Calendar implements Controller{
     
             dayOfMonth++;
         }
-    }
-    
+    }   
 }
