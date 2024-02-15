@@ -1,17 +1,15 @@
 package commppetterm.gui.page;
 
-// import org.jetbrains.annotations.NotNull;
-
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 
 
-public final class Example implements Controller {
+public class Calender implements Controller{
+
     @Override
     public String path() {
-        return "/commppetterm/gui/page/example.fxml";
+        return "/commppetterm/gui/page/calender.fxml";
     }
-    
+
     @FXML
     public void initialize() {
         // Initialisierungslogik hier
@@ -27,13 +25,9 @@ public final class Example implements Controller {
         // Optional: Code nach dem Laden
     }
 
-    @FXML
-    private Label welcomeText;
+    // @FXML
+    // ....
 
-    @FXML
-    private void onHelloButtonClick() {
-        welcomeText.setText("Hello world!");
-    }
-
+    
     
 }
