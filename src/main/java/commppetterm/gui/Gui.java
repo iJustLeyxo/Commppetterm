@@ -14,5 +14,8 @@ public final class Gui extends Application {
         GuiTools.prepare(stage, new Example());
     }
 
-
+    public static void main(String[] args) {
+        // Startet die JavaFX-Anwendung
+        launch(args);
+    }
 }

@@ -12,8 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-// import java.io.IOException;
-
 /**
  * User interface utility functions
  */
@@ -39,7 +37,8 @@ public final class GuiTools {
     public static void prepare(@NotNull Stage stage, @NotNull Controller controller) throws IOException {
         stage.setScene(new Scene(GuiTools.load(controller)));
         stage.setTitle(Commppetterm.name);
-        Image icon = new Image(Gui.class.getResource("icon.png").toString());
+        // Image icon = new Image(Gui.class.getResource("icon.png").toString());
+        Image icon = new Image(Gui.class.getResource("/icons/icon.png").toString());
         stage.getIcons().add(icon);
         stage.show();
     }
