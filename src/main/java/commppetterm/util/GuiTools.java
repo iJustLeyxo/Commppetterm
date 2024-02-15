@@ -38,7 +38,8 @@ public final class GuiTools {
         stage.setScene(new Scene(GuiTools.load(controller)));
         stage.setTitle(Commppetterm.name);
         // Image icon = new Image(Gui.class.getResource("icon.png").toString());
-        Image icon = new Image(Gui.class.getResource("/icons/icon.png").toString());
+        // Image icon = new Image(Gui.class.getResource("/icons/icon.png").toString());
+        Image icon = new Image(Gui.class.getResource("/icons/icon.svg").toString());
         stage.getIcons().add(icon);
         stage.show();
     }

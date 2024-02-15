@@ -58,14 +58,27 @@
     -fx-text-alignment: center;
 }
 
-.day-of-week {
+/* .day-of-week {
     font-weight: 100;
     padding: 0%;
     background-color: #1460c9;
     -fx-font-weight: bold;
     -fx-padding: 5px;
     -fx-background-color: #f0f0f0;
+} */
+
+.day-of-week {
+    font-weight: 100;
+    padding: 0%;
+    background-color: #1460c9;
+    border-color: #1460c9;
+    -fx-alignment: center;
+    -fx-font-weight: bold;
+    -fx-background-color: #f0f0f0;
+    -fx-padding: 5px;
+    -fx-border-color: black;
 }
+
 
 .day-cell {
     padding: 0%;
@@ -73,4 +86,21 @@
     -fx-padding: 10px;
     -fx-border-color: #d0d0d0;
     -fx-text-alignment: center;
+}
+
+.grid-pane {
+    -fx-hgap: 10px; /* Horizontaler Abstand zwischen Zellen */
+    -fx-vgap: 10px; /* Vertikaler Abstand zwischen Zellen */
+}
+
+.grid-pane .row {
+    -fx-pref-height: 40px; /* Bevorzugte Höhe jeder Zeile */
+}
+
+.day-of-week, .day-cell {
+    border-color: #1460c9;
+    -fx-alignment: center;
+    -fx-pref-width: 40px; /* Bevorzugte Breite für Wochentagslabels und Tage */
+    -fx-pref-height: 40px; /* Bevorzugte Höhe */
+    -fx-border-color: black; /* Fügt einen Rand hinzu, um Zellen sichtbar zu machen */
 }

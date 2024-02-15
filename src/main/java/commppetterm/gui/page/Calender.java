@@ -24,7 +24,7 @@ public class Calender implements Controller{
 
     @FXML
     public void initialize() {
-        fillCalendar(YearMonth.now());
+        fillCalendar(YearMonth.now()); // Füllt den Kalender mit Tagen
     }
 
     @Override
@@ -36,26 +36,29 @@ public class Calender implements Controller{
     public void postInit() {
         // Optional: Code nach dem Laden
     }
-    
+
     private void fillCalendar(YearMonth yearMonth) {
         LocalDate calendarDate = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
         
         String monthName = yearMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault());
         monthLabel.setText(monthName + " " + yearMonth.getYear());
         
-        int dayOfWeekOfFirst = calendarDate.getDayOfWeek().getValue() % 7;
+        int dayOfWeekOfFirst = calendarDate.getDayOfWeek().getValue();
         int daysInMonth = yearMonth.lengthOfMonth();
         
-        for (int i = 1, dayOfMonth = 1; dayOfMonth <= daysInMonth; i++) {
-            int col = (dayOfWeekOfFirst + i - 2) % 7;
-            int row = (dayOfWeekOfFirst + i - 2) / 7;
+        // Bereinigen des GridPane vor dem Befüllen
+        // calendarGrid.getChildren().clear();
+        
+        for (int i = 0, dayOfMonth = 1; dayOfMonth <= daysInMonth; i++) {
+            int col = (i + dayOfWeekOfFirst - 1) % 7;
+            int row = (i + dayOfWeekOfFirst - 1) / 7;
             
             Label dayLabel = new Label(Integer.toString(dayOfMonth));
-            dayLabel.getStyleClass().add("day-cell");
-            
-            calendarGrid.add(dayLabel, col, row);
+            dayLabel.getStyleClass().addAll("day-cell");
+            calendarGrid.add(dayLabel, col, row + 1); // +1 um unter den Wochentag-Headern zu beginnen
+    
             dayOfMonth++;
         }
     }
-
+    
 }
