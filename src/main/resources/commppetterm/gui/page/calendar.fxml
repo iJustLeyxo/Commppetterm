@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox stylesheets="@../style.css" xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx/21">
+<VBox stylesheets="@../style.css" xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx/21" styleClass="vbox-container">
     <Label fx:id="monthLabel" text="Februar" styleClass="month-label"/>
     <GridPane fx:id="calendarGrid" styleClass="grid-pane">
         <!-- Spaltenköpfe -->

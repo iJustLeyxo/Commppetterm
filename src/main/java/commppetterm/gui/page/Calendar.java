@@ -10,11 +10,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
 
-public class Calender implements Controller{
+public class Calendar implements Controller{
 
     @Override
     public String path() {
-        return "/commppetterm/gui/page/calender.fxml";
+        return "/commppetterm/gui/page/calendar.fxml";
     }
 
     @FXML
