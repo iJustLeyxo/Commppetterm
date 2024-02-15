@@ -15,5 +15,4 @@ public final class Gui extends Application {
     }
 
 
-    // Test
 }

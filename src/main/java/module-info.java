@@ -1,9 +1,9 @@
 module commppetterm {
-    requires javafx.fxml;
     requires javafx.controls;
-    requires com.gluonhq.charm.glisten;
+    requires javafx.fxml;
+    requires transitive javafx.graphics;
+    // requires com.gluonhq.charm.glisten;
     requires org.jetbrains.annotations;
-    
     opens commppetterm to javafx.fxml;
     exports commppetterm;
     exports commppetterm.gui;
@@ -13,3 +13,4 @@ module commppetterm {
     exports commppetterm.util;
     opens commppetterm.util to javafx.fxml;
 }
+
