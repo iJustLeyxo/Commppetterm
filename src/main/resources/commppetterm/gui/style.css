@@ -1,5 +1,7 @@
 *{
     /* Color */
+    color: #1460c9;
+    background: #202020;
     -fx-color: #1460c9;
     -hover-color: #1c70e6;
     -pressed-color: #2e7ce8;
@@ -7,6 +9,7 @@
 	-fx-background: #202020;
 
 	/* Text */
+    fill: #d0d0d0;
 	-fx-fill: #d0d0d0;
 	-fx-prompt-text-fill: #d0d0d0;
 	-fx-highlight-fill: #d0d0d0;
@@ -24,11 +27,14 @@
 }
 
 .button:hover{
+    color: #1460c9;
     -fx-color: -hover-color;
 }
 
 .button:pressed{
-    -fx-color: -pressed-color;
+    color: #1460c9;
+    -fx-color: -pressed-color
+    ;
 }
 
 .button:focused{
@@ -36,6 +42,64 @@
 }
 
 .text-field{
+    background-color: #202020;
     -fx-background-color: #303030;
     -fx-background-radius: 2.5;
+}
+
+
+.month-label {
+    font-size: 24;
+    font-weight: bold;
+    padding: 20px 20px 5px 20px;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-padding: 20px 20px 5px 20px;
+    -fx-text-alignment: center;
+}
+
+.day-of-week {
+    font-weight: 100;
+    padding: 0%;
+    background-color: #1460c9;
+    border-color: #1460c9;
+    -fx-alignment: center;
+    -fx-font-weight: bold;
+    -fx-background-color: #282788;
+    -fx-padding: 5px;
+    -fx-border-color: black;
+}
+
+
+.day-cell {
+    padding: 0%;
+    border-color: #1460c9;
+    -fx-padding: 10px;
+    -fx-border-color: #d0d0d0;
+    -fx-text-alignment: center;
+}
+
+.grid-pane {
+    -fx-hgap: 10px; /* Horizontaler Abstand zwischen Zellen */
+    -fx-vgap: 10px; /* Vertikaler Abstand zwischen Zellen */
+    padding: auto;
+    -fx-padding: 20px; /* Fügt Padding hinzu */
+}
+
+.grid-pane .row {
+    -fx-pref-height: 40px; /* Bevorzugte Höhe jeder Zeile */
+}
+
+.day-of-week, .day-cell {
+    border-color: #1460c9;
+    -fx-alignment: center;
+    -fx-pref-width: 40px; /* Bevorzugte Breite für Wochentagslabels und Tage */
+    -fx-pref-height: 40px; /* Bevorzugte Höhe */
+    -fx-border-color: black; /* Fügt einen Rand hinzu, um Zellen sichtbar zu machen */
+}
+
+.vbox-container {
+    padding: auto;
+    -fx-padding: 20px; /* Fügt Padding hinzu */
+    -fx-spacing: 10px; /* Abstand zwischen den Kind-Elementen */
 }
