@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox stylesheets="@../style.css" xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx/21" styleClass="vbox-container">
-    <Label fx:id="monthLabel" text="Februar" styleClass="month-label"/>
-    <GridPane fx:id="calendarGrid" styleClass="grid-pane">
-        <!-- Spaltenköpfe -->
-        <Label text="Mo" GridPane.columnIndex="0" styleClass="day-of-week"/>
-        <Label text="Di" GridPane.columnIndex="1" styleClass="day-of-week"/>
-        <Label text="Mi" GridPane.columnIndex="2" styleClass="day-of-week"/>
-        <Label text="Do" GridPane.columnIndex="3" styleClass="day-of-week"/>
-        <Label text="Fr" GridPane.columnIndex="4" styleClass="day-of-week"/>
-        <Label text="Sa" GridPane.columnIndex="5" styleClass="day-of-week"/>
-        <Label text="So" GridPane.columnIndex="6" styleClass="day-of-week"/>
-        <!-- Tage werden dynamisch in der Calendar.java-Datei hinzugefügt -->
+<VBox spacing="20.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <Label fx:id="label" text="Month">
+      <font>
+         <Font size="27.0" />
+      </font>
+   </Label>
+    <GridPane fx:id="grid" alignment="CENTER" hgap="5.0" vgap="5.0">
+      <Button mnemonicParsing="false" styleClass="grid-cell" text="1" GridPane.rowIndex="1" />
+      <Button mnemonicParsing="false" styleClass="grid-cell" text="2" GridPane.rowIndex="2" />
+      <Button mnemonicParsing="false" styleClass="grid-cell" text="3" GridPane.rowIndex="3" />
+      <Button mnemonicParsing="false" styleClass="grid-cell" text="4" GridPane.rowIndex="4" />
+      <Button mnemonicParsing="false" styleClass="grid-cell" text="5" GridPane.rowIndex="5" />
+      <Button mnemonicParsing="false" styleClass="grid-cell" text="Mo" GridPane.columnIndex="1" />
+      <Button mnemonicParsing="false" styleClass="grid-cell" text="Di" GridPane.columnIndex="2" />
+      <Button mnemonicParsing="false" styleClass="grid-cell" text="Mi" GridPane.columnIndex="3" />
+      <Button mnemonicParsing="false" styleClass="grid-cell" text="Do" GridPane.columnIndex="4" />
+      <Button mnemonicParsing="false" styleClass="grid-cell" text="Fr" GridPane.columnIndex="5" />
+      <Button mnemonicParsing="false" styleClass="grid-cell" text="Sa" GridPane.columnIndex="6" />
+      <Button mnemonicParsing="false" styleClass="grid-cell" text="So" GridPane.columnIndex="7" />
     </GridPane>
+   <padding>
+      <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
+   </padding>
 </VBox>
