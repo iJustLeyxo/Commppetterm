@@ -11,10 +11,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import org.jetbrains.annotations.NotNull;
 
-public final class Calendar implements Controller{
+public final class MonthView implements Controller{
     @Override
     public @NotNull String path() {
-        return "/commppetterm/gui/page/calendar.fxml";
+        return "/commppetterm/gui/page/MonthView.fxml";
     }
 
     @FXML
