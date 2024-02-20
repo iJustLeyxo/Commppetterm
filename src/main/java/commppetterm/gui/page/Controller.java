@@ -15,10 +15,10 @@ public interface Controller {
     /**
      * Called before the controller is assigned to the fxml loader
      */
-    public default void preInit() {};
+    default void preInit() {};
     
     /**
      * Called after the controller is assigned to the fxml loader;
      */
-    public default void postInit() {};
+    default void postInit() {};
 }
