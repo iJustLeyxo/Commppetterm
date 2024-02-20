@@ -11,5 +11,6 @@ module commppetterm {
     exports commppetterm;
     exports commppetterm.gui;
     exports commppetterm.gui.page;
+    opens commppetterm.gui.error to javafx.fxml;
 }
 

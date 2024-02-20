@@ -1,24 +1,36 @@
 package commppetterm.gui.page;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+
 /**
- * Scene controller interface
+ * Scene controller superclass
  */
-public interface Controller {
+public abstract class Controller {
     /**
-     * Returns the path to the scene of the controller
-     * @return the path to the scene of the controller
+     * Whether the controller has already been loaded
      */
-    @NotNull String path();
-    
+    private boolean loaded = false;
+
     /**
-     * Called before the controller is assigned to the fxml loader
+     * Loads the controller's main resource
+     * @return a parent object
+     * @throws ControllerLoadError In case the controller cannot be loaded
      */
-    default void preInit() {};
-    
-    /**
-     * Called after the controller is assigned to the fxml loader;
-     */
-    default void postInit() {};
+    public @NotNull Parent load() {
+        if (loaded) {
+            // TODO: Throw error
+        }
+        loaded = true;
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource(this.getClass().getSimpleName() + ".fxml"));
+        loader.setController(this);
+        try {
+            return loader.load();
+        } catch (IOException e) {
+            // Todo throw error
+        }
+    }
 }
