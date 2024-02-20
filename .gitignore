@@ -10,6 +10,9 @@
 !*.java
 !*.jar
 
+# Resources
+!*.png
+
 # Maven
 target/
 !pom.xml
