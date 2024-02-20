@@ -12,11 +12,11 @@ public final class Gui extends Application {
         GuiTools.prepare(stage, new Calendar());
 
         // setze die min Größe der Stage
-        stage.setMinWidth(435); // min breite vom Fenster
+        stage.setMinWidth(460); // min breite vom Fenster
         stage.setMinHeight(500); // min höhe vom Fenster
 
         // Optional: anfangsgröße
-        stage.setWidth(435); // Anfangsbreite
+        stage.setWidth(460); // Anfangsbreite
         stage.setHeight(500); // Anfangshöhe
 
         stage.show();
