@@ -52,7 +52,7 @@ public class Calendar implements Controller{
             
             Label dayLabel = new Label(Integer.toString(dayOfMonth));
             dayLabel.getStyleClass().addAll("day-cell");
-            calendarGrid.add(dayLabel, col, row + 1); // +1 um unter den Wochentag-Headern zu beginnen
+            calendarGrid.add(dayLabel, col + 1, row + 1); // +1 um unter den Wochentag-Headern zu beginnen
     
             dayOfMonth++;
         }
