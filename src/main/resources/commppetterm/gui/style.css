@@ -33,10 +33,24 @@
 
 .button:pressed{
     color: #1460c9;
-    -fx-color: -pressed-color
-    ;
+    -fx-color: -pressed-color;
 }
 
 .button:focused{
     -fx-background-insets: 0;
+}
+
+.grid-cell{
+    -fx-pref-width: 50px;
+    -fx-pref-height: 50px;
+}
+
+.grid-cell-alt{
+    -fx-color: #404040;
+    -fx-pref-width: 50px;
+    -fx-pref-height: 50px;
+}
+
+.alt-color{
+    -fx-color: #404040;
 }
