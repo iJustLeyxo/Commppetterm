@@ -11,12 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import org.jetbrains.annotations.NotNull;
 
-public final class MonthView implements Controller{
-    @Override
-    public @NotNull String path() {
-        return "/commppetterm/gui/page/MonthView.fxml";
-    }
-
+public final class MonthView extends Controller{
     @FXML
     private Label label;
 
@@ -26,16 +21,6 @@ public final class MonthView implements Controller{
     @FXML
     public void initialize() {
         this.generate(YearMonth.now());
-    }
-
-    @Override
-    public void preInit() {
-        // Optional: Code vor dem Laden
-    }
-    
-    @Override
-    public void postInit() {
-        // Optional: Code nach dem Laden
     }
 
     private void generate(YearMonth yearMonth) {
