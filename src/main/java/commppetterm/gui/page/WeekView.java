@@ -9,12 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
-public final class WeekView implements Controller {
-    @Override
-    public @NotNull String path() {
-        return "/commppetterm/gui/page/WeekView.fxml";
-    }
-
+public final class WeekView extends Controller {
     @FXML
     private Label monthAndYearLabel;
     @FXML
