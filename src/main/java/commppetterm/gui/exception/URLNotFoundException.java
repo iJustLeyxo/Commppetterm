@@ -1,4 +1,4 @@
-package commppetterm.exception.gui;
+package commppetterm.gui.exception;
 
 import org.jetbrains.annotations.NotNull;
 

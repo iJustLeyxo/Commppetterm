@@ -1,8 +1,8 @@
 package commppetterm.gui.page;
 
-import commppetterm.exception.gui.ControllerLoadedException;
-import commppetterm.exception.gui.FxmlLoadException;
-import commppetterm.exception.gui.URLNotFoundException;
+import commppetterm.gui.exception.ControllerLoadedException;
+import commppetterm.gui.exception.FxmlLoadException;
+import commppetterm.gui.exception.URLNotFoundException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
