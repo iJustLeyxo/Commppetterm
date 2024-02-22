@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      spacing="5.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="commppetterm.gui.page.CalendarPage">
+   <AnchorPane minWidth="600.0">
+      <HBox alignment="CENTER_LEFT" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+            AnchorPane.topAnchor="0.0">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+         </padding>
+         <Button mnemonicParsing="false" onAction="#onNew" text="New"/>
+         <Button fx:id="editBtn" mnemonicParsing="false" onAction="#onEdit" text="Edit"/>
+         <Button fx:id="delBtn" mnemonicParsing="false" onAction="#onDel" text="Delete"/>
+      </HBox>
+      <HBox alignment="CENTER" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+         </padding>
+         <Button mnemonicParsing="false" onAction="#onPrev" text="Prev"/>
+         <Label fx:id="dateLab" text="Label">
+            <font>
+               <Font size="25.0"/>
+            </font>
+         </Label>
+         <Button mnemonicParsing="false" onAction="#onNext" text="Next"/>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"
+            AnchorPane.topAnchor="0.0">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+         </padding>
+         <ToggleButton fx:id="dayBtn" mnemonicParsing="false" onAction="#onDay" text="Day"/>
+         <ToggleButton fx:id="weekBtn" mnemonicParsing="false" onAction="#onWeek" text="Week"/>
+         <ToggleButton fx:id="monthBtn" mnemonicParsing="false" onAction="#onMonth" text="Month"/>
+      </HBox>
+   </AnchorPane>
+   <Pane fx:id="contentPane"/>
+</VBox>
