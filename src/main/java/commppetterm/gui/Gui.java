@@ -1,11 +1,9 @@
 package commppetterm.gui;
 
 import commppetterm.gui.page.CalendarPage;
-import commppetterm.gui.page.MonthView;
 import org.jetbrains.annotations.NotNull;
 import commppetterm.App;
 import commppetterm.gui.page.Controller;
-import commppetterm.gui.page.DayView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;

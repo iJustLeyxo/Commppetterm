@@ -23,21 +23,32 @@ public abstract class Controller {
      * Loads the controller's main resource
      * @return a parent object
      */
-    public @NotNull Parent load() throws Exception {
+    public @NotNull Parent load() throws ControllerLoadedException, FxmlLoadException, URLNotFoundException {
         if (loaded) {
             throw new ControllerLoadedException(this.getClass().getName());
         }
+
         loaded = true;
         URL url = this.getClass().getResource(this.getClass().getSimpleName() + ".fxml");
         FXMLLoader loader = new FXMLLoader(url);
+        Parent parent;
         loader.setController(this);
+
         try {
-            return loader.load();
+            parent = loader.load();
         } catch (IOException e) {
             if (url == null) {
                 throw new URLNotFoundException(this.getClass(), this.getClass().getSimpleName());
             }
             throw new FxmlLoadException(url, e);
         }
+
+        this.init();
+        return parent;
     }
+
+    /**
+     * Initialises the controller
+     */
+    protected void init() throws ControllerLoadedException, FxmlLoadException, URLNotFoundException {};
 }

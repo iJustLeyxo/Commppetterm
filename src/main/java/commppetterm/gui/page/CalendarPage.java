@@ -1,5 +1,8 @@
 package commppetterm.gui.page;
 
+import commppetterm.exception.gui.ControllerLoadedException;
+import commppetterm.exception.gui.FxmlLoadException;
+import commppetterm.exception.gui.URLNotFoundException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -45,4 +48,9 @@ public final class CalendarPage extends Controller {
 
     @FXML
     private void onMonth() {};
+
+    @Override
+    protected void init() throws ControllerLoadedException, FxmlLoadException, URLNotFoundException {
+        this.contentPane.getChildren().add(new MonthSubPage().load());
+    }
 }
