@@ -7,19 +7,15 @@ import java.util.Locale;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import org.jetbrains.annotations.NotNull;
 
-public final class MonthView extends Controller{
-    @FXML
-    private Label label;
-
+public final class MonthSubPage extends SubPage {
     @FXML
     private GridPane grid;
 
-    @FXML
-    public void initialize() {
+    @Override
+    protected void init() {
         this.generate(YearMonth.now());
     }
 
@@ -27,7 +23,7 @@ public final class MonthView extends Controller{
         LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
         
         String monthName = yearMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault());
-        label.setText(monthName + " " + yearMonth.getYear());
+        //label.setText(monthName + " " + yearMonth.getYear());
         
         int firstDay = date.getDayOfWeek().getValue() - 2;
         int totalDays = yearMonth.lengthOfMonth();
@@ -38,5 +34,10 @@ public final class MonthView extends Controller{
             int relativeDay = day + firstDay;
             grid.add(button, (relativeDay % 7) + 1, (relativeDay / 7) + 1);
         }
-    }   
+    }
+
+    @Override
+    @NotNull LocalDate getDate() {
+        return LocalDate.now();
+    }
 }
