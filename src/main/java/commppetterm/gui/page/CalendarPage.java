@@ -1,6 +1,8 @@
 package commppetterm.gui.page;
 
-import org.jetbrains.annotations.NotNull;
-
+/**
+ * Calendar controller class
+ */
 public final class Calendar {
+    
 }

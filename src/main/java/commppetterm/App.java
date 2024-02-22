@@ -1,10 +1,11 @@
 package commppetterm;
 
+import java.util.logging.Logger;
 
 /**
  * Root class for configs
  */
-public final class Commppetterm {
+public final class App {
     /**
      * App name
      */
@@ -14,4 +15,6 @@ public final class Commppetterm {
      * App version
      */
     public static final String ver = "0.0.0";
+
+    public static final Logger logger = Logger.getLogger(App.class.getName());
 }
