@@ -2,9 +2,7 @@ package commppetterm.gui.page;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
 import org.jetbrains.annotations.NotNull;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;

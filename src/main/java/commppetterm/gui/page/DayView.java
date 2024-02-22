@@ -17,6 +17,7 @@ public final class DayView implements Controller {
 
     @FXML
     private Label monthAndYearLabel;
+    
     @FXML
     private GridPane weekGrid;
 
