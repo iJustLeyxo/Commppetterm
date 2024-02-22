@@ -1,26 +1,42 @@
 package commppetterm.gui;
 
+import java.io.IOException;
+
+import org.jetbrains.annotations.NotNull;
 import commppetterm.App;
 import commppetterm.gui.page.Controller;
-import commppetterm.gui.page.MonthView;
+import commppetterm.gui.page.DayView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import org.jetbrains.annotations.NotNull;
-
 import java.net.URL;
 
 public final class Gui extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        prepare(stage, new MonthView());
+        // GuiTools.prepare(stage, new Example());
+        // GuiTools.prepare(stage, new Calendar());
+    
+
+
+        // // setze die min Größe der Stage
+        // stage.setMinWidth(435); // min breite vom Fenster
+        // stage.setMinHeight(500); // min höhe vom Fenster
+
+        // // Optional: anfangsgröße
+        // stage.setWidth(435); // Anfangsbreite
+        // stage.setHeight(500); // Anfangshöhe
+
+        prepare(stage, new DayView());
         stage.show();
     }
 
     public static void main(String[] args) {
         launch(args);
     }
+
+
 
     /**
      * Prepares a stage
