@@ -46,12 +46,14 @@
 }
 
 .grid-cell-alt{
+    color: #404040;
     -fx-color: #404040;
     -fx-pref-width: 50px;
     -fx-pref-height: 50px;
 }
 
 .alt-color{
+    color: #404040;
     -fx-color: #404040;
 }
 
