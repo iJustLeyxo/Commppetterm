@@ -3,8 +3,11 @@ package commppetterm.gui.page;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import org.jetbrains.annotations.NotNull;
 
-public final class DayView extends Controller {
+import java.time.LocalDate;
+
+public final class DaySubPage extends SubPage {
     @FXML
     private Label monthAndYearLabel;
     @FXML
@@ -12,5 +15,10 @@ public final class DayView extends Controller {
 
     public void initialize() {
         
+    }
+
+    @Override
+    @NotNull LocalDate getDate() {
+        return LocalDate.now();
     }
 }

@@ -8,8 +8,9 @@ import java.util.Locale;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
+import org.jetbrains.annotations.NotNull;
 
-public final class MonthSubPage extends Controller{
+public final class MonthSubPage extends SubPage {
     @FXML
     private GridPane grid;
 
@@ -33,5 +34,10 @@ public final class MonthSubPage extends Controller{
             int relativeDay = day + firstDay;
             grid.add(button, (relativeDay % 7) + 1, (relativeDay / 7) + 1);
         }
-    }   
+    }
+
+    @Override
+    @NotNull LocalDate getDate() {
+        return LocalDate.now();
+    }
 }

@@ -13,7 +13,7 @@ import java.net.URL;
 /**
  * Scene controller superclass
  */
-public abstract class Controller {
+public abstract class Page {
     /**
      * Whether the controller has already been loaded
      */

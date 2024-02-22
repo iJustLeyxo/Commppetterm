@@ -12,7 +12,7 @@ import javafx.scene.layout.Pane;
 /**
  * Calendar controller class
  */
-public final class CalendarPage extends Controller {
+public final class CalendarPage extends Page {
     @FXML
     private Button editBtn, delBtn;
 
@@ -51,6 +51,6 @@ public final class CalendarPage extends Controller {
 
     @Override
     protected void init() throws ControllerLoadedException, FxmlLoadException, URLNotFoundException {
-        this.contentPane.getChildren().add(new MonthSubPage().load());
+        this.contentPane.getChildren().add(new DaySubPage().load());
     }
 }

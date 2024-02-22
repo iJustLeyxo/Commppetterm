@@ -3,7 +3,7 @@ package commppetterm.gui;
 import commppetterm.gui.page.CalendarPage;
 import org.jetbrains.annotations.NotNull;
 import commppetterm.App;
-import commppetterm.gui.page.Controller;
+import commppetterm.gui.page.Page;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -36,10 +36,10 @@ public final class Gui extends Application {
     /**
      * Prepares a stage
      * @param stage The stage to prepare
-     * @param controller The class to load the scene from
+     * @param page The class to load the scene from
      */
-    public static void prepare(@NotNull Stage stage, @NotNull Controller controller) throws Exception {
-        stage.setScene(new Scene(controller.load()));
+    public static void prepare(@NotNull Stage stage, @NotNull Page page) throws Exception {
+        stage.setScene(new Scene(page.load()));
         stage.setTitle(App.name);
         String iconFile = "icon.png";
         URL iconUrl = Gui.class.getResource(iconFile);
