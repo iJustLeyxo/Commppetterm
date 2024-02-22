@@ -21,22 +21,22 @@
 	-fx-body-color: -fx-color;
 }
 
-.button{
+.button, .toggle-button{
     -fx-background-insets: 0;
-    -fx-background-radius: 2.5;
+    -fx-background-radius: 5;
 }
 
-.button:hover{
+.button:hover, .toggle-button:hover{
     color: #1460c9;
     -fx-color: -hover-color;
 }
 
-.button:pressed{
+.button:pressed, .toggle-button:pressed{
     color: #1460c9;
     -fx-color: -pressed-color;
 }
 
-.button:focused{
+.button:focused, .toggle-button:focussed{
     -fx-background-insets: 0;
 }
 
