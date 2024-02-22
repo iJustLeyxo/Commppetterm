@@ -10,6 +10,7 @@ import java.time.LocalDate;
 public final class DaySubPage extends SubPage {
     @FXML
     private Label monthAndYearLabel;
+    
     @FXML
     private GridPane weekGrid;
 
