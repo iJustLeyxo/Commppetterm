@@ -9,7 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
-public class DayView implements Controller {
+public final class DayView implements Controller {
     @Override
     public @NotNull String path() {
         return "/commppetterm/gui/page/DayView.fxml";
@@ -23,9 +23,4 @@ public class DayView implements Controller {
     public void initialize() {
         
     }
-
-    
-
-
-
 }

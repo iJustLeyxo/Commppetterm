@@ -9,8 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
-public class WeekView implements Controller {
-
+public final class WeekView implements Controller {
     @Override
     public @NotNull String path() {
         return "/commppetterm/gui/page/WeekView.fxml";
@@ -33,7 +32,4 @@ public class WeekView implements Controller {
 
         // Hier könnte man weitere Logik hinzufügen, um die Tage der Woche und Termine anzuzeigen
     }
-
-
-
 }

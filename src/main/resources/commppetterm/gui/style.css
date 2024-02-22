@@ -33,43 +33,27 @@
 
 .button:pressed{
     color: #1460c9;
-    -fx-color: -pressed-color
-    ;
+    -fx-color: -pressed-color;
 }
 
 .button:focused{
     -fx-background-insets: 0;
 }
 
-.text-field{
-    background-color: #202020;
-    -fx-background-color: #303030;
-    -fx-background-radius: 2.5;
+.grid-cell{
+    -fx-pref-width: 50px;
+    -fx-pref-height: 50px;
 }
 
-
-.month-label {
-    font-size: 24;
-    font-weight: bold;
-    padding: 20px 20px 5px 20px;
-    -fx-font-size: 24px;
-    -fx-font-weight: bold;
-    -fx-padding: 20px 20px 5px 20px;
-    -fx-text-alignment: center;
+.grid-cell-alt{
+    -fx-color: #404040;
+    -fx-pref-width: 50px;
+    -fx-pref-height: 50px;
 }
 
-.day-of-week {
-    font-weight: 100;
-    padding: 0%;
-    background-color: #1460c9;
-    border-color: #1460c9;
-    -fx-alignment: center;
-    -fx-font-weight: bold;
-    -fx-background-color: #282788;
-    -fx-padding: 5px;
-    -fx-border-color: black;
+.alt-color{
+    -fx-color: #404040;
 }
-
 
 .day-cell {
     padding: 0%;
