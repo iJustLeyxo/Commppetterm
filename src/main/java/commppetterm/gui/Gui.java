@@ -29,6 +29,4 @@ public final class Gui extends Application {
         launch(args);
     }
 
-
-    // Test
 }
