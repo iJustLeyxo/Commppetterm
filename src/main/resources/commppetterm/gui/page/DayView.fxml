@@ -18,32 +18,32 @@
         <GridPane fx:id="dayGrid" hgap="10" prefHeight="4898.0" prefWidth="4202.0" style="-fx-padding: 10;" vgap="10">
             <Label style="-fx-font-weight: bold;" text="Zeit" GridPane.columnIndex="0" />
             <Label style="-fx-font-weight: bold;" text="Ereignisse" GridPane.columnIndex="1" />
-         <Button fx:id="btnOpenDialog" mnemonicParsing="false" text="+" onAction="#handleOpenDialog" GridPane.columnIndex="13" />
-         <Label text="00:00" GridPane.rowIndex="1" />
-         <Label text="01:00" GridPane.rowIndex="2" />
-         <Label text="02:00" GridPane.rowIndex="3" />
-         <Label text="03:00" GridPane.rowIndex="4" />
-         <Label text="04:00" GridPane.rowIndex="5" />
-         <Label text="05:00" GridPane.rowIndex="6" />
-         <Label text="06:00" GridPane.rowIndex="7" />
-         <Label text="07:00" GridPane.rowIndex="8" />
-         <Label text="08:00" GridPane.rowIndex="9" />
-         <Label text="09:00" GridPane.rowIndex="10" />
-         <Label text="10:00" GridPane.rowIndex="11" />
-         <Label text="11:00" GridPane.rowIndex="12" />
-         <Label text="12:00" GridPane.rowIndex="13" />
-         <Label text="13:00" GridPane.rowIndex="14" />
-         <Label text="14:00" GridPane.rowIndex="15" />
-         <Label text="15:00" GridPane.rowIndex="16" />
-         <Label text="16:00" GridPane.rowIndex="17" />
-         <Label text="17:00" GridPane.rowIndex="18" />
-         <Label text="18:00" GridPane.rowIndex="19" />
-         <Label text="19:00" GridPane.rowIndex="20" />
-         <Label text="20:00" GridPane.rowIndex="21" />
-         <Label text="21:00" GridPane.rowIndex="22" />
-         <Label text="22:00" GridPane.rowIndex="23" />
-         <Label text="23:00" GridPane.rowIndex="24" />
-         <Label text="00:00" GridPane.rowIndex="25" />
+            <Button mnemonicParsing="false" text="+" GridPane.columnIndex="13" onAction="#handleOpenDialog" />
+            <Label text="00:00" GridPane.rowIndex="1" />
+            <Label text="01:00" GridPane.rowIndex="2" />
+            <Label text="02:00" GridPane.rowIndex="3" />
+            <Label text="03:00" GridPane.rowIndex="4" />
+            <Label text="04:00" GridPane.rowIndex="5" />
+            <Label text="05:00" GridPane.rowIndex="6" />
+            <Label text="06:00" GridPane.rowIndex="7" />
+            <Label text="07:00" GridPane.rowIndex="8" />
+            <Label text="08:00" GridPane.rowIndex="9" />
+            <Label text="09:00" GridPane.rowIndex="10" />
+            <Label text="10:00" GridPane.rowIndex="11" />
+            <Label text="11:00" GridPane.rowIndex="12" />
+            <Label text="12:00" GridPane.rowIndex="13" />
+            <Label text="13:00" GridPane.rowIndex="14" />
+            <Label text="14:00" GridPane.rowIndex="15" />
+            <Label text="15:00" GridPane.rowIndex="16" />
+            <Label text="16:00" GridPane.rowIndex="17" />
+            <Label text="17:00" GridPane.rowIndex="18" />
+            <Label text="18:00" GridPane.rowIndex="19" />
+            <Label text="19:00" GridPane.rowIndex="20" />
+            <Label text="20:00" GridPane.rowIndex="21" />
+            <Label text="21:00" GridPane.rowIndex="22" />
+            <Label text="22:00" GridPane.rowIndex="23" />
+            <Label text="23:00" GridPane.rowIndex="24" />
+            <Label text="00:00" GridPane.rowIndex="25" />
             <!-- Statische Zeitskala Beispiel von 0 bis 23 Uhr -->
             <!-- Für dynamische Inhalte sollten Sie die Zeilen im zugehörigen Controller programmatisch hinzufügen -->
             <fx:define>

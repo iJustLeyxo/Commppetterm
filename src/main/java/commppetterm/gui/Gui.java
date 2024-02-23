@@ -26,7 +26,9 @@ public final class Gui extends Application {
         stage.setWidth(420); // Anfangsbreite
         stage.setHeight(800); // Anfangshöhe
 
+        // prepare(stage, new DayView());
         prepare(stage, new DayView());
+
         stage.show();
     }
 
