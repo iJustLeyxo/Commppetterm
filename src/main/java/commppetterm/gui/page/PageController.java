@@ -1,9 +1,12 @@
 package commppetterm.gui.page;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.lang.constant.PackageDesc;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 /**
  * Controller for a page of the calendar
@@ -21,10 +24,16 @@ public abstract class PageController extends Controller {
 
     /**
      * Creates a new subpage
+     * @param formatter The formatter to use for dates
+     * @param date The date to display
      */
-    public PageController(DateTimeFormatter formatter) {
+    public PageController(DateTimeFormatter formatter, @Nullable LocalDate date) {
         this.formatter = formatter;
-        this.date = LocalDate.now();
+        if (date == null) {
+            this.date = LocalDate.now();
+        } else {
+            this.date = date;
+        }
     }
 
     /**

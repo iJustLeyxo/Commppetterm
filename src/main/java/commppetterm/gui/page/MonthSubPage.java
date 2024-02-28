@@ -5,6 +5,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.WeekFields;
 import java.util.LinkedList;
 
+import commppetterm.App;
+import commppetterm.gui.exception.ControllerLoadedException;
+import commppetterm.gui.exception.FxmlLoadException;
+import commppetterm.gui.exception.URLNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -12,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Subpage for showing months
@@ -34,7 +39,15 @@ public final class MonthSubPage extends PageController {
      * Creates a new month subpage
      */
     public MonthSubPage() {
-        super(DateTimeFormatter.ofPattern("MMM yyyy"));
+        super(DateTimeFormatter.ofPattern("MMM yyyy"), null);
+    }
+
+    /**
+     * Creates a new month subpage
+     * @param date The date to display
+     */
+    public MonthSubPage(@Nullable LocalDate date) {
+        super(DateTimeFormatter.ofPattern("MMM yyyy"), date);
     }
 
     @Override
@@ -131,7 +144,13 @@ public final class MonthSubPage extends PageController {
             this.button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    // TODO: Handle action
+                    DaySubPage page = new DaySubPage(date);
+                    try {
+                        CalendarPage.get().swap(page);
+                    } catch (Exception e) {
+                        App.logger.severe(e.toString());
+                        e.printStackTrace(System.out);
+                    }
                 }
             });
         }
@@ -151,7 +170,13 @@ public final class MonthSubPage extends PageController {
             this.button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    // TODO: Handle action
+                    WeekSubPage page = new WeekSubPage(date);
+                    try {
+                        CalendarPage.get().swap(page);
+                    } catch (Exception e) {
+                        App.logger.severe(e.toString());
+                        e.printStackTrace(System.out);
+                    }
                 }
             });
         }

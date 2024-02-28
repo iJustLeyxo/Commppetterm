@@ -10,11 +10,24 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Pane;
+import org.jetbrains.annotations.NotNull;
+
+import java.time.LocalDate;
 
 /**
  * Calendar controller class
  */
 public final class CalendarPage extends Controller {
+    /**
+     * This calendar page controller
+     */
+    private static CalendarPage thiz;
+
+    /**
+     * Gets the calendar page controller
+     */
+    public static CalendarPage get() { return thiz; }
+
     /**
      * The contained page's controller
      */
@@ -31,6 +44,13 @@ public final class CalendarPage extends Controller {
 
     @FXML
     private Pane contentPane;
+
+    /**
+     * Creates a new calendar page
+     */
+    public CalendarPage() {
+        thiz = this;
+    }
 
     //TODO: Add editing, adding and deleting of entries
 
@@ -59,26 +79,25 @@ public final class CalendarPage extends Controller {
 
     @FXML
     private void onDay() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        this.swap(new DaySubPage());
+        this.swap(new DaySubPage(this.subPage.date));
     };
 
     @FXML
     private void onWeek() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        this.swap(new WeekSubPage());
+        this.swap(new WeekSubPage(this.subPage.date));
     };
 
     @FXML
     private void onMonth() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        this.swap(new MonthSubPage());
+        this.swap(new MonthSubPage(this.subPage.date));
     };
 
     /**
      * Swaps to a different subpage
      * @param pageController The subpage to swap to
      */
-    private void swap(PageController pageController) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+    public void swap(@NotNull PageController pageController) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         if (this.subPage != null) {
-            pageController.date = this.subPage.date;
             Parent parent = this.subPage.parent();
 
             if (parent != null) {
@@ -89,6 +108,7 @@ public final class CalendarPage extends Controller {
         this.subPage = pageController;
         this.dateLab.setText(this.subPage.label());
         this.contentPane.getChildren().add(this.subPage.load());
+        Gui.get().stage().sizeToScene();
     }
 
     @Override
