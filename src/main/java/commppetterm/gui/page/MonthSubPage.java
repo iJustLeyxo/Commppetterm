@@ -6,9 +6,6 @@ import java.time.temporal.WeekFields;
 import java.util.LinkedList;
 
 import commppetterm.App;
-import commppetterm.gui.exception.ControllerLoadedException;
-import commppetterm.gui.exception.FxmlLoadException;
-import commppetterm.gui.exception.URLNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -21,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Subpage for showing months
  */
-public final class MonthSubPage extends PageController {
+public final class MonthSubPage extends SubPageController {
     @FXML
     private GridPane grid;
 

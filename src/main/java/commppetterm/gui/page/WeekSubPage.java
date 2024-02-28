@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public final class WeekSubPage extends PageController {
+public final class WeekSubPage extends SubPageController {
     @FXML
     private GridPane weekGrid;
 

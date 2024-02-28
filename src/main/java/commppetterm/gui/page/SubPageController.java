@@ -3,7 +3,6 @@ package commppetterm.gui.page;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.constant.PackageDesc;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -11,7 +10,7 @@ import java.util.Objects;
 /**
  * Controller for a page of the calendar
  */
-public abstract class PageController extends Controller {
+public abstract class SubPageController extends Controller {
     /**
      * Date of the subpage timeframe
      */
@@ -27,7 +26,7 @@ public abstract class PageController extends Controller {
      * @param formatter The formatter to use for dates
      * @param date The date to display
      */
-    public PageController(DateTimeFormatter formatter, @Nullable LocalDate date) {
+    public SubPageController(DateTimeFormatter formatter, @Nullable LocalDate date) {
         this.formatter = formatter;
         this.date = Objects.requireNonNullElseGet(date, LocalDate::now);
     }
