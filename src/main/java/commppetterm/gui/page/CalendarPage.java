@@ -33,6 +33,8 @@ public final class CalendarPage extends Page {
     @FXML
     private Pane contentPane;
 
+    //TODO: Add editing, adding and deleting of entries
+
     @FXML
     private void onNew() {};
 

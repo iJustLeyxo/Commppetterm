@@ -40,7 +40,7 @@ public final class MonthSubPage extends SubPage {
         this.grid.getChildren().removeAll(buttons);
         this.buttons = new LinkedList<>();
 
-        /* Generate new contents */
+        /* Generate days */
         int firstDay = date.getDayOfWeek().getValue() - 2;
         int totalDays = date.lengthOfMonth();
 
@@ -51,6 +51,10 @@ public final class MonthSubPage extends SubPage {
             this.grid.add(button, (relativeDay % 7) + 1, (relativeDay / 7) + 1);
             this.buttons.add(button);
         }
+
+        /* Generate weeks */
+        //TODO: Add week generation
+        //TODO: Make all buttons functional
     }
 
     @Override
