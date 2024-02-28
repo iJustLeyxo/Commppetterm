@@ -61,6 +61,8 @@ public final class MonthSubPage extends SubPageController {
         this.grid.getChildren().removeAll(contents);
         this.contents = new LinkedList<>();
 
+        // TODO: Make today highlighted
+
         /* Generate */
         LocalDate iter = LocalDate.of(this.date.getYear(), this.date.getMonth(), 1);
         Parent parent = null;
@@ -136,7 +138,7 @@ public final class MonthSubPage extends SubPageController {
          */
         public DayCellController(@NotNull LocalDate date) {
             super(date, new Button(Integer.toString(date.getDayOfMonth())));
-            this.button.getStyleClass().addAll("grid-cell-alt");
+            this.button.getStyleClass().addAll("cell", "alt-color");
             this.button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
@@ -162,7 +164,7 @@ public final class MonthSubPage extends SubPageController {
          */
         public WeekCellController(@NotNull LocalDate date) {
             super(date, new Button(Integer.toString(date.get(WeekFields.ISO.weekOfYear()))));
-            this.button.getStyleClass().addAll("grid-cell");
+            this.button.getStyleClass().addAll("cell");
             this.button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {

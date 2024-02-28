@@ -16,5 +16,8 @@ public final class App {
      */
     public static final String ver = "0.0.0";
 
+    /**
+     * Application logger
+     */
     public static final Logger logger = Logger.getLogger(App.class.getName());
 }
