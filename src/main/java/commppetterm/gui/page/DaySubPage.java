@@ -9,17 +9,15 @@ import java.time.LocalDate;
 
 public final class DaySubPage extends SubPage {
     @FXML
-    private Label monthAndYearLabel;
-    
-    @FXML
     private GridPane weekGrid;
 
-    public void initialize() {
-        
+    @Override
+    @NotNull String prev() {
+        return "N/A";
     }
 
     @Override
-    @NotNull LocalDate getDate() {
-        return LocalDate.now();
+    @NotNull String next() {
+        return "N/A";
     }
 }

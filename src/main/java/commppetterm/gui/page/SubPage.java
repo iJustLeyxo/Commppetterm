@@ -6,8 +6,26 @@ import java.time.LocalDate;
 
 public abstract class SubPage extends Page {
     /**
-     * Retrieves the current time of the subpage
-     * @return the current time of the subpage
+     * Date of the subpage timeframe
      */
-    abstract @NotNull LocalDate getDate();
+    protected LocalDate date;
+
+    /**
+     * Creates a new subpage
+     */
+    public SubPage() {
+        this.date = LocalDate.now();
+    }
+
+    /**
+     * Jumps to the previous timeframe of the page
+     * @return the text for the label of the parent page
+     */
+    abstract @NotNull String prev();
+
+    /**
+     * Jumps to the next timeframe of the page
+     * @return the text for the label of the parent page
+     */
+    abstract @NotNull String next();
 }

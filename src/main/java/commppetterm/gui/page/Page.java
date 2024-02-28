@@ -6,6 +6,7 @@ import commppetterm.gui.exception.URLNotFoundException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.net.URL;
@@ -15,27 +16,32 @@ import java.net.URL;
  */
 public abstract class Page {
     /**
-     * Whether the controller has already been loaded
+     * Loaded parent
      */
-    private boolean loaded = false;
+    private @Nullable Parent parent;
+
+    /**
+     * Creates a new page
+     */
+    public Page() {
+        this.parent = null;
+    }
 
     /**
      * Loads the controller's main resource
      * @return a parent object
      */
     public @NotNull Parent load() throws ControllerLoadedException, FxmlLoadException, URLNotFoundException {
-        if (loaded) {
+        if (this.parent != null) {
             throw new ControllerLoadedException(this.getClass().getName());
         }
 
-        loaded = true;
         URL url = this.getClass().getResource(this.getClass().getSimpleName() + ".fxml");
         FXMLLoader loader = new FXMLLoader(url);
-        Parent parent;
         loader.setController(this);
 
         try {
-            parent = loader.load();
+            this.parent = loader.load();
         } catch (IOException e) {
             if (url == null) {
                 throw new URLNotFoundException(this.getClass(), this.getClass().getSimpleName());
@@ -44,11 +50,17 @@ public abstract class Page {
         }
 
         this.init();
-        return parent;
+        assert this.parent != null;
+        return this.parent;
     }
 
     /**
      * Initialises the controller
      */
     protected void init() throws ControllerLoadedException, FxmlLoadException, URLNotFoundException {};
+
+    /**
+     * @return The parent of this controller if loaded
+     */
+    public @Nullable Parent parent() { return this.parent; }
 }
