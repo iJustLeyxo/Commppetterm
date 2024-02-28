@@ -53,7 +53,6 @@ public final class MonthSubPage extends PageController {
     @Override
     protected void init() {
         this.contents = new LinkedList<>();
-        this.date = LocalDate.now();
         this.reload();
     }
 

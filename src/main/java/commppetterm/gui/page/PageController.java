@@ -29,11 +29,7 @@ public abstract class PageController extends Controller {
      */
     public PageController(DateTimeFormatter formatter, @Nullable LocalDate date) {
         this.formatter = formatter;
-        if (date == null) {
-            this.date = LocalDate.now();
-        } else {
-            this.date = date;
-        }
+        this.date = Objects.requireNonNullElseGet(date, LocalDate::now);
     }
 
     /**
