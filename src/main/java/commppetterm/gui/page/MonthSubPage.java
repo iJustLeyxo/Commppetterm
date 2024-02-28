@@ -26,6 +26,11 @@ public final class MonthSubPage extends PageController {
     private LinkedList<Parent> elements;
 
     /**
+     * List of all contents in  the grid
+     */
+    private LinkedList<Parent> contents;
+
+    /**
      * Creates a new month subpage
      */
     public MonthSubPage() {
@@ -34,7 +39,7 @@ public final class MonthSubPage extends PageController {
 
     @Override
     protected void init() {
-        this.elements = new LinkedList<>();
+        this.contents = new LinkedList<>();
         this.date = LocalDate.now();
         this.reload();
     }
@@ -44,33 +49,31 @@ public final class MonthSubPage extends PageController {
      */
     private void reload() {
         /* Clear grid pane */
-        this.grid.getChildren().removeAll(elements);
-        this.elements = new LinkedList<>();
+        this.grid.getChildren().removeAll(contents);
+        this.contents = new LinkedList<>();
 
-        /* Generate days */
-        LocalDate firstDayOfMonth = LocalDate.of(this.date.getYear(), this.date.getMonth(), 1);
-        Parent element = null;
-        int firstDayOfWeek = firstDayOfMonth.getDayOfWeek().getValue();
-        int daysInMonth = this.date.lengthOfMonth();
+        /* Generate */
+        LocalDate iter = LocalDate.of(this.date.getYear(), this.date.getMonth(), 1);
+        Parent parent = null;
+        int offset = 0;
 
-        for (int dayOfMonth = 1; dayOfMonth <= daysInMonth; dayOfMonth++) {
-            int dayOfWeek = (dayOfMonth + firstDayOfWeek - 2) % 7 + 1;
-            int weekOfMonth = (dayOfMonth + firstDayOfWeek - 2) / 7 + 1;
+        if (iter.get(WeekFields.ISO.weekOfMonth()) == 0) { offset = 1; }
 
-            element = new DayCellController(LocalDate.of(firstDayOfMonth.getYear(), firstDayOfMonth.getMonth(), dayOfMonth)).load();
-            this.elements.add(element);
-            this.grid.add(element, dayOfWeek, weekOfMonth);
-        }
+        do {
+            /* Generate days */
+            parent = new DayCellController(iter).load();
+            this.contents.add(parent);
+            this.grid.add(parent, iter.getDayOfWeek().getValue(), iter.get(WeekFields.ISO.weekOfMonth()) + offset);
 
-        /* Generate weeks */
-        int firstWeekOfMonth = firstDayOfMonth.get(WeekFields.ISO.weekOfYear());
-        int weeksInMonth = (firstDayOfWeek + daysInMonth + 5) / 7;
+            /* Generate weeks */
+            if (iter.getDayOfWeek().getValue() == 1 || iter.getDayOfMonth() == 1) {
+                parent = new WeekCellController(iter).load();
+                this.contents.add(parent);
+                this.grid.add(parent, 0, iter.get(WeekFields.ISO.weekOfMonth()) + offset);
+            }
 
-        for (int weekOfMonth = 1; weekOfMonth <= weeksInMonth; weekOfMonth++) {
-            element = new WeekCellController(LocalDate.of(firstDayOfMonth.getYear(), firstDayOfMonth.getMonth(), weekOfMonth * 7 - 6)).load();
-            this.elements.add(element);
-            this.grid.add(element, 0, weekOfMonth);
-        }
+            iter = iter.plusDays(1);
+        } while (iter.getDayOfMonth() != 1);
 
         //TODO: Make all buttons functional
     }
