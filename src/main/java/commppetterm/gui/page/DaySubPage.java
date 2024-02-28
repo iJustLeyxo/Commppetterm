@@ -1,23 +1,24 @@
 package commppetterm.gui.page;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public final class DaySubPage extends SubPage {
     @FXML
     private GridPane weekGrid;
 
-    @Override
-    @NotNull String prev() {
-        return "N/A";
+    /**
+     * Creates a new subpage
+     */
+    public DaySubPage() {
+        super(DateTimeFormatter.ofPattern("dd.mm.yyyy"));
     }
 
     @Override
-    @NotNull String next() {
-        return "N/A";
-    }
+    void prev() {}
+
+    @Override
+    void next() {}
 }

@@ -43,10 +43,16 @@ public final class CalendarPage extends Page {
     private void onDel() {};
 
     @FXML
-    private void onPrev() { this.dateLab.setText(this.subPage.prev()); };
+    private void onPrev() {
+        this.subPage.prev();
+        this.dateLab.setText(this.subPage.label());
+    };
 
     @FXML
-    private void onNext() { this.dateLab.setText(this.subPage.next()); };
+    private void onNext() {
+        this.subPage.next();
+        this.dateLab.setText(this.subPage.label());
+    };
 
     @FXML
     private void onDay() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
@@ -78,6 +84,7 @@ public final class CalendarPage extends Page {
         }
 
         this.subPage = subPage;
+        this.dateLab.setText(this.subPage.label());
         this.contentPane.getChildren().add(this.subPage.load());
     }
 

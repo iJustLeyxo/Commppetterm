@@ -17,14 +17,16 @@ public final class MonthSubPage extends SubPage {
     private GridPane grid;
 
     /**
-     * Show date timeframe
-     */
-    private LocalDate date;
-
-    /**
      * List of all visible buttons in the grid
      */
     private LinkedList<Button> buttons;
+
+    /**
+     * Creates a new month subpage
+     */
+    public MonthSubPage() {
+        super(DateTimeFormatter.ofPattern("MMM yyyy"));
+    }
 
     @Override
     protected void init() {
@@ -52,18 +54,14 @@ public final class MonthSubPage extends SubPage {
     }
 
     @Override
-    @NotNull String prev() {
+    void prev() {
         this.date = this.date.minusMonths(1);
         this.reload();
-        DateTimeFormatter fm = DateTimeFormatter.ofPattern("MMM yyyy");
-        return fm.format(this.date);
     }
 
     @Override
-    @NotNull String next() {
+    void next() {
         this.date = this.date.plusMonths(1);
         this.reload();
-        DateTimeFormatter fm = DateTimeFormatter.ofPattern("MMM yyyy");
-        return fm.format(this.date);
     }
 }
