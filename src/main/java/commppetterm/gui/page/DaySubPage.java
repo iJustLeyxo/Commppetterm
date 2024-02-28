@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 
 public final class DaySubPage extends SubPage {
     @FXML
-    private GridPane weekGrid;
+    private GridPane dayGrid;
 
     /**
      * Creates a new subpage

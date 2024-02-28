@@ -2,7 +2,6 @@ package commppetterm.gui.page;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
-import org.jetbrains.annotations.NotNull;
 
 import java.time.format.DateTimeFormatter;
 

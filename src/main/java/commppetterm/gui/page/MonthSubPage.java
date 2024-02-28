@@ -2,15 +2,12 @@ package commppetterm.gui.page;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoField;
 import java.time.temporal.WeekFields;
 import java.util.LinkedList;
-import java.util.Locale;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Subpage for showing months
@@ -37,7 +34,10 @@ public final class MonthSubPage extends SubPage {
         this.date = LocalDate.now();
         this.reload();
     }
-    
+
+    /**
+     * Reloads the contents
+     */
     private void reload() {
         /* Clear grid pane */
         this.grid.getChildren().removeAll(buttons);
