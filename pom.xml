@@ -15,7 +15,11 @@
     </properties>
     
     <dependencies>
-        <!-- JavaFX -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>22-ea+28</version>
+        </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -46,8 +50,6 @@
             <artifactId>ikonli-material2-pack</artifactId>
             <version>12.3.1</version>
         </dependency>
-        
-        <!-- Junit -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -66,20 +68,6 @@
             <version>24.0.0</version>
             <scope>compile</scope>
         </dependency>
-    
-      <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-fxml</artifactId>
-        <version>22-ea+28</version>
-      </dependency>
-    
-      <!-- <dependency>
-        <groupId>org.scala-lang</groupId>
-        <artifactId>scala-library</artifactId>
-        <version>2.13.0</version>
-      </dependency> -->
-    
-      
     </dependencies>
     
     <repositories>

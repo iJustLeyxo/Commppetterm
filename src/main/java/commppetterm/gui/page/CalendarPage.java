@@ -32,13 +32,10 @@ public final class CalendarPage extends Controller {
     private SubPageController subPage;
 
     @FXML
-    private Button editBtn, delBtn;
+    private Button editBtn, delBtn, dayBtn, weekBtn, monthBtn;
 
     @FXML
     private Label dateLab;
-
-    @FXML
-    private ToggleButton dayBtn, weekBtn, monthBtn;
 
     @FXML
     private Pane contentPane;

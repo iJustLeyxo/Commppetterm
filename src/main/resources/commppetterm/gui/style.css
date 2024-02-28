@@ -62,3 +62,7 @@
     -fx-vgap: 5px;
     -fx-padding: 5px;
 }
+
+.ikonli-font-icon {
+    -fx-icon-size: 16px;
+}
