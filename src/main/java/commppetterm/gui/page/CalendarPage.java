@@ -1,18 +1,38 @@
 package commppetterm.gui.page;
 
+import commppetterm.gui.Gui;
 import commppetterm.gui.exception.ControllerLoadedException;
 import commppetterm.gui.exception.FxmlLoadException;
 import commppetterm.gui.exception.URLNotFoundException;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Pane;
+import org.jetbrains.annotations.NotNull;
+
+import java.time.LocalDate;
 
 /**
  * Calendar controller class
  */
-public final class CalendarPage extends Page {
+public final class CalendarPage extends Controller {
+    /**
+     * This calendar page controller
+     */
+    private static CalendarPage thiz;
+
+    /**
+     * Gets the calendar page controller
+     */
+    public static CalendarPage get() { return thiz; }
+
+    /**
+     * The contained page's controller
+     */
+    private PageController subPage;
+
     @FXML
     private Button editBtn, delBtn;
 
@@ -25,6 +45,15 @@ public final class CalendarPage extends Page {
     @FXML
     private Pane contentPane;
 
+    /**
+     * Creates a new calendar page
+     */
+    public CalendarPage() {
+        thiz = this;
+    }
+
+    //TODO: Add editing, adding and deleting of entries
+
     @FXML
     private void onNew() {};
 
@@ -35,22 +64,55 @@ public final class CalendarPage extends Page {
     private void onDel() {};
 
     @FXML
-    private void onPrev() {};
+    private void onPrev() {
+        this.subPage.prev();
+        this.dateLab.setText(this.subPage.label());
+        Gui.get().stage().sizeToScene();
+    };
 
     @FXML
-    private void onNext() {};
+    private void onNext() {
+        this.subPage.next();
+        this.dateLab.setText(this.subPage.label());
+        Gui.get().stage().sizeToScene();
+    };
 
     @FXML
-    private void onDay() {};
+    private void onDay() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        this.swap(new DaySubPage(this.subPage.date));
+    };
 
     @FXML
-    private void onWeek() {};
+    private void onWeek() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        this.swap(new WeekSubPage(this.subPage.date));
+    };
 
     @FXML
-    private void onMonth() {};
+    private void onMonth() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        this.swap(new MonthSubPage(this.subPage.date));
+    };
+
+    /**
+     * Swaps to a different subpage
+     * @param pageController The subpage to swap to
+     */
+    public void swap(@NotNull PageController pageController) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        if (this.subPage != null) {
+            Parent parent = this.subPage.parent();
+
+            if (parent != null) {
+                this.contentPane.getChildren().remove(parent);
+            }
+        }
+
+        this.subPage = pageController;
+        this.dateLab.setText(this.subPage.label());
+        this.contentPane.getChildren().add(this.subPage.load());
+        Gui.get().stage().sizeToScene();
+    }
 
     @Override
     protected void init() throws ControllerLoadedException, FxmlLoadException, URLNotFoundException {
-        this.contentPane.getChildren().add(new DaySubPage().load());
+        this.swap(new MonthSubPage());
     }
 }
