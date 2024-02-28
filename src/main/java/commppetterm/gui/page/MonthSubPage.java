@@ -5,21 +5,25 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.WeekFields;
 import java.util.LinkedList;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Subpage for showing months
  */
-public final class MonthSubPage extends SubPage {
+public final class MonthSubPage extends PageController {
     @FXML
     private GridPane grid;
 
     /**
      * List of all visible buttons in the grid
      */
-    private LinkedList<Button> buttons;
+    private LinkedList<Parent> elements;
 
     /**
      * Creates a new month subpage
@@ -30,7 +34,7 @@ public final class MonthSubPage extends SubPage {
 
     @Override
     protected void init() {
-        this.buttons = new LinkedList<>();
+        this.elements = new LinkedList<>();
         this.date = LocalDate.now();
         this.reload();
     }
@@ -40,11 +44,12 @@ public final class MonthSubPage extends SubPage {
      */
     private void reload() {
         /* Clear grid pane */
-        this.grid.getChildren().removeAll(buttons);
-        this.buttons = new LinkedList<>();
+        this.grid.getChildren().removeAll(elements);
+        this.elements = new LinkedList<>();
 
         /* Generate days */
         LocalDate firstDayOfMonth = LocalDate.of(this.date.getYear(), this.date.getMonth(), 1);
+        Parent element = null;
         int firstDayOfWeek = firstDayOfMonth.getDayOfWeek().getValue();
         int daysInMonth = this.date.lengthOfMonth();
 
@@ -52,10 +57,9 @@ public final class MonthSubPage extends SubPage {
             int dayOfWeek = (dayOfMonth + firstDayOfWeek - 2) % 7 + 1;
             int weekOfMonth = (dayOfMonth + firstDayOfWeek - 2) / 7 + 1;
 
-            Button button = new Button(Integer.toString(dayOfMonth));
-            button.getStyleClass().addAll("grid-cell-alt");
-            this.buttons.add(button);
-            this.grid.add(button, dayOfWeek, weekOfMonth);
+            element = new DayCellController(LocalDate.of(firstDayOfMonth.getYear(), firstDayOfMonth.getMonth(), dayOfMonth)).load();
+            this.elements.add(element);
+            this.grid.add(element, dayOfWeek, weekOfMonth);
         }
 
         /* Generate weeks */
@@ -63,10 +67,9 @@ public final class MonthSubPage extends SubPage {
         int weeksInMonth = (firstDayOfWeek + daysInMonth + 5) / 7;
 
         for (int weekOfMonth = 1; weekOfMonth <= weeksInMonth; weekOfMonth++) {
-            Button button = new Button(Integer.toString(weekOfMonth + firstWeekOfMonth - 1));
-            button.getStyleClass().addAll("grid-cell");
-            this.buttons.add(button);
-            this.grid.add(button, 0, weekOfMonth);
+            element = new WeekCellController(LocalDate.of(firstDayOfMonth.getYear(), firstDayOfMonth.getMonth(), weekOfMonth * 7 - 6)).load();
+            this.elements.add(element);
+            this.grid.add(element, 0, weekOfMonth);
         }
 
         //TODO: Make all buttons functional
@@ -82,5 +85,74 @@ public final class MonthSubPage extends SubPage {
     void next() {
         this.date = this.date.plusMonths(1);
         this.reload();
+    }
+
+    /**
+     * Controller for cells
+     */
+    private abstract static class CellController extends Controller {
+        /**
+         * Cell button
+         */
+        protected final @NotNull Button button;
+
+        /**
+         * Associated date
+         */
+        private final @NotNull LocalDate date;
+
+        /**
+         * Creates a new cell controller
+         * @param date The associated date
+         */
+        public CellController(@NotNull LocalDate date, @NotNull Button button) {
+            this.date = date;
+            this.button = button;
+        }
+
+        @Override
+        public @NotNull Parent load() {
+            return this.button;
+        }
+    }
+
+    /**
+     * Controller for day cells
+     */
+    private static class DayCellController extends CellController {
+        /**
+         * Creates a new day cell controller
+         * @param date The associated date
+         */
+        public DayCellController(@NotNull LocalDate date) {
+            super(date, new Button(Integer.toString(date.getDayOfMonth())));
+            this.button.getStyleClass().addAll("grid-cell-alt");
+            this.button.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    // TODO: Handle action
+                }
+            });
+        }
+    }
+
+    /**
+     * Controller for week cells
+     */
+    private static class WeekCellController extends CellController {
+        /**
+         * Creates a new day cell controller
+         * @param date The associated date
+         */
+        public WeekCellController(@NotNull LocalDate date) {
+            super(date, new Button(Integer.toString(date.get(WeekFields.ISO.weekOfYear()))));
+            this.button.getStyleClass().addAll("grid-cell");
+            this.button.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    // TODO: Handle action
+                }
+            });
+        }
     }
 }

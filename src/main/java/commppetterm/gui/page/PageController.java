@@ -5,7 +5,10 @@ import org.jetbrains.annotations.NotNull;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public abstract class SubPage extends Page {
+/**
+ * Controller for a page of the calendar
+ */
+public abstract class PageController extends Controller {
     /**
      * Date of the subpage timeframe
      */
@@ -19,7 +22,7 @@ public abstract class SubPage extends Page {
     /**
      * Creates a new subpage
      */
-    public SubPage(DateTimeFormatter formatter) {
+    public PageController(DateTimeFormatter formatter) {
         this.formatter = formatter;
         this.date = LocalDate.now();
     }

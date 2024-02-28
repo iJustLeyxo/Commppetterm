@@ -5,7 +5,7 @@ import javafx.scene.layout.GridPane;
 
 import java.time.format.DateTimeFormatter;
 
-public final class DaySubPage extends SubPage {
+public final class DaySubPage extends PageController {
     @FXML
     private GridPane dayGrid;
 

@@ -14,11 +14,11 @@ import javafx.scene.layout.Pane;
 /**
  * Calendar controller class
  */
-public final class CalendarPage extends Page {
+public final class CalendarPage extends Controller {
     /**
      * The contained page's controller
      */
-    private SubPage subPage;
+    private PageController subPage;
 
     @FXML
     private Button editBtn, delBtn;
@@ -74,11 +74,11 @@ public final class CalendarPage extends Page {
 
     /**
      * Swaps to a different subpage
-     * @param subPage The subpage to swap to
+     * @param pageController The subpage to swap to
      */
-    private void swap(SubPage subPage) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+    private void swap(PageController pageController) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         if (this.subPage != null) {
-            subPage.date = this.subPage.date;
+            pageController.date = this.subPage.date;
             Parent parent = this.subPage.parent();
 
             if (parent != null) {
@@ -86,7 +86,7 @@ public final class CalendarPage extends Page {
             }
         }
 
-        this.subPage = subPage;
+        this.subPage = pageController;
         this.dateLab.setText(this.subPage.label());
         this.contentPane.getChildren().add(this.subPage.load());
     }

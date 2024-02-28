@@ -6,7 +6,7 @@ import commppetterm.gui.exception.URLNotFoundException;
 import commppetterm.gui.page.CalendarPage;
 import org.jetbrains.annotations.NotNull;
 import commppetterm.App;
-import commppetterm.gui.page.Page;
+import commppetterm.gui.page.Controller;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -65,10 +65,10 @@ public final class Gui extends Application {
 
     /**
      * Prepares a stage
-     * @param page The class to load the scene from
+     * @param controller The class to load the scene from
      */
-    public void prepare(@NotNull Page page) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        this.stage.setScene(new Scene(page.load()));
+    public void prepare(@NotNull Controller controller) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        this.stage.setScene(new Scene(controller.load()));
         this.stage.setTitle(App.name);
         String iconFile = "icon.png";
         URL iconUrl = Gui.class.getResource(iconFile);

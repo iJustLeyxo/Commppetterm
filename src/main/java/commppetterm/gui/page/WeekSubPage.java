@@ -5,7 +5,7 @@ import javafx.scene.layout.GridPane;
 
 import java.time.format.DateTimeFormatter;
 
-public final class WeekSubPage extends SubPage {
+public final class WeekSubPage extends PageController {
     @FXML
     private GridPane weekGrid;
 

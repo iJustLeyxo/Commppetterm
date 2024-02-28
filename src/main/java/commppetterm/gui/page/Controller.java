@@ -14,7 +14,7 @@ import java.net.URL;
 /**
  * Scene controller superclass
  */
-public abstract class Page {
+public abstract class Controller {
     /**
      * Loaded parent
      */
@@ -23,7 +23,7 @@ public abstract class Page {
     /**
      * Creates a new page
      */
-    public Page() {
+    public Controller() {
         this.parent = null;
     }
 
