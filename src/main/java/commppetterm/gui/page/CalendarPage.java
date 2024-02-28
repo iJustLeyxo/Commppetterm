@@ -1,5 +1,6 @@
 package commppetterm.gui.page;
 
+import commppetterm.gui.Gui;
 import commppetterm.gui.exception.ControllerLoadedException;
 import commppetterm.gui.exception.FxmlLoadException;
 import commppetterm.gui.exception.URLNotFoundException;
@@ -48,12 +49,14 @@ public final class CalendarPage extends Page {
     private void onPrev() {
         this.subPage.prev();
         this.dateLab.setText(this.subPage.label());
+        Gui.get().stage().sizeToScene();
     };
 
     @FXML
     private void onNext() {
         this.subPage.next();
         this.dateLab.setText(this.subPage.label());
+        Gui.get().stage().sizeToScene();
     };
 
     @FXML

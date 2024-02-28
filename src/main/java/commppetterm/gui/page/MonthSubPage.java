@@ -2,7 +2,10 @@ package commppetterm.gui.page;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
+import java.time.temporal.WeekFields;
 import java.util.LinkedList;
+import java.util.Locale;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -34,26 +37,38 @@ public final class MonthSubPage extends SubPage {
         this.date = LocalDate.now();
         this.reload();
     }
-
+    
     private void reload() {
         /* Clear grid pane */
         this.grid.getChildren().removeAll(buttons);
         this.buttons = new LinkedList<>();
 
         /* Generate days */
-        int firstDay = date.getDayOfWeek().getValue() - 2;
-        int totalDays = date.lengthOfMonth();
+        LocalDate firstDayOfMonth = LocalDate.of(this.date.getYear(), this.date.getMonth(), 1);
+        int firstDayOfWeek = firstDayOfMonth.getDayOfWeek().getValue();
+        int daysInMonth = this.date.lengthOfMonth();
 
-        for (int day = 1; day <= totalDays; day++) {
-            Button button = new Button(Integer.toString(day));
+        for (int dayOfMonth = 1; dayOfMonth <= daysInMonth; dayOfMonth++) {
+            int dayOfWeek = (dayOfMonth + firstDayOfWeek - 2) % 7 + 1;
+            int weekOfMonth = (dayOfMonth + firstDayOfWeek - 2) / 7 + 1;
+
+            Button button = new Button(Integer.toString(dayOfMonth));
             button.getStyleClass().addAll("grid-cell-alt");
-            int relativeDay = day + firstDay;
-            this.grid.add(button, (relativeDay % 7) + 1, (relativeDay / 7) + 1);
             this.buttons.add(button);
+            this.grid.add(button, dayOfWeek, weekOfMonth);
         }
 
         /* Generate weeks */
-        //TODO: Add week generation
+        int firstWeekOfMonth = firstDayOfMonth.get(WeekFields.ISO.weekOfYear());
+        int weeksInMonth = (firstDayOfWeek + daysInMonth + 5) / 7;
+
+        for (int weekOfMonth = 1; weekOfMonth <= weeksInMonth; weekOfMonth++) {
+            Button button = new Button(Integer.toString(weekOfMonth + firstWeekOfMonth - 1));
+            button.getStyleClass().addAll("grid-cell");
+            this.buttons.add(button);
+            this.grid.add(button, 0, weekOfMonth);
+        }
+
         //TODO: Make all buttons functional
     }
 
