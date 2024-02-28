@@ -4,11 +4,11 @@
 <?import javafx.scene.layout.GridPane?>
 
 <GridPane fx:id="grid" alignment="CENTER" hgap="5.0" stylesheets="@../style.css" vgap="5.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
-    <Button mnemonicParsing="false" styleClass="grid-cell" text="Mo" GridPane.columnIndex="1" />
-    <Button mnemonicParsing="false" styleClass="grid-cell" text="Di" GridPane.columnIndex="2" />
-    <Button mnemonicParsing="false" styleClass="grid-cell" text="Mi" GridPane.columnIndex="3" />
-    <Button mnemonicParsing="false" styleClass="grid-cell" text="Do" GridPane.columnIndex="4" />
-    <Button mnemonicParsing="false" styleClass="grid-cell" text="Fr" GridPane.columnIndex="5" />
-    <Button mnemonicParsing="false" styleClass="grid-cell" text="Sa" GridPane.columnIndex="6" />
-    <Button mnemonicParsing="false" styleClass="grid-cell" text="So" GridPane.columnIndex="7" />
+   <Button mnemonicParsing="false" styleClass="grid-cell" text="Mo" GridPane.columnIndex="1" />
+   <Button mnemonicParsing="false" styleClass="grid-cell" text="Di" GridPane.columnIndex="2" />
+   <Button mnemonicParsing="false" styleClass="grid-cell" text="Mi" GridPane.columnIndex="3" />
+   <Button mnemonicParsing="false" styleClass="grid-cell" text="Do" GridPane.columnIndex="4" />
+   <Button mnemonicParsing="false" styleClass="grid-cell" text="Fr" GridPane.columnIndex="5" />
+   <Button mnemonicParsing="false" styleClass="grid-cell" text="Sa" GridPane.columnIndex="6" />
+   <Button mnemonicParsing="false" styleClass="grid-cell" text="So" GridPane.columnIndex="7" />
 </GridPane>
