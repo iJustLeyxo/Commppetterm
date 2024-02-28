@@ -12,8 +12,6 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDate;
-
 /**
  * Calendar controller class
  */
@@ -31,7 +29,7 @@ public final class CalendarPage extends Controller {
     /**
      * The contained page's controller
      */
-    private PageController subPage;
+    private SubPageController subPage;
 
     @FXML
     private Button editBtn, delBtn;
@@ -94,9 +92,9 @@ public final class CalendarPage extends Controller {
 
     /**
      * Swaps to a different subpage
-     * @param pageController The subpage to swap to
+     * @param subPageController The subpage to swap to
      */
-    public void swap(@NotNull PageController pageController) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+    public void swap(@NotNull SubPageController subPageController) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         if (this.subPage != null) {
             Parent parent = this.subPage.parent();
 
@@ -105,7 +103,7 @@ public final class CalendarPage extends Controller {
             }
         }
 
-        this.subPage = pageController;
+        this.subPage = subPageController;
         this.dateLab.setText(this.subPage.label());
         this.contentPane.getChildren().add(this.subPage.load());
         Gui.get().stage().sizeToScene();

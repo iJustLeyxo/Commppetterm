@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public final class DaySubPage extends PageController {
+public final class DaySubPage extends SubPageController {
     @FXML
     private GridPane dayGrid;
 
