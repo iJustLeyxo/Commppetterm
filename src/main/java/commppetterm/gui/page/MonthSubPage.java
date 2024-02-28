@@ -74,8 +74,6 @@ public final class MonthSubPage extends PageController {
 
             iter = iter.plusDays(1);
         } while (iter.getDayOfMonth() != 1);
-
-        //TODO: Make all buttons functional
     }
 
     @Override
