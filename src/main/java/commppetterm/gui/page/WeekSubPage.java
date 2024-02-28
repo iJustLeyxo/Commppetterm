@@ -14,7 +14,7 @@ public final class WeekSubPage extends SubPage {
      * Creates a new week subpage
      */
     public WeekSubPage() {
-        super(DateTimeFormatter.ofPattern("w "));
+        super(DateTimeFormatter.ofPattern("w yyyy"));
     }
 
     @Override

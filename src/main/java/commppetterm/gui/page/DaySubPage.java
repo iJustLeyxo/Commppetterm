@@ -13,7 +13,7 @@ public final class DaySubPage extends SubPage {
      * Creates a new subpage
      */
     public DaySubPage() {
-        super(DateTimeFormatter.ofPattern("dd.mm.yyyy"));
+        super(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
     @Override
