@@ -117,8 +117,6 @@ public final class CalendarPage extends Controller {
         this.contentPane.getChildren().add(this.subPage.load());
         Gui.get().stage().sizeToScene();
 
-        // TODO: Make control buttons same size and enlarge icons
-
         // TODO: Repair icon
     }
 
