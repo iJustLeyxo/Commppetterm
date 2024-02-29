@@ -49,7 +49,9 @@ public final class Calendar extends Controller {
     //TODO: Add editing, adding and deleting of entries
 
     @FXML
-    private void onNew() {};
+    private void onNew() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        Gui.get().prepare(new Editor());
+    };
 
     @FXML
     private void onEdit() {}
