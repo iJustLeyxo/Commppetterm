@@ -41,4 +41,6 @@ public final class Editor extends Controller {
     // TODO: Add options for whole day events, recurring events and single day events
 
     // TODO: Make calendar memorize date
+
+    // TODO: Increase font size
 }
