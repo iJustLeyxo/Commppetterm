@@ -46,7 +46,7 @@ public final class Calendar extends Controller {
         thiz = this;
     }
 
-    //TODO: Add editing, adding and deleting of entries
+    // TODO: Add adding and deleting of entries
 
     @FXML
     private void create() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
