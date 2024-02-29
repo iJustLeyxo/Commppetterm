@@ -75,25 +75,16 @@ public final class CalendarPage extends Controller {
     @FXML
     private void onDay() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         this.swap(new DaySubPage(this.subPage.date));
-        this.dayBtn.setDisable(true);
-        this.weekBtn.setDisable(false);
-        this.monthBtn.setDisable(false);
     };
 
     @FXML
     private void onWeek() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         this.swap(new WeekSubPage(this.subPage.date));
-        this.dayBtn.setDisable(false);
-        this.weekBtn.setDisable(true);
-        this.monthBtn.setDisable(false);
     };
 
     @FXML
     private void onMonth() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         this.swap(new MonthSubPage(this.subPage.date));
-        this.dayBtn.setDisable(false);
-        this.weekBtn.setDisable(false);
-        this.monthBtn.setDisable(true);
     };
 
     /**
@@ -109,12 +100,22 @@ public final class CalendarPage extends Controller {
             }
         }
 
+        this.dayBtn.setDisable(false);
+        this.weekBtn.setDisable(false);
+        this.monthBtn.setDisable(false);
+
+        if (subPageController instanceof DaySubPage) {
+            this.dayBtn.setDisable(true);
+        } else if (subPageController instanceof WeekSubPage) {
+            this.weekBtn.setDisable(true);
+        } else {
+            this.monthBtn.setDisable(true);
+        }
+
         this.subPage = subPageController;
         this.dateLab.setText(this.subPage.label());
         this.contentPane.getChildren().add(this.subPage.load());
         Gui.get().stage().sizeToScene();
-
-        // TODO: Update button activity when swapping
 
         // TODO: Make control buttons same size and enlarge icons
 
@@ -124,8 +125,5 @@ public final class CalendarPage extends Controller {
     @Override
     protected void init() throws ControllerLoadedException, FxmlLoadException, URLNotFoundException {
         this.swap(new MonthSubPage());
-        this.dayBtn.setDisable(false);
-        this.weekBtn.setDisable(false);
-        this.monthBtn.setDisable(true);
     }
 }
