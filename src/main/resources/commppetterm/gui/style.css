@@ -4,6 +4,7 @@
     -fx-background-color: #202020;
     -fx-hover-color: #176de6;
     -fx-pressed-color: #1979ff;
+    -fx-selected-color: #1461cc;
     -fx-disabled-color: #404040;
 
     -fx-text-fill: -fx-foreground-color;
@@ -29,6 +30,10 @@
 
 .button:pressed, .toggle-button:pressed{
     -fx-background-color: -fx-pressed-color;
+}
+
+.toggle-button:selected{
+    -fx-background-color: -fx-selected-color;
 }
 
 .button:disabled, .toggle-button:disabled{

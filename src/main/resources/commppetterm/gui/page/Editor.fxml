@@ -18,39 +18,41 @@
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
    </padding>
    <AnchorPane>
-      <children>
-         <HBox alignment="CENTER_LEFT" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <Button fx:id="save" mnemonicParsing="false" onAction="#save" styleClass="small-cell">
-               <graphic>
-                  <FontIcon iconLiteral="mdmz-save" />
-               </graphic>
-            </Button>
-            <Button fx:id="delete" mnemonicParsing="false" onAction="#delete" styleClass="small-cell">
-               <graphic>
-                  <FontIcon iconLiteral="mdal-delete" />
-               </graphic>
-            </Button>
-            <Button mnemonicParsing="false" onAction="#cancel" styleClass="small-cell">
-               <graphic>
-                  <FontIcon iconLiteral="mdal-cancel" />
-               </graphic>
-            </Button>
-         </HBox>
-         <HBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <children>
-               <ToggleButton mnemonicParsing="false" styleClass="small-cell">
-                  <graphic>
-                     <FontIcon iconLiteral="mdal-compare_arrows" />
-                  </graphic>
-               </ToggleButton>
-               <ToggleButton mnemonicParsing="false" styleClass="small-cell">
-                  <graphic>
-                     <FontIcon iconLiteral="mdmz-today" />
-                  </graphic>
-               </ToggleButton>
-            </children>
-         </HBox>
-      </children>
+      <HBox alignment="CENTER_LEFT" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+            AnchorPane.topAnchor="0.0">
+         <Button fx:id="save" mnemonicParsing="false" onAction="#save" styleClass="small-cell">
+            <graphic>
+               <FontIcon iconLiteral="mdmz-save"/>
+            </graphic>
+         </Button>
+         <Button fx:id="delete" mnemonicParsing="false" onAction="#delete" styleClass="small-cell">
+            <graphic>
+               <FontIcon iconLiteral="mdal-delete"/>
+            </graphic>
+         </Button>
+         <Button mnemonicParsing="false" onAction="#cancel" styleClass="small-cell">
+            <graphic>
+               <FontIcon iconLiteral="mdal-cancel"/>
+            </graphic>
+         </Button>
+      </HBox>
+      <HBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <ToggleButton fx:id="end" mnemonicParsing="false" onAction="#end" styleClass="small-cell">
+            <graphic>
+               <FontIcon iconLiteral="mdal-last_page"/>
+            </graphic>
+         </ToggleButton>
+         <ToggleButton fx:id="time" mnemonicParsing="false" onAction="#time" styleClass="small-cell">
+            <graphic>
+               <FontIcon iconLiteral="mdal-access_time"/>
+            </graphic>
+         </ToggleButton>
+         <ToggleButton fx:id="repeat" mnemonicParsing="false" onAction="#repeat" styleClass="small-cell">
+            <graphic>
+               <FontIcon iconLiteral="mdmz-refresh"/>
+            </graphic>
+         </ToggleButton>
+      </HBox>
    </AnchorPane>
    <GridPane alignment="CENTER" hgap="5.0" vgap="5.0">
       <columnConstraints>
@@ -97,7 +99,7 @@
          <RowConstraints />
          <RowConstraints />
          <RowConstraints />
-         <RowConstraints fx:id="end" />
+         <RowConstraints fx:id="endRow" />
       </rowConstraints>
    </GridPane>
 </VBox>
