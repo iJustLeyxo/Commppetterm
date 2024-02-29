@@ -111,7 +111,7 @@ public final class MonthSubPage extends SubPageController {
         /**
          * Associated date
          */
-        private final @NotNull LocalDate date;
+        protected final @NotNull LocalDate date;
 
         /**
          * Creates a new cell controller
@@ -138,7 +138,13 @@ public final class MonthSubPage extends SubPageController {
          */
         public DayCellController(@NotNull LocalDate date) {
             super(date, new Button(Integer.toString(date.getDayOfMonth())));
-            this.button.getStyleClass().addAll("cell", "alt-color");
+
+            if (this.date.equals(LocalDate.now())) {
+                this.button.getStyleClass().addAll("cell");
+            } else  {
+                this.button.getStyleClass().addAll("cell", "alt-color");
+            }
+            
             this.button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
