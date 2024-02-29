@@ -46,18 +46,20 @@ public final class Calendar extends Controller {
         thiz = this;
     }
 
-    // TODO: Add adding and deleting of entries
-
     @FXML
     private void create() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         Gui.get().prepare(new Editor());
     };
 
     @FXML
-    private void edit() {}
+    private void edit() {
+        // TODO: Add editing
+    }
 
     @FXML
-    private void delete() {};
+    private void delete() {
+        // TODO: Add deleting
+    };
 
     @FXML
     private void prev() {
@@ -104,6 +106,8 @@ public final class Calendar extends Controller {
         this.day.setDisable(false);
         this.week.setDisable(false);
         this.month.setDisable(false);
+        this.edit.setDisable(false);
+        this.delete.setDisable(false);
 
         if (pageController instanceof DayPage) {
             this.day.setDisable(true);
@@ -111,6 +115,8 @@ public final class Calendar extends Controller {
             this.week.setDisable(true);
         } else {
             this.month.setDisable(true);
+            this.edit.setDisable(true);
+            this.delete.setDisable(true);
         }
 
         this.subPage = pageController;
