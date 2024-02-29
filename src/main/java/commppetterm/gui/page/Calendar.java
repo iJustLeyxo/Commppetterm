@@ -48,7 +48,7 @@ public final class Calendar extends Controller {
 
     @FXML
     private void createButtonAction() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        Gui.get().prepare(new Editor());
+        Gui.get().swap(new Editor());
     };
 
     @FXML

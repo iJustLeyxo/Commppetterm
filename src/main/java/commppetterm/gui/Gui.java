@@ -48,27 +48,12 @@ public final class Gui extends Application {
     }
 
     /**
-     * JavaFX custom start method
+     * Initialize the stage
      * @param stage Application stage
      */
     @Override
     public void start(Stage stage) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         this.stage = stage;
-        this.prepare(new Calendar());
-        this.stage.show();
-    }
-
-    /**
-     * Returns the application stage
-     */
-    public Stage stage() { return this.stage; }
-
-    /**
-     * Prepares a stage
-     * @param controller The class to load the scene from
-     */
-    public void prepare(@NotNull Controller controller) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        this.stage.setScene(new Scene(controller.load()));
         this.stage.setTitle(App.name);
         String iconFile = "icon.png";
         URL iconUrl = Gui.class.getResource(iconFile);
@@ -78,6 +63,20 @@ public final class Gui extends Application {
             Image icon = new Image(iconUrl.toString());
             this.stage.getIcons().add(icon);
         }
+        this.swap(new Calendar());
         this.stage.show();
+    }
+
+    /**
+     * Returns the application stage
+     */
+    public Stage stage() { return this.stage; }
+
+    /**
+     * Swaps to a controller
+     * @param controller The controller to swap to
+     */
+    public void swap(@NotNull Controller controller) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        this.stage.setScene(new Scene(controller.load()));
     }
 }

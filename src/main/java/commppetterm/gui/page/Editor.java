@@ -40,7 +40,7 @@ public final class Editor extends Controller {
 
     @FXML
     private void cancelButtonAction() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        Gui.get().prepare(new Calendar());
+        Gui.get().swap(new Calendar());
     };
 
     @FXML
