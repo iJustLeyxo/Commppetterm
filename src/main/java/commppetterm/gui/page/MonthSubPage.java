@@ -3,12 +3,11 @@ package commppetterm.gui.page;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.WeekFields;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 import commppetterm.App;
-import commppetterm.gui.exception.ControllerLoadedException;
-import commppetterm.gui.exception.FxmlLoadException;
-import commppetterm.gui.exception.URLNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -21,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Subpage for showing months
  */
-public final class MonthSubPage extends PageController {
+public final class MonthSubPage extends SubPageController {
     @FXML
     private GridPane grid;
 
@@ -39,7 +38,7 @@ public final class MonthSubPage extends PageController {
      * Creates a new month subpage
      */
     public MonthSubPage() {
-        super(DateTimeFormatter.ofPattern("MMM yyyy"), null);
+        super(null);
     }
 
     /**
@@ -47,14 +46,30 @@ public final class MonthSubPage extends PageController {
      * @param date The date to display
      */
     public MonthSubPage(@Nullable LocalDate date) {
-        super(DateTimeFormatter.ofPattern("MMM yyyy"), date);
+        super(date);
     }
 
     @Override
     protected void init() {
         this.contents = new LinkedList<>();
-        this.date = LocalDate.now();
         this.reload();
+    }
+
+    @Override
+    void prev() {
+        this.date = this.date.minusMonths(1);
+        this.reload();
+    }
+
+    @Override
+    void next() {
+        this.date = this.date.plusMonths(1);
+        this.reload();
+    }
+
+    @Override
+    @NotNull List<DtfElement> pattern() {
+        return List.of(new DtfElement(DtfElement.Type.PATTERN, "MMM yyyy"));
     }
 
     /**
@@ -89,18 +104,6 @@ public final class MonthSubPage extends PageController {
         } while (iter.getDayOfMonth() != 1);
     }
 
-    @Override
-    void prev() {
-        this.date = this.date.minusMonths(1);
-        this.reload();
-    }
-
-    @Override
-    void next() {
-        this.date = this.date.plusMonths(1);
-        this.reload();
-    }
-
     /**
      * Controller for cells
      */
@@ -113,7 +116,7 @@ public final class MonthSubPage extends PageController {
         /**
          * Associated date
          */
-        private final @NotNull LocalDate date;
+        protected final @NotNull LocalDate date;
 
         /**
          * Creates a new cell controller
@@ -140,7 +143,13 @@ public final class MonthSubPage extends PageController {
          */
         public DayCellController(@NotNull LocalDate date) {
             super(date, new Button(Integer.toString(date.getDayOfMonth())));
-            this.button.getStyleClass().addAll("grid-cell-alt");
+
+            if (this.date.equals(LocalDate.now())) {
+                this.button.getStyleClass().addAll("cell");
+            } else  {
+                this.button.getStyleClass().addAll("cell", "alt-color");
+            }
+
             this.button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
@@ -166,7 +175,7 @@ public final class MonthSubPage extends PageController {
          */
         public WeekCellController(@NotNull LocalDate date) {
             super(date, new Button(Integer.toString(date.get(WeekFields.ISO.weekOfYear()))));
-            this.button.getStyleClass().addAll("grid-cell");
+            this.button.getStyleClass().addAll("cell");
             this.button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {

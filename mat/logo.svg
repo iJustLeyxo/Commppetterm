@@ -9,7 +9,7 @@
    id="svg5"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
    sodipodi:docname="logo.svg"
-   inkscape:export-filename="/home/leonard/Desktop/deinemutter.png"
+   inkscape:export-filename="/home/pfeiffle/School/IN/Commppetterm/src/main/resources/commppetterm/gui/icon.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -33,11 +33,11 @@
      inkscape:snap-bbox-midpoints="true"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:zoom="0.72063455"
-     inkscape:cx="368.4253"
-     inkscape:cy="407.27994"
+     inkscape:zoom="1.1280988"
+     inkscape:cx="281.00375"
+     inkscape:cy="343.9415"
      inkscape:window-width="1920"
-     inkscape:window-height="1009"
+     inkscape:window-height="1012"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -169,13 +169,14 @@
        ry="20.000013"
        rx="0" />
     <path
-       style="opacity:0.996;fill:none;stroke:#ffffff;stroke-width:10.5833;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
-       d="M 104.77499,46.566669 H 35.98333 v 42.333333 h 31.75 v 0"
+       style="opacity:0.996;fill:none;stroke:#ffffff;stroke-width:15.875;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 110.06666,38.629169 -82.02083,0 v 58.208332 l 39.6875,0"
        id="path2748"
-       sodipodi:nodetypes="ccccc" />
+       sodipodi:nodetypes="cccc" />
     <path
-       style="opacity:0.996;fill:none;stroke:#ffffff;stroke-width:10.5833;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
-       d="M 83.60833,46.566669 V 88.900002"
-       id="path2958" />
+       style="opacity:0.996;fill:none;stroke:#ffffff;stroke-width:15.875;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 88.899996,41.275002 V 96.837501"
+       id="path2958"
+       sodipodi:nodetypes="cc" />
   </g>
 </svg>

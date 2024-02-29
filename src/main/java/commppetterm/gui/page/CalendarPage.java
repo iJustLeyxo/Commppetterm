@@ -12,8 +12,6 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDate;
-
 /**
  * Calendar controller class
  */
@@ -31,16 +29,13 @@ public final class CalendarPage extends Controller {
     /**
      * The contained page's controller
      */
-    private PageController subPage;
+    private SubPageController subPage;
 
     @FXML
-    private Button editBtn, delBtn;
+    private Button editBtn, delBtn, dayBtn, weekBtn, monthBtn;
 
     @FXML
     private Label dateLab;
-
-    @FXML
-    private ToggleButton dayBtn, weekBtn, monthBtn;
 
     @FXML
     private Pane contentPane;
@@ -94,9 +89,9 @@ public final class CalendarPage extends Controller {
 
     /**
      * Swaps to a different subpage
-     * @param pageController The subpage to swap to
+     * @param subPageController The subpage to swap to
      */
-    public void swap(@NotNull PageController pageController) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+    public void swap(@NotNull SubPageController subPageController) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         if (this.subPage != null) {
             Parent parent = this.subPage.parent();
 
@@ -105,7 +100,19 @@ public final class CalendarPage extends Controller {
             }
         }
 
-        this.subPage = pageController;
+        this.dayBtn.setDisable(false);
+        this.weekBtn.setDisable(false);
+        this.monthBtn.setDisable(false);
+
+        if (subPageController instanceof DaySubPage) {
+            this.dayBtn.setDisable(true);
+        } else if (subPageController instanceof WeekSubPage) {
+            this.weekBtn.setDisable(true);
+        } else {
+            this.monthBtn.setDisable(true);
+        }
+
+        this.subPage = subPageController;
         this.dateLab.setText(this.subPage.label());
         this.contentPane.getChildren().add(this.subPage.load());
         Gui.get().stage().sizeToScene();

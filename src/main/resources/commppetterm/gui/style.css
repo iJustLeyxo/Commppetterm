@@ -1,64 +1,45 @@
 *{
-    /* Color */
-    color: #1460c9;
-    background: #202020;
-    -fx-color: #1460c9;
-    -hover-color: #1c70e6;
-    -pressed-color: #2e7ce8;
-    -focused-color: #408df7;
-	-fx-background: background;
+    -fx-color: #1461cc;
+    -fx-foreground-color: #d0d0d0;
+    -fx-background-color: #202020;
+    -fx-hover-color: #176de6;
+    -fx-pressed-color: #1979ff;
+    -fx-disabled-color: #404040;
 
-	/* Text */
-    fill: #d0d0d0;
-	-fx-fill: #d0d0d0;
-	-fx-prompt-text-fill: #d0d0d0;
-	-fx-highlight-fill: #d0d0d0;
-	-fx-highlight-text-fill: #202020;
-
-	/* Shapes */
-	-fx-focus-color: transparent;
-	-fx-faint-focus-color: transparent;
-	-fx-body-color: -fx-color;
-}
-
-.button, .toggle-button{
-    -fx-background-insets: 0;
-    -fx-background-radius: 5;
-}
-
-.button:hover, .toggle-button:hover{
-    color: #1460c9;
-    -fx-color: -hover-color;
-}
-
-.button:pressed, .toggle-button:pressed{
-    color: #1460c9;
-    -fx-color: -pressed-color;
-}
-
-.button:focused, .toggle-button:focussed{
-    -fx-background-insets: 0;
-}
-
-.grid-cell{
-    -fx-pref-width: 50px;
-    -fx-pref-height: 50px;
-}
-
-.grid-cell-alt{
-    color: #404040;
-    -fx-color: #404040;
-    -fx-pref-width: 50px;
-    -fx-pref-height: 50px;
+    -fx-text-fill: -fx-foreground-color;
+    -fx-icon-color: -fx-foreground-color;
 }
 
 .alt-color{
-    color: #404040;
     -fx-color: #404040;
+    -fx-hover-color: #4d4d4d;
+    -fx-pressed-color: #595959;
+    -fx-disabled-color: #333333;
 }
 
-.grid-pane {
-    -fx-hgap: 5px;
-    -fx-vgap: 5px;
-    -fx-padding: 5px;
+.button{
+    -fx-background-color: -fx-color;
+    -fx-background-insets: 0;
+}
+
+.button:hover{
+    -fx-background-color: -fx-hover-color;
+}
+
+.button:pressed{
+    -fx-background-color: -fx-pressed-color;
+}
+
+.button:disabled{
+    -fx-background-color: -fx-disabled-color;
+}
+
+.cell{
+    -fx-pref-width: 50px;
+    -fx-pref-height: 50px;
+}
+
+.small-cell{
+    -fx-pref-width: 33px;
+    -fx-pref-height: 33px;
 }
