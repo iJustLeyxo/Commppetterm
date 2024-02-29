@@ -6,24 +6,22 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.LinkedList;
 import java.util.List;
 
-public final class DaySubPage extends SubPageController {
+public final class DayPage extends PageController {
     @FXML
     private GridPane dayGrid;
 
     /**
      * Creates a new day page
      */
-    public DaySubPage() { super(null); }
+    public DayPage() { super(null); }
 
     /**
      * Creates a new day page
      * @param date The date to display
      */
-    public DaySubPage(@Nullable LocalDate date) {
+    public DayPage(@Nullable LocalDate date) {
         super(date);
     }
 

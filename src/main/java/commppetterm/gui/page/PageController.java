@@ -7,14 +7,13 @@ import org.jetbrains.annotations.Nullable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * Controller for a page of the calendar
  */
-public abstract class SubPageController extends Controller {
+public abstract class PageController extends Controller {
     /**
      * Date of the subpage timeframe
      */
@@ -29,7 +28,7 @@ public abstract class SubPageController extends Controller {
      * Creates a new subpage
      * @param date The date to display
      */
-    public SubPageController(@Nullable LocalDate date) {
+    public PageController(@Nullable LocalDate date) {
         DateTimeFormatterBuilder dtfBuilder = new DateTimeFormatterBuilder();
 
         for (DtfElement e : this.pattern()) {
