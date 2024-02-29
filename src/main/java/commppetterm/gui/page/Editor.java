@@ -51,6 +51,8 @@ public final class Editor extends Controller {
 
     @FXML
     private void endToggleButtonAction() {
+        this.timeToggleButton.setSelected(false);
+        this.timeToggleButtonAction();
         this.enabled(this.endLabel, this.endToggleButton.isSelected());
         this.enabled(this.endHBox, this.endToggleButton.isSelected());
         Gui.get().stage().sizeToScene();
@@ -58,6 +60,8 @@ public final class Editor extends Controller {
 
     @FXML
     private void timeToggleButtonAction() {
+        this.endToggleButton.setSelected(true);
+        this.endToggleButtonAction();
         this.enabled(this.startTimeHBox, this.timeToggleButton.isSelected());
         this.enabled(this.endTimeHBox, this.timeToggleButton.isSelected());
         Gui.get().stage().sizeToScene();
