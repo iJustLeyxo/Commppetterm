@@ -9,60 +9,60 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.RowConstraints;
 
 /**
  * Controller for entry editor
  */
 public final class Editor extends Controller {
     @FXML
-    private HBox startTime, endTime;
+    private HBox startTimeHBox, endTimeHBox;
 
     @FXML
-    private RowConstraints endRow;
+    private Button saveButton, deleteButton;
 
     @FXML
-    private Button save, delete;
+    private ToggleButton endToggleButton, timeToggleButton, recurringToggleButton;
 
     @FXML
-    private ToggleButton end, time, repeat;
+    private TextField titleTextField, detailsTextField,
+            startDayTextField, startMonthTextField, startYearTextField, startHourTextField, startMinuteTextField,
+            endDayTextField, endMonthTextField, endYearTextField, endHourTextField, endMinuteTextField;
 
     @FXML
-    private TextField title, detail, startDay, startMonth, startYear, startHour, startMinute, endDay, endMonth, endYear, endHour, endMinute;
-
-    @FXML
-    private void save() {
+    private void saveButtonAction() {
         // TODO: Add save logic
     }
 
     @FXML
-    private void delete() {
+    private void deleteButtonAction() {
         // TODO: Add delete logic
     }
 
     @FXML
-    private void end() {
+    private void cancelButtonAction() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        Gui.get().prepare(new Calendar());
+    };
+
+    @FXML
+    private void endToggleButtonAction() {
         // TODO: Add end logic
     }
 
     @FXML
-    private void time() {
+    private void timeToggleButtonAction() {
         // TODO: Add time logic
     }
 
     @FXML
-    private void repeat() {
+    private void recurringToggleButtonAction() {
         // TODO: Add repeat logic
     }
 
-    @FXML
-    private void cancel() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        Gui.get().prepare(new Calendar());
-    };
-
     @Override
     protected void init() {
-        // TODO: Add init logic
+        this.endToggleButton.setSelected(false);
+        this.timeToggleButton.setSelected(false);
+        this.recurringToggleButton.setSelected(false);
     }
 
     // TODO: Make calendar memorize date

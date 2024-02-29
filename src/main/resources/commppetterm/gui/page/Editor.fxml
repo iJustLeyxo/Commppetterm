@@ -20,34 +20,34 @@
    <AnchorPane>
       <HBox alignment="CENTER_LEFT" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
             AnchorPane.topAnchor="0.0">
-         <Button fx:id="save" mnemonicParsing="false" onAction="#save" styleClass="small-cell">
+         <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveButtonAction" styleClass="small-cell">
             <graphic>
                <FontIcon iconLiteral="mdmz-save"/>
             </graphic>
          </Button>
-         <Button fx:id="delete" mnemonicParsing="false" onAction="#delete" styleClass="small-cell">
+         <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteButtonAction" styleClass="small-cell">
             <graphic>
                <FontIcon iconLiteral="mdal-delete"/>
             </graphic>
          </Button>
-         <Button mnemonicParsing="false" onAction="#cancel" styleClass="small-cell">
+         <Button mnemonicParsing="false" onAction="#cancelButtonAction" styleClass="small-cell">
             <graphic>
                <FontIcon iconLiteral="mdal-cancel"/>
             </graphic>
          </Button>
       </HBox>
       <HBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <ToggleButton fx:id="end" mnemonicParsing="false" onAction="#end" styleClass="small-cell">
+         <ToggleButton fx:id="endToggleButton" mnemonicParsing="false" onAction="#endToggleButtonAction" styleClass="small-cell">
             <graphic>
                <FontIcon iconLiteral="mdal-last_page"/>
             </graphic>
          </ToggleButton>
-         <ToggleButton fx:id="time" mnemonicParsing="false" onAction="#time" styleClass="small-cell">
+         <ToggleButton fx:id="timeToggleButton" mnemonicParsing="false" onAction="#timeToggleButtonAction" styleClass="small-cell">
             <graphic>
                <FontIcon iconLiteral="mdal-access_time"/>
             </graphic>
          </ToggleButton>
-         <ToggleButton fx:id="repeat" mnemonicParsing="false" onAction="#repeat" styleClass="small-cell">
+         <ToggleButton fx:id="recurringToggleButton" mnemonicParsing="false" onAction="#recurringToggleButtonAction" styleClass="small-cell">
             <graphic>
                <FontIcon iconLiteral="mdmz-refresh"/>
             </graphic>
@@ -60,46 +60,40 @@
          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
       </columnConstraints>
       <Label text="Titel" />
-      <TextField fx:id="title" promptText="Titel" GridPane.columnIndex="1" />
+      <TextField fx:id="titleTextField" promptText="Titel" GridPane.columnIndex="1" />
       <Label text="Details" GridPane.rowIndex="1" />
-      <TextField fx:id="detail" promptText="Details" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <TextField fx:id="detailsTextField" promptText="Details" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Label text="Start" GridPane.rowIndex="2" />
       <HBox alignment="CENTER" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <HBox alignment="CENTER" spacing="5.0">
-            <TextField fx:id="startDay" promptText="T" styleClass="small-cell-width" />
+            <TextField fx:id="startDayTextField" promptText="T" styleClass="small-cell-width" />
             <Label text="." />
-            <TextField fx:id="startMonth" promptText="M" styleClass="small-cell-width" />
+            <TextField fx:id="startMonthTextField" promptText="M" styleClass="small-cell-width" />
             <Label text="." />
-            <TextField fx:id="startYear" promptText="J" styleClass="small-cell-width" />
+            <TextField fx:id="startYearTextField" promptText="J" styleClass="small-cell-width" />
          </HBox>
-         <HBox fx:id="startTime" alignment="CENTER" spacing="5.0">
+         <HBox fx:id="startTimeHBox" alignment="CENTER" spacing="5.0">
             <Label text="," />
-            <TextField fx:id="startHour" promptText="H" styleClass="small-cell-width" />
+            <TextField fx:id="startHourTextField" promptText="H" styleClass="small-cell-width" />
             <Label text=":" />
-            <TextField fx:id="startMinute" promptText="M" styleClass="small-cell-width" />
+            <TextField fx:id="startMinuteTextField" promptText="M" styleClass="small-cell-width" />
          </HBox>
       </HBox>
       <Label text="Ende" GridPane.rowIndex="3" />
       <HBox alignment="CENTER" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <HBox alignment="CENTER" spacing="5.0">
-            <TextField fx:id="endDay" promptText="T" styleClass="small-cell-width" />
+            <TextField fx:id="endDayTextField" promptText="T" styleClass="small-cell-width" />
             <Label text="." />
-            <TextField fx:id="endMonth" promptText="M" styleClass="small-cell-width" />
+            <TextField fx:id="endMonthTextField" promptText="M" styleClass="small-cell-width" />
             <Label text="." />
-            <TextField fx:id="endYear" promptText="J" styleClass="small-cell-width" />
+            <TextField fx:id="endYearTextField" promptText="J" styleClass="small-cell-width" />
          </HBox>
-         <HBox fx:id="endTime" alignment="CENTER" spacing="5.0">
+         <HBox fx:id="endTimeHBox" alignment="CENTER" spacing="5.0">
             <Label text="," />
-            <TextField fx:id="endHour" promptText="H" styleClass="small-cell-width" />
+            <TextField fx:id="endHourTextField" promptText="H" styleClass="small-cell-width" />
             <Label text=":" />
-            <TextField fx:id="endMinute" promptText="M" styleClass="small-cell-width" />
+            <TextField fx:id="endMinuteTextField" promptText="M" styleClass="small-cell-width" />
          </HBox>
       </HBox>
-      <rowConstraints>
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints fx:id="endRow" />
-      </rowConstraints>
    </GridPane>
 </VBox>
