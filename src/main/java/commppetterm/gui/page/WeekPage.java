@@ -6,26 +6,27 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.LinkedList;
 import java.util.List;
 
-public final class WeekSubPage extends SubPageController {
+/**
+ * Page for showing weeks
+ */
+public final class WeekPage extends PageController {
     @FXML
     private GridPane weekGrid;
 
     /**
-     * Creates a new week subpage
+     * Creates a new week page
      */
-    public WeekSubPage() {
+    public WeekPage() {
         super(null);
     }
 
     /**
-     * Creates a new week subpage
+     * Creates a new week page
      * @param date The date to display
      */
-    public WeekSubPage(@Nullable LocalDate date) { super(date); }
+    public WeekPage(@Nullable LocalDate date) { super(date); }
 
     @Override
     void prev() {}

@@ -7,16 +7,15 @@ import org.jetbrains.annotations.Nullable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * Controller for a page of the calendar
  */
-public abstract class SubPageController extends Controller {
+public abstract class PageController extends Controller {
     /**
-     * Date of the subpage timeframe
+     * Timeframe of the page
      */
     protected LocalDate date;
 
@@ -26,10 +25,10 @@ public abstract class SubPageController extends Controller {
     protected DateTimeFormatter formatter;
 
     /**
-     * Creates a new subpage
+     * Creates a new page
      * @param date The date to display
      */
-    public SubPageController(@Nullable LocalDate date) {
+    public PageController(@Nullable LocalDate date) {
         DateTimeFormatterBuilder dtfBuilder = new DateTimeFormatterBuilder();
 
         for (DtfElement e : this.pattern()) {
@@ -44,8 +43,7 @@ public abstract class SubPageController extends Controller {
     }
 
     /**
-     * Retrieves the label text to show in the calendar
-     * @return the text for the label
+     * Returns the label text to show in the calendar
      */
     public @NotNull String label() {
         return this.formatter.format(this.date);

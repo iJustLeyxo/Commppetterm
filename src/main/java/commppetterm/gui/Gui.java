@@ -3,7 +3,7 @@ package commppetterm.gui;
 import commppetterm.gui.exception.ControllerLoadedException;
 import commppetterm.gui.exception.FxmlLoadException;
 import commppetterm.gui.exception.URLNotFoundException;
-import commppetterm.gui.page.CalendarPage;
+import commppetterm.gui.page.Calendar;
 import org.jetbrains.annotations.NotNull;
 import commppetterm.App;
 import commppetterm.gui.page.Controller;
@@ -54,7 +54,7 @@ public final class Gui extends Application {
     @Override
     public void start(Stage stage) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         this.stage = stage;
-        this.prepare(new CalendarPage());
+        this.prepare(new Calendar());
         this.stage.show();
     }
 

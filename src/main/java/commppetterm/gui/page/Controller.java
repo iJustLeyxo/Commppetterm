@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 
 /**
- * Scene controller superclass
+ * Controller superclass
  */
 public abstract class Controller {
     /**
@@ -21,14 +21,14 @@ public abstract class Controller {
     private @Nullable Parent parent;
 
     /**
-     * Creates a new page
+     * Creates a new controller
      */
     public Controller() {
         this.parent = null;
     }
 
     /**
-     * Loads the controller's main resource
+     * Loads the controller's resource
      * @return a parent object
      */
     public @NotNull Parent load() throws ControllerLoadedException, FxmlLoadException, URLNotFoundException {
@@ -60,7 +60,7 @@ public abstract class Controller {
     protected void init() throws ControllerLoadedException, FxmlLoadException, URLNotFoundException {};
 
     /**
-     * @return The parent of this controller if loaded
+     * Returns the parent of this controller if loaded
      */
     public @Nullable Parent parent() { return this.parent; }
 }

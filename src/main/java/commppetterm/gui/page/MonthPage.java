@@ -1,9 +1,7 @@
 package commppetterm.gui.page;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.WeekFields;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,9 +16,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Subpage for showing months
+ * Page for showing months
  */
-public final class MonthSubPage extends SubPageController {
+public final class MonthPage extends PageController {
     @FXML
     private GridPane grid;
 
@@ -37,7 +35,7 @@ public final class MonthSubPage extends SubPageController {
     /**
      * Creates a new month subpage
      */
-    public MonthSubPage() {
+    public MonthPage() {
         super(null);
     }
 
@@ -45,7 +43,7 @@ public final class MonthSubPage extends SubPageController {
      * Creates a new month subpage
      * @param date The date to display
      */
-    public MonthSubPage(@Nullable LocalDate date) {
+    public MonthPage(@Nullable LocalDate date) {
         super(date);
     }
 
@@ -153,9 +151,9 @@ public final class MonthSubPage extends SubPageController {
             this.button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    DaySubPage page = new DaySubPage(date);
+                    DayPage page = new DayPage(date);
                     try {
-                        CalendarPage.get().swap(page);
+                        Calendar.get().swap(page);
                     } catch (Exception e) {
                         App.logger.severe(e.toString());
                         e.printStackTrace(System.out);
@@ -179,9 +177,9 @@ public final class MonthSubPage extends SubPageController {
             this.button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    WeekSubPage page = new WeekSubPage(date);
+                    WeekPage page = new WeekPage(date);
                     try {
-                        CalendarPage.get().swap(page);
+                        Calendar.get().swap(page);
                     } catch (Exception e) {
                         App.logger.severe(e.toString());
                         e.printStackTrace(System.out);

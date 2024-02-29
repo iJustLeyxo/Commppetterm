@@ -8,28 +8,27 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Calendar controller class
  */
-public final class CalendarPage extends Controller {
+public final class Calendar extends Controller {
     /**
-     * This calendar page controller
+     * This calendar controller
      */
-    private static CalendarPage thiz;
+    private static Calendar thiz;
 
     /**
-     * Gets the calendar page controller
+     * Gets the calendar controller
      */
-    public static CalendarPage get() { return thiz; }
+    public static Calendar get() { return thiz; }
 
     /**
      * The contained page's controller
      */
-    private SubPageController subPage;
+    private PageController subPage;
 
     @FXML
     private Button editBtn, delBtn, dayBtn, weekBtn, monthBtn;
@@ -41,9 +40,9 @@ public final class CalendarPage extends Controller {
     private Pane contentPane;
 
     /**
-     * Creates a new calendar page
+     * Creates a new calendar
      */
-    public CalendarPage() {
+    public Calendar() {
         thiz = this;
     }
 
@@ -74,24 +73,24 @@ public final class CalendarPage extends Controller {
 
     @FXML
     private void onDay() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        this.swap(new DaySubPage(this.subPage.date));
+        this.swap(new DayPage(this.subPage.date));
     };
 
     @FXML
     private void onWeek() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        this.swap(new WeekSubPage(this.subPage.date));
+        this.swap(new WeekPage(this.subPage.date));
     };
 
     @FXML
     private void onMonth() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        this.swap(new MonthSubPage(this.subPage.date));
+        this.swap(new MonthPage(this.subPage.date));
     };
 
     /**
-     * Swaps to a different subpage
-     * @param subPageController The subpage to swap to
+     * Swaps to a different page
+     * @param pageController The page to swap to
      */
-    public void swap(@NotNull SubPageController subPageController) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+    public void swap(@NotNull PageController pageController) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         if (this.subPage != null) {
             Parent parent = this.subPage.parent();
 
@@ -104,15 +103,15 @@ public final class CalendarPage extends Controller {
         this.weekBtn.setDisable(false);
         this.monthBtn.setDisable(false);
 
-        if (subPageController instanceof DaySubPage) {
+        if (pageController instanceof DayPage) {
             this.dayBtn.setDisable(true);
-        } else if (subPageController instanceof WeekSubPage) {
+        } else if (pageController instanceof WeekPage) {
             this.weekBtn.setDisable(true);
         } else {
             this.monthBtn.setDisable(true);
         }
 
-        this.subPage = subPageController;
+        this.subPage = pageController;
         this.dateLab.setText(this.subPage.label());
         this.contentPane.getChildren().add(this.subPage.load());
         Gui.get().stage().sizeToScene();
@@ -120,6 +119,6 @@ public final class CalendarPage extends Controller {
 
     @Override
     protected void init() throws ControllerLoadedException, FxmlLoadException, URLNotFoundException {
-        this.swap(new MonthSubPage());
+        this.swap(new MonthPage());
     }
 }
