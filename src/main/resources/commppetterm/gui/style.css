@@ -50,6 +50,10 @@
     -fx-pref-height: 33px;
 }
 
-.small-cell-width{
-    -fx-pref-width: 33px;
+.large-cell-width{
+    -fx-pref-width: 55px;
+}
+
+.medium-cell-width{
+    -fx-pref-width: 40px;
 }

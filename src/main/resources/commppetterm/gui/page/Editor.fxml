@@ -63,35 +63,35 @@
       <Label text="Details" GridPane.rowIndex="1" />
       <TextField fx:id="detailsTextField" promptText="Details" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Label text="Start" GridPane.rowIndex="2" />
-      <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-         <HBox alignment="CENTER_LEFT" spacing="5.0">
-            <TextField fx:id="startDayTextField" promptText="T" styleClass="small-cell-width" />
+      <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <HBox alignment="CENTER_LEFT">
+            <TextField fx:id="startDayTextField" promptText="T" styleClass="medium-cell-width" />
             <Label text="." />
-            <TextField fx:id="startMonthTextField" promptText="M" styleClass="small-cell-width" />
+            <TextField fx:id="startMonthTextField" promptText="M" styleClass="medium-cell-width" />
             <Label text="." />
-            <TextField fx:id="startYearTextField" promptText="J" styleClass="small-cell-width" />
+            <TextField fx:id="startYearTextField" promptText="J" styleClass="large-cell-width" />
          </HBox>
-         <HBox fx:id="startTimeHBox" alignment="CENTER_LEFT" spacing="5.0">
+         <HBox fx:id="startTimeHBox" alignment="CENTER_LEFT">
             <Label text="," />
-            <TextField fx:id="startHourTextField" promptText="H" styleClass="small-cell-width" />
+            <TextField fx:id="startHourTextField" promptText="H" styleClass="medium-cell-width" />
             <Label text=":" />
-            <TextField fx:id="startMinuteTextField" promptText="M" styleClass="small-cell-width" />
+            <TextField fx:id="startMinuteTextField" promptText="M" styleClass="medium-cell-width" />
          </HBox>
       </HBox>
       <Label fx:id="endLabel" text="Ende" GridPane.rowIndex="3" />
-      <HBox fx:id="endHBox" alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-         <HBox alignment="CENTER_LEFT" spacing="5.0">
-            <TextField fx:id="endDayTextField" promptText="T" styleClass="small-cell-width" />
+      <HBox fx:id="endHBox" alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <HBox alignment="CENTER_LEFT">
+            <TextField fx:id="endDayTextField" promptText="T" styleClass="medium-cell-width" />
             <Label text="." />
-            <TextField fx:id="endMonthTextField" promptText="M" styleClass="small-cell-width" />
+            <TextField fx:id="endMonthTextField" promptText="M" styleClass="medium-cell-width" />
             <Label text="." />
-            <TextField fx:id="endYearTextField" promptText="J" styleClass="small-cell-width" />
+            <TextField fx:id="endYearTextField" promptText="J" styleClass="large-cell-width" />
          </HBox>
-         <HBox fx:id="endTimeHBox" alignment="CENTER_LEFT" spacing="5.0">
+         <HBox fx:id="endTimeHBox" alignment="CENTER_LEFT">
             <Label text="," />
-            <TextField fx:id="endHourTextField" promptText="H" styleClass="small-cell-width" />
+            <TextField fx:id="endHourTextField" promptText="H" styleClass="medium-cell-width" />
             <Label text=":" />
-            <TextField fx:id="endMinuteTextField" promptText="M" styleClass="small-cell-width" />
+            <TextField fx:id="endMinuteTextField" promptText="M" styleClass="medium-cell-width" />
          </HBox>
       </HBox>
       <rowConstraints>
