@@ -6,12 +6,21 @@ import commppetterm.gui.exception.FxmlLoadException;
 import commppetterm.gui.exception.URLNotFoundException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.RowConstraints;
 
 /**
  * Controller for entry editor
  */
 public final class Editor extends Controller {
+    @FXML
+    private HBox startTime, endTime;
+
+    @FXML
+    private RowConstraints end;
+
     @FXML
     private Button save, delete;
 

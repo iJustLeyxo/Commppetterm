@@ -7,30 +7,31 @@
     -fx-disabled-color: #404040;
 
     -fx-text-fill: -fx-foreground-color;
+    -fx-icon-size: 16px;
     -fx-icon-color: -fx-foreground-color;
 }
 
-.alt-color{
+.alt-color, .toggle-button{
     -fx-color: #404040;
     -fx-hover-color: #4d4d4d;
     -fx-pressed-color: #595959;
     -fx-disabled-color: #333333;
 }
 
-.button{
+.button, .toggle-button{
     -fx-background-color: -fx-color;
     -fx-background-insets: 0;
 }
 
-.button:hover{
+.button:hover, .toggle-button:hover{
     -fx-background-color: -fx-hover-color;
 }
 
-.button:pressed{
+.button:pressed, .toggle-button:pressed{
     -fx-background-color: -fx-pressed-color;
 }
 
-.button:disabled{
+.button:disabled, .toggle-button:disabled{
     -fx-background-color: -fx-disabled-color;
 }
 
