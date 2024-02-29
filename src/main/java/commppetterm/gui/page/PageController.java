@@ -31,7 +31,7 @@ public abstract class PageController extends Controller {
     public PageController(@Nullable LocalDate date) {
         DateTimeFormatterBuilder dtfBuilder = new DateTimeFormatterBuilder();
 
-        for (DtfElement e : this.pattern()) {
+        for (DtfElement e : this.formatting()) {
             switch (e.type) {
                 case LITERAL -> dtfBuilder.appendLiteral(e.contents);
                 case PATTERN -> dtfBuilder.appendPattern(e.contents);
@@ -50,6 +50,11 @@ public abstract class PageController extends Controller {
     }
 
     /**
+     * Generates the contents of the page
+     */
+    protected void generate() {};
+
+    /**
      * Jumps to the previous timeframe of the page
      */
     abstract void prev();
@@ -62,7 +67,7 @@ public abstract class PageController extends Controller {
     /**
      * Returns the pattern to use for date formatting
      */
-    abstract @NotNull List<DtfElement> pattern();
+    abstract @NotNull List<DtfElement> formatting();
 
     /**
      * Record for date time formatter elements

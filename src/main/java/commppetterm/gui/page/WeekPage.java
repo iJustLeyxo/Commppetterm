@@ -35,7 +35,7 @@ public final class WeekPage extends PageController {
     void next() {}
 
     @Override
-    @NotNull List<DtfElement> pattern() {
+    @NotNull List<DtfElement> formatting() {
         return List.of(
                 new DtfElement(DtfElement.Type.PATTERN, "w"),
                 new DtfElement(DtfElement.Type.LITERAL, ". KW "),
