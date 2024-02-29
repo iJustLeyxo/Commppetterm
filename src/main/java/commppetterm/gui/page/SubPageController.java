@@ -1,10 +1,14 @@
 package commppetterm.gui.page;
 
+import commppetterm.App;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -23,11 +27,19 @@ public abstract class SubPageController extends Controller {
 
     /**
      * Creates a new subpage
-     * @param formatter The formatter to use for dates
      * @param date The date to display
      */
-    public SubPageController(DateTimeFormatter formatter, @Nullable LocalDate date) {
-        this.formatter = formatter;
+    public SubPageController(@Nullable LocalDate date) {
+        DateTimeFormatterBuilder dtfBuilder = new DateTimeFormatterBuilder();
+
+        for (DtfElement e : this.pattern()) {
+            switch (e.type) {
+                case LITERAL -> dtfBuilder.appendLiteral(e.contents);
+                case PATTERN -> dtfBuilder.appendPattern(e.contents);
+            }
+        }
+
+        this.formatter = dtfBuilder.toFormatter(App.locale);
         this.date = Objects.requireNonNullElseGet(date, LocalDate::now);
     }
 
@@ -48,4 +60,20 @@ public abstract class SubPageController extends Controller {
      * Jumps to the next timeframe of the page
      */
     abstract void next();
+
+    /**
+     * Returns the pattern to use for date formatting
+     */
+    abstract @NotNull List<DtfElement> pattern();
+
+    /**
+     * Record for date time formatter elements
+     * @param type Element type
+     * @param contents Element contents
+     */
+    public record DtfElement(@NotNull Type type, @NotNull String contents) {
+        public enum Type {
+            LITERAL, PATTERN;
+        }
+    }
 }

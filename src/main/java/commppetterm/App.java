@@ -1,5 +1,6 @@
 package commppetterm;
 
+import java.util.Locale;
 import java.util.logging.Logger;
 
 /**
@@ -15,6 +16,11 @@ public final class App {
      * App version
      */
     public static final String ver = "0.0.0";
+
+    /**
+     * Application locale
+     */
+    public static final Locale locale = Locale.GERMANY;
 
     /**
      * Application logger

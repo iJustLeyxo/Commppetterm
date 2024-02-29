@@ -3,7 +3,9 @@ package commppetterm.gui.page;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.WeekFields;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 import commppetterm.App;
 import javafx.event.ActionEvent;
@@ -36,7 +38,7 @@ public final class MonthSubPage extends SubPageController {
      * Creates a new month subpage
      */
     public MonthSubPage() {
-        super(DateTimeFormatter.ofPattern("MMM yyyy"), null);
+        super(null);
     }
 
     /**
@@ -44,13 +46,30 @@ public final class MonthSubPage extends SubPageController {
      * @param date The date to display
      */
     public MonthSubPage(@Nullable LocalDate date) {
-        super(DateTimeFormatter.ofPattern("MMM yyyy"), date);
+        super(date);
     }
 
     @Override
     protected void init() {
         this.contents = new LinkedList<>();
         this.reload();
+    }
+
+    @Override
+    void prev() {
+        this.date = this.date.minusMonths(1);
+        this.reload();
+    }
+
+    @Override
+    void next() {
+        this.date = this.date.plusMonths(1);
+        this.reload();
+    }
+
+    @Override
+    @NotNull List<DtfElement> pattern() {
+        return List.of(new DtfElement(DtfElement.Type.PATTERN, "MMM yyyy"));
     }
 
     /**
@@ -60,8 +79,6 @@ public final class MonthSubPage extends SubPageController {
         /* Clear grid pane */
         this.grid.getChildren().removeAll(contents);
         this.contents = new LinkedList<>();
-
-        // TODO: Make today highlighted
 
         /* Generate */
         LocalDate iter = LocalDate.of(this.date.getYear(), this.date.getMonth(), 1);
@@ -85,18 +102,6 @@ public final class MonthSubPage extends SubPageController {
 
             iter = iter.plusDays(1);
         } while (iter.getDayOfMonth() != 1);
-    }
-
-    @Override
-    void prev() {
-        this.date = this.date.minusMonths(1);
-        this.reload();
-    }
-
-    @Override
-    void next() {
-        this.date = this.date.plusMonths(1);
-        this.reload();
     }
 
     /**
@@ -144,7 +149,7 @@ public final class MonthSubPage extends SubPageController {
             } else  {
                 this.button.getStyleClass().addAll("cell", "alt-color");
             }
-            
+
             this.button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
