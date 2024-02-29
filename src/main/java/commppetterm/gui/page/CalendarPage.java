@@ -116,8 +116,6 @@ public final class CalendarPage extends Controller {
         this.dateLab.setText(this.subPage.label());
         this.contentPane.getChildren().add(this.subPage.load());
         Gui.get().stage().sizeToScene();
-
-        // TODO: Repair icon
     }
 
     @Override
