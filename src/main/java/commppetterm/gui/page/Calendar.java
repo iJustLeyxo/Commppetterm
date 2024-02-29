@@ -18,76 +18,76 @@ public final class Calendar extends Controller {
     /**
      * This calendar controller
      */
-    private static Calendar thiz;
+    private static Calendar calendarController;
 
     /**
      * Gets the calendar controller
      */
-    public static Calendar get() { return thiz; }
+    public static Calendar get() { return calendarController; }
 
     /**
      * The contained page's controller
      */
-    private PageController subPage;
+    private PageController pageController;
 
     @FXML
-    private Button edit, delete, day, week, month;
+    private Button editButton, deleteButton, dayButton, weekButton, monthButton;
 
     @FXML
-    private Label date;
+    private Label dateLabel;
 
     @FXML
-    private Pane pane;
+    private Pane contentPane;
 
     /**
      * Creates a new calendar
      */
     public Calendar() {
-        thiz = this;
+        calendarController = this;
     }
 
     @FXML
-    private void create() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+    private void createButtonAction() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         Gui.get().prepare(new Editor());
     };
 
     @FXML
-    private void edit() {
+    private void editButtonAction() {
         // TODO: Add editing
     }
 
     @FXML
-    private void delete() {
+    private void deleteButtonAction() {
         // TODO: Add deleting
     };
 
     @FXML
-    private void prev() {
-        this.subPage.prev();
-        this.date.setText(this.subPage.label());
+    private void previousButtonAction() {
+        this.pageController.prev();
+        this.dateLabel.setText(this.pageController.label());
         Gui.get().stage().sizeToScene();
     };
 
     @FXML
-    private void next() {
-        this.subPage.next();
-        this.date.setText(this.subPage.label());
+    private void nextButtonAction() {
+        this.pageController.next();
+        this.dateLabel.setText(this.pageController.label());
         Gui.get().stage().sizeToScene();
     };
 
     @FXML
-    private void day() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        this.swap(new DayPage(this.subPage.date));
+    private void dayButtonAction() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        this.swap(new DayPage(this.pageController.date));
     };
 
     @FXML
-    private void week() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        this.swap(new WeekPage(this.subPage.date));
+    private void weekButtonAction() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        this.swap(new WeekPage(this.pageController.date));
     };
 
     @FXML
-    private void month() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        this.swap(new MonthPage(this.subPage.date));
+    private void monthButtonAction() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        this.swap(new MonthPage(this.pageController.date));
     };
 
     /**
@@ -95,33 +95,33 @@ public final class Calendar extends Controller {
      * @param pageController The page to swap to
      */
     public void swap(@NotNull PageController pageController) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        if (this.subPage != null) {
-            Parent parent = this.subPage.parent();
+        if (this.pageController != null) {
+            Parent parent = this.pageController.parent();
 
             if (parent != null) {
-                this.pane.getChildren().remove(parent);
+                this.contentPane.getChildren().remove(parent);
             }
         }
 
-        this.day.setDisable(false);
-        this.week.setDisable(false);
-        this.month.setDisable(false);
-        this.edit.setDisable(false);
-        this.delete.setDisable(false);
+        this.dayButton.setDisable(false);
+        this.weekButton.setDisable(false);
+        this.monthButton.setDisable(false);
+        this.editButton.setDisable(false);
+        this.deleteButton.setDisable(false);
 
         if (pageController instanceof DayPage) {
-            this.day.setDisable(true);
+            this.dayButton.setDisable(true);
         } else if (pageController instanceof WeekPage) {
-            this.week.setDisable(true);
+            this.weekButton.setDisable(true);
         } else {
-            this.month.setDisable(true);
-            this.edit.setDisable(true);
-            this.delete.setDisable(true);
+            this.monthButton.setDisable(true);
+            this.editButton.setDisable(true);
+            this.deleteButton.setDisable(true);
         }
 
-        this.subPage = pageController;
-        this.date.setText(this.subPage.label());
-        this.pane.getChildren().add(this.subPage.load());
+        this.pageController = pageController;
+        this.dateLabel.setText(this.pageController.label());
+        this.contentPane.getChildren().add(this.pageController.load());
         Gui.get().stage().sizeToScene();
     }
 
