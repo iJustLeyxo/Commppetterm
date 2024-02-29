@@ -21,6 +21,11 @@
             <FontIcon iconLiteral="mdmz-save" />
          </graphic>
       </Button>
+      <Button fx:id="delete" mnemonicParsing="false" onAction="#delete" styleClass="small-cell">
+         <graphic>
+            <FontIcon iconLiteral="mdal-delete" />
+         </graphic>
+      </Button>
       <Button mnemonicParsing="false" onAction="#cancel" styleClass="small-cell">
          <graphic>
             <FontIcon iconLiteral="mdal-cancel" />

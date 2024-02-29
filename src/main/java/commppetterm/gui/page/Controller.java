@@ -15,6 +15,8 @@ import java.net.URL;
  * Controller superclass
  */
 public abstract class Controller {
+    // TODO: Add date property
+
     /**
      * Loaded parent
      */

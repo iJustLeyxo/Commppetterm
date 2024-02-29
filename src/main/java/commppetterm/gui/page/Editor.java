@@ -13,7 +13,7 @@ import javafx.scene.control.TextField;
  */
 public final class Editor extends Controller {
     @FXML
-    private Button save;
+    private Button save, delete;
 
     @FXML
     private TextField title, detail, startDay, startMonth, startYear, startHour, startMinute, endDay, endMonth, endYear, endHour, endMinute;
@@ -21,14 +21,15 @@ public final class Editor extends Controller {
     @FXML
     private void save() {}
 
-    // TODO: Add options for whole day events, recurring events and single day events
-
-    // TODO: Add delete button to editor
-
-    // TODO: Make calendar memorize date
+    @FXML
+    private void delete() {}
 
     @FXML
     private void cancel() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         Gui.get().prepare(new Calendar());
     };
+
+    // TODO: Add options for whole day events, recurring events and single day events
+
+    // TODO: Make calendar memorize date
 }
