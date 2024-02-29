@@ -35,7 +35,7 @@ public final class DayPage extends PageController {
     void next() {}
 
     @Override
-    @NotNull List<DtfElement> pattern() {
+    @NotNull List<DtfElement> formatting() {
         return List.of(new DtfElement(DtfElement.Type.PATTERN, "dd.MM.yyyy"));
     }
 }

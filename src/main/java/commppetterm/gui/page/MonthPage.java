@@ -50,30 +50,28 @@ public final class MonthPage extends PageController {
     @Override
     protected void init() {
         this.contents = new LinkedList<>();
-        this.reload();
+        this.generate();
     }
 
     @Override
     void prev() {
         this.date = this.date.minusMonths(1);
-        this.reload();
+        this.generate();
     }
 
     @Override
     void next() {
         this.date = this.date.plusMonths(1);
-        this.reload();
+        this.generate();
     }
 
     @Override
-    @NotNull List<DtfElement> pattern() {
+    @NotNull List<DtfElement> formatting() {
         return List.of(new DtfElement(DtfElement.Type.PATTERN, "MMM yyyy"));
     }
 
-    /**
-     * Reloads the contents
-     */
-    private void reload() {
+    @Override
+    protected void generate() {
         /* Clear grid pane */
         this.grid.getChildren().removeAll(contents);
         this.contents = new LinkedList<>();
