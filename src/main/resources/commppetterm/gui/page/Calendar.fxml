@@ -15,46 +15,46 @@
    <AnchorPane>
       <children>
          <HBox alignment="CENTER" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <Button mnemonicParsing="false" onAction="#onPrev" styleClass="small-cell">
+            <Button mnemonicParsing="false" onAction="#prev" styleClass="small-cell">
                <graphic>
                   <FontIcon iconLiteral="mdal-arrow_back" />
                </graphic>
             </Button>
-            <Button mnemonicParsing="false" onAction="#onNext" styleClass="small-cell">
+            <Button mnemonicParsing="false" onAction="#next" styleClass="small-cell">
                <graphic>
                   <FontIcon iconLiteral="mdal-arrow_forward" />
                </graphic>
             </Button>
          </HBox>
          <HBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <Button mnemonicParsing="false" onAction="#onNew" styleClass="small-cell">
+            <Button mnemonicParsing="false" onAction="#create" styleClass="small-cell">
                <graphic>
                   <FontIcon iconLiteral="mdal-add" />
                </graphic>
             </Button>
-            <Button fx:id="editBtn" mnemonicParsing="false" onAction="#onEdit" styleClass="small-cell">
+            <Button fx:id="edit" mnemonicParsing="false" onAction="#edit" styleClass="small-cell">
                <graphic>
                   <FontIcon iconLiteral="mdal-create" />
                </graphic>
             </Button>
-            <Button fx:id="delBtn" mnemonicParsing="false" onAction="#onDel" styleClass="small-cell">
+            <Button fx:id="delete" mnemonicParsing="false" onAction="#delete" styleClass="small-cell">
                <graphic>
                   <FontIcon iconLiteral="mdal-delete" />
                </graphic>
             </Button>
          </HBox>
          <HBox alignment="TOP_RIGHT" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <Button fx:id="dayBtn" mnemonicParsing="false" onAction="#onDay" styleClass="small-cell">
+            <Button fx:id="day" mnemonicParsing="false" onAction="#day" styleClass="small-cell">
                <graphic>
                   <FontIcon iconLiteral="mdsmz-view_day" />
                </graphic>
             </Button>
-            <Button fx:id="weekBtn" mnemonicParsing="false" onAction="#onWeek" styleClass="small-cell">
+            <Button fx:id="week" mnemonicParsing="false" onAction="#week" styleClass="small-cell">
                <graphic>
                   <FontIcon iconLiteral="mdsmz-view_week" />
                </graphic>
             </Button>
-            <Button fx:id="monthBtn" mnemonicParsing="false" onAction="#onMonth" styleClass="small-cell">
+            <Button fx:id="month" mnemonicParsing="false" onAction="#month" styleClass="small-cell">
                <graphic>
                   <FontIcon iconLiteral="mdsmz-view_comfy" />
                </graphic>
@@ -62,12 +62,12 @@
          </HBox>
       </children>
    </AnchorPane>
-   <Label fx:id="dateLab" text="Label">
+   <Label fx:id="date" text="Datum">
       <font>
          <Font size="25.0" />
       </font>
    </Label>
-   <StackPane fx:id="contentPane">
+   <StackPane fx:id="pane">
       <VBox.margin>
          <Insets />
       </VBox.margin>

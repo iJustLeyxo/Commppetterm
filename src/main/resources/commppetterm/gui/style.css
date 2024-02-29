@@ -43,3 +43,7 @@
     -fx-pref-width: 33px;
     -fx-pref-height: 33px;
 }
+
+.small-cell-width{
+    -fx-pref-width: 33px;
+}

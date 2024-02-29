@@ -11,18 +11,18 @@ import javafx.scene.control.TextField;
 /**
  * Controller for entry editor
  */
-public class Editor extends Controller {
+public final class Editor extends Controller {
     @FXML
-    private Button saveBtn;
+    private Button save;
 
     @FXML
-    private TextField titleFld, detailFld, startDateFld, startTimeFld, endDateFld, endTimeFld;
+    private TextField title, detail, startDay, startMonth, startYear, startHour, startMinute, endDay, endMonth, endYear, endHour, endMinute;
 
     @FXML
-    private void onSave() {}
+    private void save() {}
 
     @FXML
-    private void onCancel() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+    private void cancel() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         Gui.get().prepare(new Calendar());
     };
 }

@@ -31,13 +31,13 @@ public final class Calendar extends Controller {
     private PageController subPage;
 
     @FXML
-    private Button editBtn, delBtn, dayBtn, weekBtn, monthBtn;
+    private Button edit, delete, day, week, month;
 
     @FXML
-    private Label dateLab;
+    private Label date;
 
     @FXML
-    private Pane contentPane;
+    private Pane pane;
 
     /**
      * Creates a new calendar
@@ -49,42 +49,42 @@ public final class Calendar extends Controller {
     //TODO: Add editing, adding and deleting of entries
 
     @FXML
-    private void onNew() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+    private void create() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         Gui.get().prepare(new Editor());
     };
 
     @FXML
-    private void onEdit() {}
+    private void edit() {}
 
     @FXML
-    private void onDel() {};
+    private void delete() {};
 
     @FXML
-    private void onPrev() {
+    private void prev() {
         this.subPage.prev();
-        this.dateLab.setText(this.subPage.label());
+        this.date.setText(this.subPage.label());
         Gui.get().stage().sizeToScene();
     };
 
     @FXML
-    private void onNext() {
+    private void next() {
         this.subPage.next();
-        this.dateLab.setText(this.subPage.label());
+        this.date.setText(this.subPage.label());
         Gui.get().stage().sizeToScene();
     };
 
     @FXML
-    private void onDay() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+    private void day() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         this.swap(new DayPage(this.subPage.date));
     };
 
     @FXML
-    private void onWeek() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+    private void week() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         this.swap(new WeekPage(this.subPage.date));
     };
 
     @FXML
-    private void onMonth() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+    private void month() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         this.swap(new MonthPage(this.subPage.date));
     };
 
@@ -97,25 +97,25 @@ public final class Calendar extends Controller {
             Parent parent = this.subPage.parent();
 
             if (parent != null) {
-                this.contentPane.getChildren().remove(parent);
+                this.pane.getChildren().remove(parent);
             }
         }
 
-        this.dayBtn.setDisable(false);
-        this.weekBtn.setDisable(false);
-        this.monthBtn.setDisable(false);
+        this.day.setDisable(false);
+        this.week.setDisable(false);
+        this.month.setDisable(false);
 
         if (pageController instanceof DayPage) {
-            this.dayBtn.setDisable(true);
+            this.day.setDisable(true);
         } else if (pageController instanceof WeekPage) {
-            this.weekBtn.setDisable(true);
+            this.week.setDisable(true);
         } else {
-            this.monthBtn.setDisable(true);
+            this.month.setDisable(true);
         }
 
         this.subPage = pageController;
-        this.dateLab.setText(this.subPage.label());
-        this.contentPane.getChildren().add(this.subPage.load());
+        this.date.setText(this.subPage.label());
+        this.pane.getChildren().add(this.subPage.load());
         Gui.get().stage().sizeToScene();
     }
 

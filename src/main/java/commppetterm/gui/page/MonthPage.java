@@ -23,11 +23,6 @@ public final class MonthPage extends PageController {
     private GridPane grid;
 
     /**
-     * List of all visible buttons in the grid
-     */
-    private LinkedList<Parent> elements;
-
-    /**
      * List of all contents in  the grid
      */
     private LinkedList<Parent> contents;

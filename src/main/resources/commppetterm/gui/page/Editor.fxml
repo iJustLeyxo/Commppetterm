@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
@@ -15,12 +16,12 @@
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
    </padding>
    <HBox alignment="CENTER" spacing="5.0">
-      <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#onSave" styleClass="small-cell">
+      <Button fx:id="save" mnemonicParsing="false" onAction="#save" styleClass="small-cell">
          <graphic>
             <FontIcon iconLiteral="mdmz-save" />
          </graphic>
       </Button>
-      <Button mnemonicParsing="false" onAction="#onCancel" styleClass="small-cell">
+      <Button mnemonicParsing="false" onAction="#cancel" styleClass="small-cell">
          <graphic>
             <FontIcon iconLiteral="mdal-cancel" />
          </graphic>
@@ -32,18 +33,41 @@
          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
       </columnConstraints>
       <Label text="Titel" />
-      <TextField fx:id="titleFld" promptText="Titel" GridPane.columnIndex="1" />
+      <TextField fx:id="title" promptText="Titel" GridPane.columnIndex="1" />
       <Label text="Details" GridPane.rowIndex="1" />
-      <TextField fx:id="detailFld" promptText="Details" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <TextField fx:id="detail" promptText="Details" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Label text="Start" GridPane.rowIndex="2" />
       <HBox alignment="CENTER" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-         <TextField fx:id="startDateFld" prefWidth="100.0" promptText="Datum"/>
-         <TextField fx:id="startTimeFld" prefWidth="100.0" promptText="Zeit"/>
+         <TextField fx:id="startDay" promptText="T" styleClass="small-cell-width" />
+         <Label text="." />
+         <TextField fx:id="startMonth" promptText="M" styleClass="small-cell-width" />
+         <Label text="." />
+         <TextField fx:id="startYear" promptText="J" styleClass="small-cell-width" />
+         <Label text="," />
+         <TextField fx:id="startHour" promptText="H" styleClass="small-cell-width" />
+         <Label text=":" />
+         <TextField fx:id="startMinute" promptText="M" styleClass="small-cell-width" />
       </HBox>
-      <Label text="Ende" GridPane.rowIndex="4" />
+      <Label text="Ende" GridPane.rowIndex="3" />
       <HBox alignment="CENTER" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-         <TextField fx:id="endDateFld" prefWidth="100.0" promptText="Datum"/>
-         <TextField fx:id="endTimeFld" prefWidth="100.0" promptText="Zeit"/>
+         <children>
+            <TextField fx:id="endDay" promptText="T" styleClass="small-cell-width" />
+            <Label text="." />
+            <TextField fx:id="endMonth" promptText="M" styleClass="small-cell-width" />
+            <Label text="." />
+            <TextField fx:id="endYear" promptText="J" styleClass="small-cell-width" />
+            <Label text="," />
+            <TextField fx:id="endHour" promptText="H" styleClass="small-cell-width" />
+            <Label text=":" />
+            <TextField fx:id="endMinute" promptText="M" styleClass="small-cell-width" />
+         </children>
       </HBox>
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
    </GridPane>
 </VBox>
