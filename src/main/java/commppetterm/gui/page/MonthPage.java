@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Subpage for showing months
+ * Page for showing months
  */
 public final class MonthPage extends PageController {
     @FXML

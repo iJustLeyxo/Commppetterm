@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public abstract class PageController extends Controller {
     /**
-     * Date of the subpage timeframe
+     * Timeframe of the page
      */
     protected LocalDate date;
 
@@ -25,7 +25,7 @@ public abstract class PageController extends Controller {
     protected DateTimeFormatter formatter;
 
     /**
-     * Creates a new subpage
+     * Creates a new page
      * @param date The date to display
      */
     public PageController(@Nullable LocalDate date) {
@@ -43,8 +43,7 @@ public abstract class PageController extends Controller {
     }
 
     /**
-     * Retrieves the label text to show in the calendar
-     * @return the text for the label
+     * Returns the label text to show in the calendar
      */
     public @NotNull String label() {
         return this.formatter.format(this.date);

@@ -8,6 +8,9 @@ import org.jetbrains.annotations.Nullable;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Page for showing days
+ */
 public final class DayPage extends PageController {
     @FXML
     private GridPane dayGrid;

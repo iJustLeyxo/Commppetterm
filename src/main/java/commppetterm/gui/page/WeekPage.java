@@ -8,19 +8,22 @@ import org.jetbrains.annotations.Nullable;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Page for showing weeks
+ */
 public final class WeekPage extends PageController {
     @FXML
     private GridPane weekGrid;
 
     /**
-     * Creates a new week subpage
+     * Creates a new week page
      */
     public WeekPage() {
         super(null);
     }
 
     /**
-     * Creates a new week subpage
+     * Creates a new week page
      * @param date The date to display
      */
     public WeekPage(@Nullable LocalDate date) { super(date); }

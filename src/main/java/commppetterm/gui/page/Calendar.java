@@ -16,12 +16,12 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class Calendar extends Controller {
     /**
-     * This calendar page controller
+     * This calendar controller
      */
     private static Calendar thiz;
 
     /**
-     * Gets the calendar page controller
+     * Gets the calendar controller
      */
     public static Calendar get() { return thiz; }
 
@@ -40,7 +40,7 @@ public final class Calendar extends Controller {
     private Pane contentPane;
 
     /**
-     * Creates a new calendar page
+     * Creates a new calendar
      */
     public Calendar() {
         thiz = this;
@@ -87,8 +87,8 @@ public final class Calendar extends Controller {
     };
 
     /**
-     * Swaps to a different subpage
-     * @param pageController The subpage to swap to
+     * Swaps to a different page
+     * @param pageController The page to swap to
      */
     public void swap(@NotNull PageController pageController) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         if (this.subPage != null) {
