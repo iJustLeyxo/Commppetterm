@@ -24,6 +24,8 @@ public final class Editor extends Controller {
     @FXML
     private HBox startTimeHBox, endHBox, endTimeHBox, recurringHBox;
 
+    // TODO: Make toggleable buttons real toggle-buttons
+
     @FXML
     private Button saveButton, deleteButton, yearlyButton, monthlyButton, weeklyButton, dailyButton;
 

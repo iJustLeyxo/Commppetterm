@@ -32,6 +32,8 @@ public final class Calendar extends Controller {
      */
     private PageController pageController;
 
+    // TODO: Make toggleable buttons real toggle-buttons
+
     @FXML
     private Button editButton, deleteButton, dayButton, weekButton, monthButton;
 
