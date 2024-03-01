@@ -12,37 +12,37 @@
    <HBox alignment="CENTER" spacing="5.0">
       <Button mnemonicParsing="false" onAction="#createButtonAction" styleClass="small-cell">
          <graphic>
-            <FontIcon iconLiteral="mdal-add" />
+            <FontIcon iconLiteral="mdral-add" />
          </graphic>
       </Button>
       <Button fx:id="editButton" mnemonicParsing="false" onAction="#editButtonAction" styleClass="small-cell">
          <graphic>
-            <FontIcon iconLiteral="mdal-create" />
+            <FontIcon iconLiteral="mdral-create" />
          </graphic>
       </Button>
       <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteButtonAction" styleClass="small-cell">
          <graphic>
-            <FontIcon iconLiteral="mdal-delete" />
+            <FontIcon iconLiteral="mdral-delete" />
          </graphic>
       </Button>
       <Button mnemonicParsing="false" onAction="#previousButtonAction" styleClass="small-cell">
          <graphic>
-            <FontIcon iconLiteral="mdal-arrow_back" />
+            <FontIcon iconLiteral="mdral-keyboard_arrow_left" />
          </graphic>
       </Button>
       <Button mnemonicParsing="false" onAction="#nextButtonAction" styleClass="small-cell">
          <graphic>
-            <FontIcon iconLiteral="mdal-arrow_forward" />
+            <FontIcon iconLiteral="mdral-keyboard_arrow_right" />
          </graphic>
       </Button>
       <Button fx:id="dayButton" mnemonicParsing="false" onAction="#dayButtonAction" styleClass="small-cell">
          <graphic>
-            <FontIcon iconLiteral="mdrmz-table_rows" />
+            <FontIcon iconLiteral="mdrmz-view_agenda" />
          </graphic>
       </Button>
       <Button fx:id="weekButton" mnemonicParsing="false" onAction="#weekButtonAction" styleClass="small-cell">
          <graphic>
-            <FontIcon iconLiteral="mdmz-table_chart" />
+            <FontIcon iconLiteral="mdrmz-view_week" />
          </graphic>
       </Button>
       <Button fx:id="monthButton" mnemonicParsing="false" onAction="#monthButtonAction" styleClass="small-cell">

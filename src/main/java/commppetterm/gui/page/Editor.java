@@ -7,7 +7,6 @@ import commppetterm.gui.exception.URLNotFoundException;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
@@ -23,10 +22,10 @@ import java.time.LocalDate;
  */
 public final class Editor extends Controller {
     @FXML
-    private HBox startTimeHBox, endHBox, endTimeHBox;
+    private HBox startTimeHBox, endHBox, endTimeHBox, recurringHBox;
 
     @FXML
-    private Button saveButton, deleteButton;
+    private Button saveButton, deleteButton, yearlyButton, monthlyButton, weeklyButton, dailyButton;
 
     @FXML
     private ToggleButton endToggleButton, timeToggleButton, recurringToggleButton;
@@ -63,7 +62,7 @@ public final class Editor extends Controller {
     };
 
     @FXML
-    private void endToggleButtonAction() {
+    private void endToggleButtonUpdate() {
         if (this.endToggleButton.isSelected()) {
             this.startIcon.setIconCode(Material2AL.FIRST_PAGE);
         } else {
@@ -71,7 +70,7 @@ public final class Editor extends Controller {
 
             if (this.timeToggleButton.isSelected()) {
                 this.timeToggleButton.setSelected(false);
-                this.timeToggleButtonAction();
+                this.timeToggleButtonUpdate();
             }
         }
 
@@ -81,10 +80,10 @@ public final class Editor extends Controller {
     }
 
     @FXML
-    private void timeToggleButtonAction() {
+    private void timeToggleButtonUpdate() {
         if (this.timeToggleButton.isSelected() && !this.endToggleButton.isSelected()) {
             this.endToggleButton.setSelected(true);
-            this.endToggleButtonAction();
+            this.endToggleButtonUpdate();
         }
 
         this.enabled(this.startTimeHBox, this.timeToggleButton.isSelected());
@@ -93,15 +92,27 @@ public final class Editor extends Controller {
     }
 
     @FXML
-    private void recurringToggleButtonAction() {
-        // TODO: [1] Change icons and add functionality for recurring event controls
+    private void recurringToggleButtonUpdate() {
+        // TODO: [1] Add functionality for recurring event controls
     }
+
+    @FXML
+    private void yearlyButtonAction() {}
+
+    @FXML
+    private void monthlyButtonAction() {}
+
+    @FXML
+    private void weeklyButtonAction() {}
+
+    @FXML
+    private void dailyButtonAction() {}
 
     @Override
     protected void init() {
-        this.endToggleButtonAction();
-        this.timeToggleButtonAction();
-        this.recurringToggleButtonAction();
+        this.endToggleButtonUpdate();
+        this.timeToggleButtonUpdate();
+        this.recurringToggleButtonUpdate();
     }
 
     /**

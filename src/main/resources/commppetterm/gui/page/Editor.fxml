@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -9,47 +8,46 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox alignment="CENTER" spacing="5.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" spacing="10.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
    </padding>
    <HBox alignment="CENTER" spacing="5.0">
       <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveButtonAction" styleClass="small-cell">
          <graphic>
-            <FontIcon iconLiteral="mdmz-save" />
+            <FontIcon iconLiteral="mdrmz-save" />
          </graphic>
       </Button>
       <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteButtonAction" styleClass="small-cell">
          <graphic>
-            <FontIcon iconLiteral="mdal-delete" />
+            <FontIcon iconLiteral="mdral-delete" />
          </graphic>
       </Button>
       <Button mnemonicParsing="false" onAction="#cancelButtonAction" styleClass="small-cell">
          <graphic>
-            <FontIcon iconLiteral="mdal-cancel" />
+            <FontIcon iconLiteral="mdral-cancel" />
          </graphic>
       </Button>
-      <ToggleButton fx:id="endToggleButton" mnemonicParsing="false" onAction="#endToggleButtonAction" styleClass="small-cell">
+      <ToggleButton fx:id="endToggleButton" mnemonicParsing="false" onAction="#endToggleButtonUpdate" styleClass="small-cell">
          <graphic>
-            <FontIcon iconLiteral="mdal-last_page" />
+            <FontIcon iconLiteral="mdral-last_page" />
          </graphic>
       </ToggleButton>
-      <ToggleButton fx:id="timeToggleButton" mnemonicParsing="false" onAction="#timeToggleButtonAction" styleClass="small-cell">
+      <ToggleButton fx:id="timeToggleButton" mnemonicParsing="false" onAction="#timeToggleButtonUpdate" styleClass="small-cell">
          <graphic>
-            <FontIcon iconLiteral="mdal-access_time" />
+            <FontIcon iconLiteral="mdral-access_time" />
          </graphic>
       </ToggleButton>
-      <ToggleButton fx:id="recurringToggleButton" mnemonicParsing="false" onAction="#recurringToggleButtonAction" styleClass="small-cell">
+      <ToggleButton fx:id="recurringToggleButton" mnemonicParsing="false" onAction="#recurringToggleButtonUpdate" styleClass="small-cell">
          <graphic>
-            <FontIcon iconLiteral="mdmz-refresh" />
+            <FontIcon iconLiteral="mdrmz-refresh" />
          </graphic>
       </ToggleButton>
    </HBox>
-   <GridPane alignment="CENTER" hgap="5.0" vgap="5.0">
+   <GridPane alignment="CENTER" hgap="10.0" vgap="5.0">
       <columnConstraints>
          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
@@ -89,46 +87,31 @@
       <FontIcon iconLiteral="mdrmz-title" />
       <FontIcon iconLiteral="mdral-info" GridPane.rowIndex="1" />
       <FontIcon fx:id="startIcon" iconLiteral="mdrmz-today" GridPane.rowIndex="2" />
-      <FontIcon fx:id="endIcon" iconLiteral="mdsal-last_page" GridPane.rowIndex="3" />
-      <FontIcon fx:id="refreshIcon" iconLiteral="mdmz-refresh" GridPane.rowIndex="4" />
-      <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-         <children>
-            <Button fx:id="saveButton1" mnemonicParsing="false" onAction="#saveButtonAction">
-               <graphic>
-                  <FontIcon iconLiteral="mdmz-save" />
-               </graphic>
-               <styleClass>
-                  <String fx:value="small-cell" />
-                  <String fx:value="alt-color" />
-               </styleClass>
-            </Button>
-            <Button fx:id="deleteButton1" mnemonicParsing="false" onAction="#deleteButtonAction">
-               <graphic>
-                  <FontIcon iconLiteral="mdal-delete" />
-               </graphic>
-               <styleClass>
-                  <String fx:value="small-cell" />
-                  <String fx:value="alt-color" />
-               </styleClass>
-            </Button>
-            <Button mnemonicParsing="false" onAction="#cancelButtonAction">
-               <graphic>
-                  <FontIcon iconLiteral="mdal-cancel" />
-               </graphic>
-               <styleClass>
-                  <String fx:value="small-cell" />
-                  <String fx:value="alt-color" />
-               </styleClass>
-            </Button>
-            <TextField promptText="N" styleClass="large-cell-width" />
-         </children>
+      <FontIcon fx:id="endIcon" iconLiteral="mdral-last_page" GridPane.rowIndex="3" />
+      <FontIcon fx:id="recurringIcon" iconLiteral="mdrmz-refresh" GridPane.rowIndex="4" />
+      <HBox fx:id="recurringHBox" alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+         <Button fx:id="yearlyButton" mnemonicParsing="false" onAction="#yearlyButtonAction" styleClass="alt-color">
+            <graphic>
+               <FontIcon iconLiteral="mdrmz-today"/>
+            </graphic>
+         </Button>
+         <Button fx:id="monthlyButton" mnemonicParsing="false" onAction="#monthlyButtonAction" styleClass="alt-color">
+            <graphic>
+               <FontIcon iconLiteral="mdrmz-view_module"/>
+            </graphic>
+         </Button>
+         <Button fx:id="weeklyButton" mnemonicParsing="false" onAction="#weeklyButtonAction" styleClass="alt-color">
+            <graphic>
+               <FontIcon iconLiteral="mdrmz-view_week"/>
+            </graphic>
+         </Button>
+         <Button fx:id="dailyButton" layoutX="123.0" layoutY="13.0" mnemonicParsing="false"
+                 onAction="#dailyButtonAction" styleClass="alt-color">
+            <graphic>
+               <FontIcon iconLiteral="mdrmz-view_agenda"/>
+            </graphic>
+         </Button>
+         <TextField promptText="N" styleClass="large-cell-width"/>
       </HBox>
-      <rowConstraints>
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      </rowConstraints>
    </GridPane>
 </VBox>
