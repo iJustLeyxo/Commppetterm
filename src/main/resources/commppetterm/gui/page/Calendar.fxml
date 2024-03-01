@@ -3,75 +3,56 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-
 <VBox alignment="CENTER" minWidth="325.0" spacing="5.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
-   <AnchorPane>
-      <children>
-         <HBox alignment="CENTER" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <Button mnemonicParsing="false" onAction="#previousButtonAction" styleClass="small-cell">
-               <graphic>
-                  <FontIcon iconLiteral="mdal-arrow_back" />
-               </graphic>
-            </Button>
-            <Button mnemonicParsing="false" onAction="#nextButtonAction" styleClass="small-cell">
-               <graphic>
-                  <FontIcon iconLiteral="mdal-arrow_forward" />
-               </graphic>
-            </Button>
-         </HBox>
-         <HBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <Button mnemonicParsing="false" onAction="#createButtonAction" styleClass="small-cell">
-               <graphic>
-                  <FontIcon iconLiteral="mdal-add" />
-               </graphic>
-            </Button>
-            <Button fx:id="editButton" mnemonicParsing="false" onAction="#editButtonAction" styleClass="small-cell">
-               <graphic>
-                  <FontIcon iconLiteral="mdal-create" />
-               </graphic>
-            </Button>
-            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteButtonAction" styleClass="small-cell">
-               <graphic>
-                  <FontIcon iconLiteral="mdal-delete" />
-               </graphic>
-            </Button>
-         </HBox>
-         <HBox alignment="TOP_RIGHT" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <Button fx:id="dayButton" mnemonicParsing="false" onAction="#dayButtonAction" styleClass="small-cell">
-               <graphic>
-                  <FontIcon iconLiteral="mdsmz-view_day" />
-               </graphic>
-            </Button>
-            <Button fx:id="weekButton" mnemonicParsing="false" onAction="#weekButtonAction" styleClass="small-cell">
-               <graphic>
-                  <FontIcon iconLiteral="mdsmz-view_week" />
-               </graphic>
-            </Button>
-            <Button fx:id="monthButton" mnemonicParsing="false" onAction="#monthButtonAction" styleClass="small-cell">
-               <graphic>
-                  <FontIcon iconLiteral="mdsmz-view_comfy" />
-               </graphic>
-            </Button>
-         </HBox>
-      </children>
-   </AnchorPane>
-   <Label fx:id="dateLabel" text="Datum">
-      <font>
-         <Font size="25.0" />
-      </font>
-   </Label>
-   <StackPane fx:id="contentPane">
-      <VBox.margin>
-         <Insets />
-      </VBox.margin>
-   </StackPane>
+   <HBox alignment="CENTER" spacing="5.0">
+      <Button mnemonicParsing="false" onAction="#createButtonAction" styleClass="small-cell">
+         <graphic>
+            <FontIcon iconLiteral="mdal-add" />
+         </graphic>
+      </Button>
+      <Button fx:id="editButton" mnemonicParsing="false" onAction="#editButtonAction" styleClass="small-cell">
+         <graphic>
+            <FontIcon iconLiteral="mdal-create" />
+         </graphic>
+      </Button>
+      <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteButtonAction" styleClass="small-cell">
+         <graphic>
+            <FontIcon iconLiteral="mdal-delete" />
+         </graphic>
+      </Button>
+      <Button mnemonicParsing="false" onAction="#previousButtonAction" styleClass="small-cell">
+         <graphic>
+            <FontIcon iconLiteral="mdal-arrow_back" />
+         </graphic>
+      </Button>
+      <Button mnemonicParsing="false" onAction="#nextButtonAction" styleClass="small-cell">
+         <graphic>
+            <FontIcon iconLiteral="mdal-arrow_forward" />
+         </graphic>
+      </Button>
+      <Button fx:id="dayButton" mnemonicParsing="false" onAction="#dayButtonAction" styleClass="small-cell">
+         <graphic>
+            <FontIcon iconLiteral="mdrmz-table_rows" />
+         </graphic>
+      </Button>
+      <Button fx:id="weekButton" mnemonicParsing="false" onAction="#weekButtonAction" styleClass="small-cell">
+         <graphic>
+            <FontIcon iconLiteral="mdmz-table_chart" />
+         </graphic>
+      </Button>
+      <Button fx:id="monthButton" mnemonicParsing="false" onAction="#monthButtonAction" styleClass="small-cell">
+         <graphic>
+            <FontIcon iconLiteral="mdrmz-view_module" />
+         </graphic>
+      </Button>
+   </HBox>
+   <Label fx:id="dateLabel" alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 25;" text="Datum" />
+   <StackPane fx:id="contentPane" />
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
    </padding>
