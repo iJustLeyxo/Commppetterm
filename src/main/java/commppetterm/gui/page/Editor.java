@@ -94,7 +94,7 @@ public final class Editor extends Controller {
 
     @FXML
     private void recurringToggleButtonAction() {
-        // TODO: Add recurring logic and control elements
+        // TODO: [1] Add recurring logic and control elements
     }
 
     @Override
