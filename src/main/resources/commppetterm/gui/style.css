@@ -10,6 +10,9 @@
     -fx-background-color: #202020;
 
     -fx-text-fill: -fx-foreground-color;
+    -fx-prompt-text-fill: derive(-fx-text-fill, -20%);
+    -fx-highlight-fill: derive(-fx-base, -20%);
+    -fx-highlight-text-fill: -fx-foreground-color;
     -fx-font-size: 13px;
     -fx-icon-size: 20px;
     -fx-icon-color: -fx-foreground-color;
@@ -20,6 +23,7 @@
 }
 
 .button, .toggle-button{
+    -fx-cursor: hand;
     -fx-background-color: -fx-color;
     -fx-background-insets: 0;
 }
