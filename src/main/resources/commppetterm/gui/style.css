@@ -19,7 +19,7 @@
 }
 
 .alt-color, .toggle-button{
-    -fx-base: #404040;
+    -fx-color: #404040;
 }
 
 .button, .toggle-button{
@@ -36,12 +36,16 @@
     -fx-background-color: -fx-pressed-color;
 }
 
-.toggle-button:selected{
-    -fx-background-color: -fx-selected-color;
-}
-
 .button:disabled, .toggle-button:disabled{
     -fx-background-color: -fx-disabled-color;
+}
+
+.toggle-button:focus{
+    -fx-background-color: -fx-color;
+}
+
+.toggle-button:selected{
+    -fx-background-color: derive(-fx-base, -20%);
 }
 
 .cell{
