@@ -4,6 +4,8 @@ module commppetterm {
     requires transitive javafx.graphics;
     requires com.gluonhq.charm.glisten;
     requires org.jetbrains.annotations;
+    requires org.kordamp.ikonli.javafx;
+    requires org.kordamp.ikonli.material2;
 
     exports commppetterm;
     opens commppetterm to javafx.fxml;

@@ -12,6 +12,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import org.jetbrains.annotations.NotNull;
+import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.material2.Material2AL;
+import org.kordamp.ikonli.material2.Material2MZ;
 
 import java.time.LocalDate;
 
@@ -29,7 +32,7 @@ public final class Editor extends Controller {
     private ToggleButton endToggleButton, timeToggleButton, recurringToggleButton;
 
     @FXML
-    private Label endLabel;
+    private FontIcon startIcon, endIcon, refreshIcon;
 
     @FXML
     private TextField titleTextField, detailsTextField,
@@ -61,12 +64,18 @@ public final class Editor extends Controller {
 
     @FXML
     private void endToggleButtonAction() {
-        if (!this.endToggleButton.isSelected() && this.timeToggleButton.isSelected()) {
-            this.timeToggleButton.setSelected(false);
-            this.timeToggleButtonAction();
+        if (this.endToggleButton.isSelected()) {
+            this.startIcon.setIconCode(Material2AL.FIRST_PAGE);
+        } else {
+            this.startIcon.setIconCode(Material2MZ.TODAY);
+
+            if (this.timeToggleButton.isSelected()) {
+                this.timeToggleButton.setSelected(false);
+                this.timeToggleButtonAction();
+            }
         }
 
-        this.enabled(this.endLabel, this.endToggleButton.isSelected());
+        this.enabled(this.endIcon, this.endToggleButton.isSelected());
         this.enabled(this.endHBox, this.endToggleButton.isSelected());
         Gui.get().stage().sizeToScene();
     }
@@ -90,14 +99,9 @@ public final class Editor extends Controller {
 
     @Override
     protected void init() {
-        this.endToggleButton.setSelected(false);
-        this.timeToggleButton.setSelected(false);
-        this.recurringToggleButton.setSelected(false);
-
-        this.enabled(this.startTimeHBox, false);
-        this.enabled(this.endTimeHBox, false);
-        this.enabled(this.endLabel, false);
-        this.enabled(this.endHBox, false);
+        this.endToggleButtonAction();
+        this.timeToggleButtonAction();
+        this.recurringToggleButtonAction();
     }
 
     /**
@@ -109,8 +113,4 @@ public final class Editor extends Controller {
         node.setVisible(value);
         node.setManaged(value);
     }
-
-    // TODO: Make calendar memorize date
-
-    // TODO: Increase font size
 }

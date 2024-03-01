@@ -53,11 +53,8 @@
          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
       </columnConstraints>
-      <Label text="Titel" />
       <TextField fx:id="titleTextField" promptText="Titel" GridPane.columnIndex="1" />
-      <Label text="Details" GridPane.rowIndex="1" />
       <TextField fx:id="detailsTextField" promptText="Details" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <Label text="Start" GridPane.rowIndex="2" />
       <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <HBox alignment="CENTER_LEFT">
             <TextField fx:id="startDayTextField" promptText="T" styleClass="medium-cell-width" />
@@ -73,7 +70,6 @@
             <TextField fx:id="startMinuteTextField" promptText="M" styleClass="medium-cell-width" />
          </HBox>
       </HBox>
-      <Label fx:id="endLabel" text="Ende" GridPane.rowIndex="3" />
       <HBox fx:id="endHBox" alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <HBox alignment="CENTER_LEFT">
             <TextField fx:id="endDayTextField" promptText="T" styleClass="medium-cell-width" />
@@ -89,11 +85,17 @@
             <TextField fx:id="endMinuteTextField" promptText="M" styleClass="medium-cell-width" />
          </HBox>
       </HBox>
+      <FontIcon iconLiteral="mdrmz-title" />
+      <FontIcon iconLiteral="mdral-info" GridPane.rowIndex="1" />
+      <FontIcon fx:id="startIcon" iconLiteral="mdrmz-today" GridPane.rowIndex="2" />
+      <FontIcon fx:id="endIcon" iconLiteral="mdsal-last_page" GridPane.rowIndex="3" />
+      <FontIcon fx:id="refreshIcon" iconLiteral="mdmz-refresh" GridPane.rowIndex="4" />
       <rowConstraints>
          <RowConstraints />
          <RowConstraints />
          <RowConstraints />
          <RowConstraints />
+         <RowConstraints minHeight="10.0" prefHeight="30.0" />
       </rowConstraints>
    </GridPane>
 </VBox>
