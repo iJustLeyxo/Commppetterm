@@ -22,23 +22,21 @@ import java.time.LocalDate;
  */
 public final class Editor extends Controller {
     @FXML
-    private HBox startTimeHBox, endHBox, endTimeHBox, recurringHBox;
-
-    // TODO: Make toggleable buttons real toggle-buttons
+    private HBox startTime, endBox, endTime, recurringBox;
 
     @FXML
-    private Button saveButton, deleteButton, yearlyButton, monthlyButton, weeklyButton, dailyButton;
+    private Button save, delete;
 
     @FXML
-    private ToggleButton endToggleButton, timeToggleButton, recurringToggleButton;
+    private ToggleButton end, time, recurring, yearly, monthly, weekly, daily;
 
     @FXML
     private FontIcon startIcon, endIcon, recurringIcon;
 
     @FXML
-    private TextField titleTextField, detailsTextField,
-            startDayTextField, startMonthTextField, startYearTextField, startHourTextField, startMinuteTextField,
-            endDayTextField, endMonthTextField, endYearTextField, endHourTextField, endMinuteTextField;
+    private TextField title, info,
+            startDay, startMonth, startYear, startHour, startMinute,
+            endDay, endMonth, endYear, endHour, endMinute;
 
     /**
      * Creates a new editor controller
@@ -49,76 +47,76 @@ public final class Editor extends Controller {
     }
 
     @FXML
-    private void saveButtonAction() {
+    private void save() {
         // TODO: Add save logic
     }
 
     @FXML
-    private void deleteButtonAction() {
+    private void delete() {
         // TODO: Add delete logic
     }
 
     @FXML
-    private void cancelButtonAction() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+    private void cancel() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         Gui.get().swap(new Calendar(this.date));
     };
 
     @FXML
-    private void endToggleButtonUpdate() {
-        if (this.endToggleButton.isSelected()) {
+    private void end() {
+        if (this.end.isSelected()) {
             this.startIcon.setIconCode(Material2AL.FIRST_PAGE);
         } else {
             this.startIcon.setIconCode(Material2MZ.TODAY);
 
-            if (this.timeToggleButton.isSelected()) {
-                this.timeToggleButton.setSelected(false);
-                this.timeToggleButtonUpdate();
+            if (this.time.isSelected()) {
+                this.time.setSelected(false);
+                this.time();
             }
         }
 
-        this.enabled(this.endIcon, this.endToggleButton.isSelected());
-        this.enabled(this.endHBox, this.endToggleButton.isSelected());
+        this.enabled(this.endIcon, this.end.isSelected());
+        this.enabled(this.endBox, this.end.isSelected());
         Gui.get().stage().sizeToScene();
     }
 
     @FXML
-    private void timeToggleButtonUpdate() {
-        if (this.timeToggleButton.isSelected() && !this.endToggleButton.isSelected()) {
-            this.endToggleButton.setSelected(true);
-            this.endToggleButtonUpdate();
+    private void time() {
+        if (this.time.isSelected() && !this.end.isSelected()) {
+            this.end.setSelected(true);
+            this.end();
         }
 
-        this.enabled(this.startTimeHBox, this.timeToggleButton.isSelected());
-        this.enabled(this.endTimeHBox, this.timeToggleButton.isSelected());
+        this.enabled(this.startTime, this.time.isSelected());
+        this.enabled(this.endTime, this.time.isSelected());
         Gui.get().stage().sizeToScene();
     }
 
     @FXML
-    private void recurringToggleButtonUpdate() {
-        this.enabled(recurringIcon, this.recurringToggleButton.isSelected());
-        this.enabled(recurringHBox, this.recurringToggleButton.isSelected());
+    private void recurring() {
+        this.enabled(recurringIcon, this.recurring.isSelected());
+        this.enabled(recurringBox, this.recurring.isSelected());
         Gui.get().stage().sizeToScene();
     }
 
     // TODO: Add functionality for recurring event options
 
     @FXML
-    private void yearlyButtonAction() {}
+    private void yearly() {}
 
     @FXML
-    private void monthlyButtonAction() {}
+    private void monthly() {}
 
     @FXML
-    private void weeklyButtonAction() {}
+    private void weekly() {}
 
     @FXML
-    private void dailyButtonAction() {}
+    private void daily() {}
 
     @Override
     protected void init() {
-        this.endToggleButtonUpdate();
-        this.timeToggleButtonUpdate();
-        this.recurringToggleButtonUpdate();
+        this.end();
+        this.time();
+        this.recurring();
     }
 
     /**

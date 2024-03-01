@@ -35,13 +35,13 @@ public final class Calendar extends Controller {
     // TODO: Make toggleable buttons real toggle-buttons
 
     @FXML
-    private Button editButton, deleteButton, dayButton, weekButton, monthButton;
+    private Button edit, delete, day, week, month;
 
     @FXML
-    private Label dateLabel;
+    private Label label;
 
     @FXML
-    private Pane contentPane;
+    private Pane pane;
 
     /**
      * Creates a new calendar
@@ -53,46 +53,46 @@ public final class Calendar extends Controller {
     }
 
     @FXML
-    private void createButtonAction() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+    private void create() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         Gui.get().swap(new Editor(this.pageController.date));
     };
 
     @FXML
-    private void editButtonAction() {
+    private void edit() {
         // TODO: Add editing
     }
 
     @FXML
-    private void deleteButtonAction() {
+    private void delete() {
         // TODO: Add deleting
     };
 
     @FXML
-    private void previousButtonAction() {
+    private void previous() {
         this.pageController.prev();
-        this.dateLabel.setText(this.pageController.label());
+        this.label.setText(this.pageController.label());
         Gui.get().stage().sizeToScene();
     };
 
     @FXML
-    private void nextButtonAction() {
+    private void next() {
         this.pageController.next();
-        this.dateLabel.setText(this.pageController.label());
+        this.label.setText(this.pageController.label());
         Gui.get().stage().sizeToScene();
     };
 
     @FXML
-    private void dayButtonAction() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+    private void day() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         this.swap(new DayPage(this.pageController.date));
     };
 
     @FXML
-    private void weekButtonAction() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+    private void week() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         this.swap(new WeekPage(this.pageController.date));
     };
 
     @FXML
-    private void monthButtonAction() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+    private void month() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         this.swap(new MonthPage(this.pageController.date));
     };
 
@@ -105,29 +105,29 @@ public final class Calendar extends Controller {
             Parent parent = this.pageController.parent();
 
             if (parent != null) {
-                this.contentPane.getChildren().remove(parent);
+                this.pane.getChildren().remove(parent);
             }
         }
 
-        this.dayButton.setDisable(false);
-        this.weekButton.setDisable(false);
-        this.monthButton.setDisable(false);
-        this.editButton.setDisable(false);
-        this.deleteButton.setDisable(false);
+        this.day.setDisable(false);
+        this.week.setDisable(false);
+        this.month.setDisable(false);
+        this.edit.setDisable(false);
+        this.delete.setDisable(false);
 
         if (pageController instanceof DayPage) {
-            this.dayButton.setDisable(true);
+            this.day.setDisable(true);
         } else if (pageController instanceof WeekPage) {
-            this.weekButton.setDisable(true);
+            this.week.setDisable(true);
         } else {
-            this.monthButton.setDisable(true);
-            this.editButton.setDisable(true);
-            this.deleteButton.setDisable(true);
+            this.month.setDisable(true);
+            this.edit.setDisable(true);
+            this.delete.setDisable(true);
         }
 
         this.pageController = pageController;
-        this.contentPane.getChildren().add(this.pageController.load());
-        this.dateLabel.setText(this.pageController.label());
+        this.pane.getChildren().add(this.pageController.load());
+        this.label.setText(this.pageController.label());
         Gui.get().stage().sizeToScene();
     }
 
