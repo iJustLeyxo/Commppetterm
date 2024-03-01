@@ -31,7 +31,7 @@ public final class Editor extends Controller {
     private ToggleButton endToggleButton, timeToggleButton, recurringToggleButton;
 
     @FXML
-    private FontIcon startIcon, endIcon, refreshIcon;
+    private FontIcon startIcon, endIcon, recurringIcon;
 
     @FXML
     private TextField titleTextField, detailsTextField,
@@ -93,8 +93,12 @@ public final class Editor extends Controller {
 
     @FXML
     private void recurringToggleButtonUpdate() {
-        // TODO: [1] Add functionality for recurring event controls
+        this.enabled(recurringIcon, this.recurringToggleButton.isSelected());
+        this.enabled(recurringHBox, this.recurringToggleButton.isSelected());
+        Gui.get().stage().sizeToScene();
     }
+
+    // TODO: Add functionality for recurring event options
 
     @FXML
     private void yearlyButtonAction() {}
