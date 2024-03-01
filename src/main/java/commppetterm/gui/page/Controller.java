@@ -70,4 +70,6 @@ public abstract class Controller {
      * Returns the parent of this controller if loaded
      */
     public @Nullable Parent parent() { return this.parent; }
+
+    // TODO: Restructure controller to not have date field
 }
