@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -90,6 +91,38 @@
       <FontIcon fx:id="startIcon" iconLiteral="mdrmz-today" GridPane.rowIndex="2" />
       <FontIcon fx:id="endIcon" iconLiteral="mdsal-last_page" GridPane.rowIndex="3" />
       <FontIcon fx:id="refreshIcon" iconLiteral="mdmz-refresh" GridPane.rowIndex="4" />
+      <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+         <children>
+            <Button fx:id="saveButton1" mnemonicParsing="false" onAction="#saveButtonAction">
+               <graphic>
+                  <FontIcon iconLiteral="mdmz-save" />
+               </graphic>
+               <styleClass>
+                  <String fx:value="small-cell" />
+                  <String fx:value="alt-color" />
+               </styleClass>
+            </Button>
+            <Button fx:id="deleteButton1" mnemonicParsing="false" onAction="#deleteButtonAction">
+               <graphic>
+                  <FontIcon iconLiteral="mdal-delete" />
+               </graphic>
+               <styleClass>
+                  <String fx:value="small-cell" />
+                  <String fx:value="alt-color" />
+               </styleClass>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#cancelButtonAction">
+               <graphic>
+                  <FontIcon iconLiteral="mdal-cancel" />
+               </graphic>
+               <styleClass>
+                  <String fx:value="small-cell" />
+                  <String fx:value="alt-color" />
+               </styleClass>
+            </Button>
+            <TextField promptText="N" styleClass="large-cell-width" />
+         </children>
+      </HBox>
       <rowConstraints>
          <RowConstraints />
          <RowConstraints />
