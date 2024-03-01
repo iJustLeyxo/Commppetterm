@@ -13,7 +13,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Page for showing months
@@ -29,16 +28,9 @@ public final class MonthPage extends PageController {
 
     /**
      * Creates a new month subpage
-     */
-    public MonthPage() {
-        super(null);
-    }
-
-    /**
-     * Creates a new month subpage
      * @param date The date to display
      */
-    public MonthPage(@Nullable LocalDate date) {
+    public MonthPage(@NotNull LocalDate date) {
         super(date);
     }
 
@@ -73,7 +65,7 @@ public final class MonthPage extends PageController {
 
         /* Generate */
         LocalDate iter = LocalDate.of(this.date.getYear(), this.date.getMonth(), 1);
-        Parent parent = null;
+        Parent parent;
         int offset = 0;
 
         if (iter.get(WeekFields.ISO.weekOfMonth()) == 0) { offset = 1; }
@@ -105,16 +97,11 @@ public final class MonthPage extends PageController {
         protected final @NotNull Button button;
 
         /**
-         * Associated date
-         */
-        protected final @NotNull LocalDate date;
-
-        /**
          * Creates a new cell controller
          * @param date The associated date
          */
         public CellController(@NotNull LocalDate date, @NotNull Button button) {
-            this.date = date;
+            super(date);
             this.button = button;
         }
 

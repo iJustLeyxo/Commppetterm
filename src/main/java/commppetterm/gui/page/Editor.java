@@ -6,12 +6,14 @@ import commppetterm.gui.exception.FxmlLoadException;
 import commppetterm.gui.exception.URLNotFoundException;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
+import org.jetbrains.annotations.NotNull;
+
+import java.time.LocalDate;
 
 /**
  * Controller for entry editor
@@ -34,6 +36,14 @@ public final class Editor extends Controller {
             startDayTextField, startMonthTextField, startYearTextField, startHourTextField, startMinuteTextField,
             endDayTextField, endMonthTextField, endYearTextField, endHourTextField, endMinuteTextField;
 
+    /**
+     * Creates a new editor controller
+     * @param date The initial editor date
+     */
+    public Editor(@NotNull LocalDate date) {
+        super(date);
+    }
+
     @FXML
     private void saveButtonAction() {
         // TODO: Add save logic
@@ -46,7 +56,7 @@ public final class Editor extends Controller {
 
     @FXML
     private void cancelButtonAction() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        Gui.get().swap(new Calendar());
+        Gui.get().swap(new Calendar(this.date));
     };
 
     @FXML

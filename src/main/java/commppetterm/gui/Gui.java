@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.net.URL;
+import java.time.LocalDate;
 
 /**
  * Main class
@@ -57,13 +58,15 @@ public final class Gui extends Application {
         this.stage.setTitle(App.name);
         String iconFile = "icon.png";
         URL iconUrl = Gui.class.getResource(iconFile);
+
         if (iconUrl == null) {
             App.logger.warning("Failed to load icon " + iconFile + " from " + Gui.class.getCanonicalName());
         } else {
             Image icon = new Image(iconUrl.toString());
             this.stage.getIcons().add(icon);
         }
-        this.swap(new Calendar());
+
+        this.swap(new Calendar(LocalDate.now()));
         this.stage.show();
     }
 

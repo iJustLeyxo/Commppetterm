@@ -11,6 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDate;
+
 /**
  * Calendar controller class
  */
@@ -41,14 +43,16 @@ public final class Calendar extends Controller {
 
     /**
      * Creates a new calendar
+     * @param date Calendar initial date
      */
-    public Calendar() {
+    public Calendar(@NotNull LocalDate date) {
+        super(date);
         calendarController = this;
     }
 
     @FXML
     private void createButtonAction() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        Gui.get().swap(new Editor());
+        Gui.get().swap(new Editor(this.pageController.date));
     };
 
     @FXML
@@ -120,13 +124,13 @@ public final class Calendar extends Controller {
         }
 
         this.pageController = pageController;
-        this.dateLabel.setText(this.pageController.label());
         this.contentPane.getChildren().add(this.pageController.load());
+        this.dateLabel.setText(this.pageController.label());
         Gui.get().stage().sizeToScene();
     }
 
     @Override
     protected void init() throws ControllerLoadedException, FxmlLoadException, URLNotFoundException {
-        this.swap(new MonthPage());
+        this.swap(new MonthPage(this.date));
     }
 }

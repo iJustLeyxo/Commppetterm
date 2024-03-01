@@ -10,22 +10,27 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 
 /**
  * Controller superclass
  */
 public abstract class Controller {
-    // TODO: Add date property
-
     /**
      * Loaded parent
      */
     private @Nullable Parent parent;
 
     /**
+     * The controller's date
+     */
+    protected @NotNull LocalDate date;
+
+    /**
      * Creates a new controller
      */
-    public Controller() {
+    public Controller(@NotNull LocalDate date) {
+        this.date = date;
         this.parent = null;
     }
 
