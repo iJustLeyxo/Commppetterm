@@ -26,14 +26,6 @@ public final class MonthPage extends PageController {
      */
     private LinkedList<Parent> contents;
 
-    /**
-     * Creates a new month subpage
-     * @param date The date to display
-     */
-    public MonthPage(@NotNull LocalDate date) {
-        super(date);
-    }
-
     @Override
     protected void init() {
         this.contents = new LinkedList<>();
@@ -42,13 +34,13 @@ public final class MonthPage extends PageController {
 
     @Override
     void prev() {
-        this.date = this.date.minusMonths(1);
+        App.date = App.date.minusMonths(1);
         this.generate();
     }
 
     @Override
     void next() {
-        this.date = this.date.plusMonths(1);
+        App.date = App.date.plusMonths(1);
         this.generate();
     }
 
@@ -64,7 +56,7 @@ public final class MonthPage extends PageController {
         this.contents = new LinkedList<>();
 
         /* Generate */
-        LocalDate iter = LocalDate.of(this.date.getYear(), this.date.getMonth(), 1);
+        LocalDate iter = LocalDate.of(App.date.getYear(), App.date.getMonth(), 1);
         Parent parent;
         int offset = 0;
 
@@ -98,10 +90,8 @@ public final class MonthPage extends PageController {
 
         /**
          * Creates a new cell controller
-         * @param date The associated date
          */
-        public CellController(@NotNull LocalDate date, @NotNull Button button) {
-            super(date);
+        public CellController(@NotNull Button button) {
             this.button = button;
         }
 
@@ -120,9 +110,9 @@ public final class MonthPage extends PageController {
          * @param date The associated date
          */
         public DayCellController(@NotNull LocalDate date) {
-            super(date, new Button(Integer.toString(date.getDayOfMonth())));
+            super(new Button(Integer.toString(date.getDayOfMonth())));
 
-            if (this.date.equals(LocalDate.now())) {
+            if (date.equals(LocalDate.now())) {
                 this.button.getStyleClass().addAll("cell");
             } else  {
                 this.button.getStyleClass().addAll("cell", "alt-color");
@@ -131,7 +121,7 @@ public final class MonthPage extends PageController {
             this.button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    DayPage page = new DayPage(date);
+                    DayPage page = new DayPage();
                     try {
                         Calendar.get().swap(page);
                     } catch (Exception e) {
@@ -149,15 +139,14 @@ public final class MonthPage extends PageController {
     private static class WeekCellController extends CellController {
         /**
          * Creates a new day cell controller
-         * @param date The associated date
          */
         public WeekCellController(@NotNull LocalDate date) {
-            super(date, new Button(Integer.toString(date.get(WeekFields.ISO.weekOfYear()))));
+            super(new Button(Integer.toString(date.get(WeekFields.ISO.weekOfYear()))));
             this.button.getStyleClass().addAll("cell");
             this.button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    WeekPage page = new WeekPage(date);
+                    WeekPage page = new WeekPage();
                     try {
                         Calendar.get().swap(page);
                     } catch (Exception e) {

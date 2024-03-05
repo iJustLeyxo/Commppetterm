@@ -38,14 +38,6 @@ public final class Editor extends Controller {
             startDay, startMonth, startYear, startHour, startMinute,
             endDay, endMonth, endYear, endHour, endMinute;
 
-    /**
-     * Creates a new editor controller
-     * @param date The initial editor date
-     */
-    public Editor(@NotNull LocalDate date) {
-        super(date);
-    }
-
     @FXML
     private void save() {
         // TODO: Add save logic
@@ -58,7 +50,7 @@ public final class Editor extends Controller {
 
     @FXML
     private void cancel() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        Gui.get().swap(new Calendar(this.date));
+        Gui.get().swap(new Calendar());
     };
 
     @FXML

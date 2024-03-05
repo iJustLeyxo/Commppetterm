@@ -47,16 +47,14 @@ public final class Calendar extends Controller {
 
     /**
      * Creates a new calendar
-     * @param date Calendar initial date
      */
-    public Calendar(@NotNull LocalDate date) {
-        super(date);
+    public Calendar() {
         calendarController = this;
     }
 
     @FXML
     private void create() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        Gui.get().swap(new Editor(this.pageController.date));
+        Gui.get().swap(new Editor());
     };
 
     @FXML
@@ -88,7 +86,7 @@ public final class Calendar extends Controller {
         if (this.day.isSelected()) {
             this.week.setSelected(false);
             this.month.setSelected(false);
-            this.swap(new DayPage(this.pageController.date));
+            this.swap(new DayPage());
         } else {
             this.day.setSelected(true);
         }
@@ -99,7 +97,7 @@ public final class Calendar extends Controller {
         if (this.week.isSelected()) {
             this.day.setSelected(false);
             this.month.setSelected(false);
-            this.swap(new WeekPage(this.pageController.date));
+            this.swap(new WeekPage());
         } else {
             this.week.setSelected(true);
         }
@@ -110,7 +108,7 @@ public final class Calendar extends Controller {
         if (this.month.isSelected()) {
             this.day.setSelected(false);
             this.week.setSelected(false);
-            this.swap(new MonthPage(this.pageController.date));
+            this.swap(new MonthPage());
         } else {
             this.month.setSelected(true);
         }
@@ -141,6 +139,6 @@ public final class Calendar extends Controller {
     @Override
     protected void init() throws ControllerLoadedException, FxmlLoadException, URLNotFoundException {
         this.month.setSelected(true);
-        this.swap(new MonthPage(this.date));
+        this.swap(new MonthPage());
     }
 }

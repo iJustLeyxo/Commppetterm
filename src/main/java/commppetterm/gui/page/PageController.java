@@ -19,10 +19,8 @@ public abstract class PageController extends Controller {
 
     /**
      * Creates a new page
-     * @param date The date to display
      */
-    public PageController(@NotNull LocalDate date) {
-        super(date);
+    public PageController() {
         DateTimeFormatterBuilder dtfBuilder = new DateTimeFormatterBuilder();
 
         for (DtfElement e : this.formatting()) {
@@ -39,7 +37,7 @@ public abstract class PageController extends Controller {
      * Returns the label text to show in the calendar
      */
     public @NotNull String label() {
-        return this.formatter.format(this.date);
+        return this.formatter.format(App.date);
     }
 
     /**
