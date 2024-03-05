@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,10 +33,11 @@ public final class Calendar extends Controller {
      */
     private PageController pageController;
 
-    // TODO: Make toggleable buttons real toggle-buttons
+    @FXML
+    private Button edit, delete;
 
     @FXML
-    private Button edit, delete, day, week, month;
+    private ToggleButton day, week, month;
 
     @FXML
     private Label label;
@@ -109,18 +111,18 @@ public final class Calendar extends Controller {
             }
         }
 
-        this.day.setDisable(false);
-        this.week.setDisable(false);
-        this.month.setDisable(false);
+        this.day.setSelected(false);
+        this.week.setSelected(false);
+        this.month.setSelected(false);
         this.edit.setDisable(false);
         this.delete.setDisable(false);
 
         if (pageController instanceof DayPage) {
-            this.day.setDisable(true);
+            this.day.setSelected(true);
         } else if (pageController instanceof WeekPage) {
-            this.week.setDisable(true);
+            this.week.setSelected(true);
         } else {
-            this.month.setDisable(true);
+            this.month.setSelected(true);
             this.edit.setDisable(true);
             this.delete.setDisable(true);
         }
