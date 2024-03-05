@@ -35,17 +35,22 @@
             <groupId>com.gluonhq.attach</groupId>
             <artifactId>util</artifactId>
             <version>4.0.19</version>
-        </dependency>
-        <dependency>
+         </dependency>
+         <dependency>
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-javafx</artifactId>
             <version>12.3.1</version>
-        </dependency>
-        <dependency>
+         </dependency>
+         <dependency>
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-material2-pack</artifactId>
             <version>12.3.1</version>
-        </dependency>
+         </dependency>
+         <dependency>
+             <groupId>com.mysql</groupId>
+             <artifactId>mysql-connector-j</artifactId>
+             <version>4.3</version>
+         </dependency>
         
         <!-- Junit -->
         <dependency>
