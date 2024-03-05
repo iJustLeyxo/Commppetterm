@@ -1,18 +1,20 @@
 package commppetterm.gui;
 
+import java.net.URL;
+import java.time.LocalDate;
+
+import org.jetbrains.annotations.NotNull;
+
+import commppetterm.App;
 import commppetterm.gui.exception.ControllerLoadedException;
 import commppetterm.gui.exception.FxmlLoadException;
 import commppetterm.gui.exception.URLNotFoundException;
 import commppetterm.gui.page.Calendar;
-import org.jetbrains.annotations.NotNull;
-import commppetterm.App;
 import commppetterm.gui.page.Controller;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import java.net.URL;
-import java.time.LocalDate;
 
 /**
  * Main class

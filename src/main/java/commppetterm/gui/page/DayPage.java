@@ -1,12 +1,12 @@
 package commppetterm.gui.page;
 
-import javafx.fxml.FXML;
-import javafx.scene.layout.GridPane;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.time.LocalDate;
 import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
+
+import javafx.fxml.FXML;
+import javafx.scene.layout.GridPane;
 
 /**
  * Page for showing days
@@ -24,10 +24,16 @@ public final class DayPage extends PageController {
     }
 
     @Override
-    void prev() {}
+    void prev() {
+        this.date = this.date.minusDays(1);
+        this.generate();
+    }
 
     @Override
-    void next() {}
+    void next() {
+        this.date  = this.date.plusDays(1);
+        this.generate();
+    }
 
     @Override
     @NotNull List<DtfElement> formatting() {
