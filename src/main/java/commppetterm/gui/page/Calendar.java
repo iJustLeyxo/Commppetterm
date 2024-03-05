@@ -85,17 +85,35 @@ public final class Calendar extends Controller {
 
     @FXML
     private void day() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        this.swap(new DayPage(this.pageController.date));
+        if (this.day.isSelected()) {
+            this.week.setSelected(false);
+            this.month.setSelected(false);
+            this.swap(new DayPage(this.pageController.date));
+        } else {
+            this.day.setSelected(true);
+        }
     };
 
     @FXML
     private void week() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        this.swap(new WeekPage(this.pageController.date));
+        if (this.week.isSelected()) {
+            this.day.setSelected(false);
+            this.month.setSelected(false);
+            this.swap(new WeekPage(this.pageController.date));
+        } else {
+            this.week.setSelected(true);
+        }
     };
 
     @FXML
     private void month() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        this.swap(new MonthPage(this.pageController.date));
+        if (this.month.isSelected()) {
+            this.day.setSelected(false);
+            this.week.setSelected(false);
+            this.swap(new MonthPage(this.pageController.date));
+        } else {
+            this.month.setSelected(true);
+        }
     };
 
     /**
@@ -111,21 +129,8 @@ public final class Calendar extends Controller {
             }
         }
 
-        this.day.setSelected(false);
-        this.week.setSelected(false);
-        this.month.setSelected(false);
-        this.edit.setDisable(false);
-        this.delete.setDisable(false);
-
-        if (pageController instanceof DayPage) {
-            this.day.setSelected(true);
-        } else if (pageController instanceof WeekPage) {
-            this.week.setSelected(true);
-        } else {
-            this.month.setSelected(true);
-            this.edit.setDisable(true);
-            this.delete.setDisable(true);
-        }
+        this.edit.setDisable(true);
+        this.delete.setDisable(true);
 
         this.pageController = pageController;
         this.pane.getChildren().add(this.pageController.load());
@@ -135,6 +140,7 @@ public final class Calendar extends Controller {
 
     @Override
     protected void init() throws ControllerLoadedException, FxmlLoadException, URLNotFoundException {
+        this.month.setSelected(true);
         this.swap(new MonthPage(this.date));
     }
 }
