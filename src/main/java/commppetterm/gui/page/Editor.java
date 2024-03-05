@@ -101,22 +101,55 @@ public final class Editor extends Controller {
     // TODO: Add functionality for recurring event options
 
     @FXML
-    private void yearly() {}
+    private void yearly() {
+        if (this.yearly.isSelected()) {
+            this.daily.setSelected(false);
+            this.weekly.setSelected(false);
+            this.monthly.setSelected(false);
+        } else {
+            this.yearly.setSelected(true);
+        }
+    }
 
     @FXML
-    private void monthly() {}
+    private void monthly() {
+        if (this.monthly.isSelected()) {
+            this.daily.setSelected(false);
+            this.weekly.setSelected(false);
+            this.yearly.setSelected(false);
+        } else {
+            this.monthly.setSelected(true);
+        }
+    }
 
     @FXML
-    private void weekly() {}
+    private void weekly() {
+        if (this.weekly.isSelected()) {
+            this.daily.setSelected(false);
+            this.monthly.setSelected(false);
+            this.yearly.setSelected(false);
+        } else {
+            this.weekly.setSelected(true);
+        }
+    }
 
     @FXML
-    private void daily() {}
+    private void daily() {
+        if (this.daily.isSelected()) {
+            this.weekly.setSelected(false);
+            this.monthly.setSelected(false);
+            this.yearly.setSelected(false);
+        } else {
+            this.daily.setSelected(true);
+        }
+    }
 
     @Override
     protected void init() {
         this.end();
         this.time();
         this.recurring();
+        this.yearly.setSelected(true);
     }
 
     /**
