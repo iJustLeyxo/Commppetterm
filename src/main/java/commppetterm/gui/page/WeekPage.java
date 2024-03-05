@@ -15,12 +15,6 @@ public final class WeekPage extends PageController {
     @FXML
     private GridPane weekGrid;
 
-    /**
-     * Creates a new week page
-     * @param date The date to display
-     */
-    public WeekPage(@NotNull LocalDate date) { super(date); }
-
     @Override
     void prev() {
         this.date = this.date.minusWeeks(1);

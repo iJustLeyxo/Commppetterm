@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,10 +33,11 @@ public final class Calendar extends Controller {
      */
     private PageController pageController;
 
-    // TODO: Make toggleable buttons real toggle-buttons
+    @FXML
+    private Button edit, delete;
 
     @FXML
-    private Button edit, delete, day, week, month;
+    private ToggleButton day, week, month;
 
     @FXML
     private Label label;
@@ -45,16 +47,14 @@ public final class Calendar extends Controller {
 
     /**
      * Creates a new calendar
-     * @param date Calendar initial date
      */
-    public Calendar(@NotNull LocalDate date) {
-        super(date);
+    public Calendar() {
         calendarController = this;
     }
 
     @FXML
     private void create() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        Gui.get().swap(new Editor(this.pageController.date));
+        Gui.get().swap(new Editor());
     };
 
     @FXML
@@ -83,17 +83,35 @@ public final class Calendar extends Controller {
 
     @FXML
     private void day() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        this.swap(new DayPage(this.pageController.date));
+        if (this.day.isSelected()) {
+            this.week.setSelected(false);
+            this.month.setSelected(false);
+            this.swap(new DayPage());
+        } else {
+            this.day.setSelected(true);
+        }
     };
 
     @FXML
     private void week() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        this.swap(new WeekPage(this.pageController.date));
+        if (this.week.isSelected()) {
+            this.day.setSelected(false);
+            this.month.setSelected(false);
+            this.swap(new WeekPage());
+        } else {
+            this.week.setSelected(true);
+        }
     };
 
     @FXML
     private void month() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        this.swap(new MonthPage(this.pageController.date));
+        if (this.month.isSelected()) {
+            this.day.setSelected(false);
+            this.week.setSelected(false);
+            this.swap(new MonthPage());
+        } else {
+            this.month.setSelected(true);
+        }
     };
 
     /**
@@ -109,21 +127,8 @@ public final class Calendar extends Controller {
             }
         }
 
-        this.day.setDisable(false);
-        this.week.setDisable(false);
-        this.month.setDisable(false);
-        this.edit.setDisable(false);
-        this.delete.setDisable(false);
-
-        if (pageController instanceof DayPage) {
-            this.day.setDisable(true);
-        } else if (pageController instanceof WeekPage) {
-            this.week.setDisable(true);
-        } else {
-            this.month.setDisable(true);
-            this.edit.setDisable(true);
-            this.delete.setDisable(true);
-        }
+        this.edit.setDisable(true);
+        this.delete.setDisable(true);
 
         this.pageController = pageController;
         this.pane.getChildren().add(this.pageController.load());
@@ -133,6 +138,7 @@ public final class Calendar extends Controller {
 
     @Override
     protected void init() throws ControllerLoadedException, FxmlLoadException, URLNotFoundException {
-        this.swap(new MonthPage(this.date));
+        this.month.setSelected(true);
+        this.swap(new MonthPage());
     }
 }

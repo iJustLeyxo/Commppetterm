@@ -68,7 +68,7 @@ public final class Gui extends Application {
             this.stage.getIcons().add(icon);
         }
 
-        this.swap(new Calendar(LocalDate.now()));
+        this.swap(new Calendar());
         this.stage.show();
     }
 
