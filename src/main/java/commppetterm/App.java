@@ -1,5 +1,8 @@
 package commppetterm;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.time.LocalDate;
 import java.util.Locale;
 import java.util.logging.Logger;
 
@@ -21,6 +24,11 @@ public final class App {
      * Application locale
      */
     public static final Locale locale = Locale.GERMANY;
+
+    /**
+     * Global date
+     */
+    public static @NotNull LocalDate date = LocalDate.now();
 
     /**
      * Application logger

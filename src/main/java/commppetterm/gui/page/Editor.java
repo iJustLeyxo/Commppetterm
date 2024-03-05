@@ -38,14 +38,6 @@ public final class Editor extends Controller {
             startDay, startMonth, startYear, startHour, startMinute,
             endDay, endMonth, endYear, endHour, endMinute;
 
-    /**
-     * Creates a new editor controller
-     * @param date The initial editor date
-     */
-    public Editor(@NotNull LocalDate date) {
-        super(date);
-    }
-
     @FXML
     private void save() {
         // TODO: Add save logic
@@ -58,7 +50,7 @@ public final class Editor extends Controller {
 
     @FXML
     private void cancel() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        Gui.get().swap(new Calendar(this.date));
+        Gui.get().swap(new Calendar());
     };
 
     @FXML
@@ -98,25 +90,56 @@ public final class Editor extends Controller {
         Gui.get().stage().sizeToScene();
     }
 
-    // TODO: Add functionality for recurring event options
+    @FXML
+    private void yearly() {
+        if (this.yearly.isSelected()) {
+            this.daily.setSelected(false);
+            this.weekly.setSelected(false);
+            this.monthly.setSelected(false);
+        } else {
+            this.yearly.setSelected(true);
+        }
+    }
 
     @FXML
-    private void yearly() {}
+    private void monthly() {
+        if (this.monthly.isSelected()) {
+            this.daily.setSelected(false);
+            this.weekly.setSelected(false);
+            this.yearly.setSelected(false);
+        } else {
+            this.monthly.setSelected(true);
+        }
+    }
 
     @FXML
-    private void monthly() {}
+    private void weekly() {
+        if (this.weekly.isSelected()) {
+            this.daily.setSelected(false);
+            this.monthly.setSelected(false);
+            this.yearly.setSelected(false);
+        } else {
+            this.weekly.setSelected(true);
+        }
+    }
 
     @FXML
-    private void weekly() {}
-
-    @FXML
-    private void daily() {}
+    private void daily() {
+        if (this.daily.isSelected()) {
+            this.weekly.setSelected(false);
+            this.monthly.setSelected(false);
+            this.yearly.setSelected(false);
+        } else {
+            this.daily.setSelected(true);
+        }
+    }
 
     @Override
     protected void init() {
         this.end();
         this.time();
         this.recurring();
+        this.yearly.setSelected(true);
     }
 
     /**
