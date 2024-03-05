@@ -2,23 +2,16 @@ package commppetterm.gui.page;
 
 import commppetterm.App;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Controller for a page of the calendar
  */
 public abstract class PageController extends Controller {
-    /**
-     * Timeframe of the page
-     */
-    protected LocalDate date;
-
     /**
      * Formatter for label texts
      */
@@ -28,7 +21,8 @@ public abstract class PageController extends Controller {
      * Creates a new page
      * @param date The date to display
      */
-    public PageController(@Nullable LocalDate date) {
+    public PageController(@NotNull LocalDate date) {
+        super(date);
         DateTimeFormatterBuilder dtfBuilder = new DateTimeFormatterBuilder();
 
         for (DtfElement e : this.formatting()) {
@@ -39,7 +33,6 @@ public abstract class PageController extends Controller {
         }
 
         this.formatter = dtfBuilder.toFormatter(App.locale);
-        this.date = Objects.requireNonNullElseGet(date, LocalDate::now);
     }
 
     /**

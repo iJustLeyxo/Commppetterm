@@ -3,7 +3,6 @@ package commppetterm.gui.page;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,16 +16,9 @@ public final class WeekPage extends PageController {
 
     /**
      * Creates a new week page
-     */
-    public WeekPage() {
-        super(null);
-    }
-
-    /**
-     * Creates a new week page
      * @param date The date to display
      */
-    public WeekPage(@Nullable LocalDate date) { super(date); }
+    public WeekPage(@NotNull LocalDate date) { super(date); }
 
     @Override
     void prev() {}

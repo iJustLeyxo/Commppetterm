@@ -11,6 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDate;
+
 /**
  * Calendar controller class
  */
@@ -18,72 +20,80 @@ public final class Calendar extends Controller {
     /**
      * This calendar controller
      */
-    private static Calendar thiz;
+    private static Calendar calendarController;
 
     /**
      * Gets the calendar controller
      */
-    public static Calendar get() { return thiz; }
+    public static Calendar get() { return calendarController; }
 
     /**
      * The contained page's controller
      */
-    private PageController subPage;
+    private PageController pageController;
+
+    // TODO: Make toggleable buttons real toggle-buttons
 
     @FXML
-    private Button editBtn, delBtn, dayBtn, weekBtn, monthBtn;
+    private Button edit, delete, day, week, month;
 
     @FXML
-    private Label dateLab;
+    private Label label;
 
     @FXML
-    private Pane contentPane;
+    private Pane pane;
 
     /**
      * Creates a new calendar
+     * @param date Calendar initial date
      */
-    public Calendar() {
-        thiz = this;
+    public Calendar(@NotNull LocalDate date) {
+        super(date);
+        calendarController = this;
     }
 
-    //TODO: Add editing, adding and deleting of entries
+    @FXML
+    private void create() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        Gui.get().swap(new Editor(this.pageController.date));
+    };
 
     @FXML
-    private void onNew() {};
+    private void edit() {
+        // TODO: Add editing
+    }
 
     @FXML
-    private void onEdit() {}
+    private void delete() {
+        // TODO: Add deleting
+    };
 
     @FXML
-    private void onDel() {};
-
-    @FXML
-    private void onPrev() {
-        this.subPage.prev();
-        this.dateLab.setText(this.subPage.label());
+    private void previous() {
+        this.pageController.prev();
+        this.label.setText(this.pageController.label());
         Gui.get().stage().sizeToScene();
     };
 
     @FXML
-    private void onNext() {
-        this.subPage.next();
-        this.dateLab.setText(this.subPage.label());
+    private void next() {
+        this.pageController.next();
+        this.label.setText(this.pageController.label());
         Gui.get().stage().sizeToScene();
     };
 
     @FXML
-    private void onDay() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        this.swap(new DayPage(this.subPage.date));
+    private void day() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        this.swap(new DayPage(this.pageController.date));
     };
 
     @FXML
-    private void onWeek() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        this.swap(new WeekPage(this.subPage.date));
+    private void week() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        this.swap(new WeekPage(this.pageController.date));
     };
 
     @FXML
-    private void onMonth() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        this.swap(new MonthPage(this.subPage.date));
+    private void month() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        this.swap(new MonthPage(this.pageController.date));
     };
 
     /**
@@ -91,34 +101,38 @@ public final class Calendar extends Controller {
      * @param pageController The page to swap to
      */
     public void swap(@NotNull PageController pageController) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        if (this.subPage != null) {
-            Parent parent = this.subPage.parent();
+        if (this.pageController != null) {
+            Parent parent = this.pageController.parent();
 
             if (parent != null) {
-                this.contentPane.getChildren().remove(parent);
+                this.pane.getChildren().remove(parent);
             }
         }
 
-        this.dayBtn.setDisable(false);
-        this.weekBtn.setDisable(false);
-        this.monthBtn.setDisable(false);
+        this.day.setDisable(false);
+        this.week.setDisable(false);
+        this.month.setDisable(false);
+        this.edit.setDisable(false);
+        this.delete.setDisable(false);
 
         if (pageController instanceof DayPage) {
-            this.dayBtn.setDisable(true);
+            this.day.setDisable(true);
         } else if (pageController instanceof WeekPage) {
-            this.weekBtn.setDisable(true);
+            this.week.setDisable(true);
         } else {
-            this.monthBtn.setDisable(true);
+            this.month.setDisable(true);
+            this.edit.setDisable(true);
+            this.delete.setDisable(true);
         }
 
-        this.subPage = pageController;
-        this.dateLab.setText(this.subPage.label());
-        this.contentPane.getChildren().add(this.subPage.load());
+        this.pageController = pageController;
+        this.pane.getChildren().add(this.pageController.load());
+        this.label.setText(this.pageController.label());
         Gui.get().stage().sizeToScene();
     }
 
     @Override
     protected void init() throws ControllerLoadedException, FxmlLoadException, URLNotFoundException {
-        this.swap(new MonthPage());
+        this.swap(new MonthPage(this.date));
     }
 }

@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.net.URL;
+import java.time.LocalDate;
 
 /**
  * Main class
@@ -48,13 +49,24 @@ public final class Gui extends Application {
     }
 
     /**
-     * JavaFX custom start method
+     * Initialize the stage
      * @param stage Application stage
      */
     @Override
     public void start(Stage stage) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         this.stage = stage;
-        this.prepare(new Calendar());
+        this.stage.setTitle(App.name);
+        String iconFile = "icon.png";
+        URL iconUrl = Gui.class.getResource(iconFile);
+
+        if (iconUrl == null) {
+            App.logger.warning("Failed to load icon " + iconFile + " from " + Gui.class.getCanonicalName());
+        } else {
+            Image icon = new Image(iconUrl.toString());
+            this.stage.getIcons().add(icon);
+        }
+
+        this.swap(new Calendar(LocalDate.now()));
         this.stage.show();
     }
 
@@ -64,20 +76,10 @@ public final class Gui extends Application {
     public Stage stage() { return this.stage; }
 
     /**
-     * Prepares a stage
-     * @param controller The class to load the scene from
+     * Swaps to a controller
+     * @param controller The controller to swap to
      */
-    public void prepare(@NotNull Controller controller) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+    public void swap(@NotNull Controller controller) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         this.stage.setScene(new Scene(controller.load()));
-        this.stage.setTitle(App.name);
-        String iconFile = "icon.png";
-        URL iconUrl = Gui.class.getResource(iconFile);
-        if (iconUrl == null) {
-            App.logger.warning("Failed to load icon " + iconFile + " from " + Gui.class.getCanonicalName());
-        } else {
-            Image icon = new Image(iconUrl.toString());
-            this.stage.getIcons().add(icon);
-        }
-        this.stage.show();
     }
 }

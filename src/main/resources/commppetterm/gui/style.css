@@ -1,37 +1,51 @@
 *{
-    -fx-color: #1461cc;
+    -fx-base: #ff9500;
+    -fx-color: derive(-fx-base, -20%);
+    -fx-hover-color: derive(-fx-color, 20%);
+    -fx-pressed-color: derive(-fx-hover-color, 20%);
+    -fx-selected-color: -fx-hover-color;
+
+    -fx-disabled-color: #404040;
     -fx-foreground-color: #d0d0d0;
     -fx-background-color: #202020;
-    -fx-hover-color: #176de6;
-    -fx-pressed-color: #1979ff;
-    -fx-disabled-color: #404040;
 
     -fx-text-fill: -fx-foreground-color;
+    -fx-prompt-text-fill: derive(-fx-text-fill, -20%);
+    -fx-highlight-fill: derive(-fx-base, -20%);
+    -fx-highlight-text-fill: -fx-foreground-color;
+    -fx-font-size: 13px;
+    -fx-icon-size: 20px;
     -fx-icon-color: -fx-foreground-color;
 }
 
-.alt-color{
+.alt-color, .toggle-button{
     -fx-color: #404040;
-    -fx-hover-color: #4d4d4d;
-    -fx-pressed-color: #595959;
-    -fx-disabled-color: #333333;
 }
 
-.button{
+.button, .toggle-button{
+    -fx-cursor: hand;
     -fx-background-color: -fx-color;
     -fx-background-insets: 0;
 }
 
-.button:hover{
+.button:hover, .toggle-button:hover{
     -fx-background-color: -fx-hover-color;
 }
 
-.button:pressed{
+.button:pressed, .toggle-button:pressed{
     -fx-background-color: -fx-pressed-color;
 }
 
-.button:disabled{
+.button:disabled, .toggle-button:disabled{
     -fx-background-color: -fx-disabled-color;
+}
+
+.toggle-button:focus{
+    -fx-background-color: -fx-color;
+}
+
+.toggle-button:selected{
+    -fx-background-color: derive(-fx-base, -20%);
 }
 
 .cell{
@@ -40,6 +54,14 @@
 }
 
 .small-cell{
-    -fx-pref-width: 33px;
+    -fx-pref-width: 50px;
     -fx-pref-height: 33px;
+}
+
+.large-cell-width{
+    -fx-pref-width: 55px;
+}
+
+.medium-cell-width{
+    -fx-pref-width: 42px;
 }

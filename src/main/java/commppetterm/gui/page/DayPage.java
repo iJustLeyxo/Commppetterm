@@ -17,14 +17,9 @@ public final class DayPage extends PageController {
 
     /**
      * Creates a new day page
-     */
-    public DayPage() { super(null); }
-
-    /**
-     * Creates a new day page
      * @param date The date to display
      */
-    public DayPage(@Nullable LocalDate date) {
+    public DayPage(@NotNull LocalDate date) {
         super(date);
     }
 

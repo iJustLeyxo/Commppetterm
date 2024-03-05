@@ -13,19 +13,13 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Page for showing months
  */
 public final class MonthPage extends PageController {
     @FXML
-    private GridPane grid;
-
-    /**
-     * List of all visible buttons in the grid
-     */
-    private LinkedList<Parent> elements;
+    private GridPane gridPane;
 
     /**
      * List of all contents in  the grid
@@ -34,16 +28,9 @@ public final class MonthPage extends PageController {
 
     /**
      * Creates a new month subpage
-     */
-    public MonthPage() {
-        super(null);
-    }
-
-    /**
-     * Creates a new month subpage
      * @param date The date to display
      */
-    public MonthPage(@Nullable LocalDate date) {
+    public MonthPage(@NotNull LocalDate date) {
         super(date);
     }
 
@@ -73,12 +60,12 @@ public final class MonthPage extends PageController {
     @Override
     protected void generate() {
         /* Clear grid pane */
-        this.grid.getChildren().removeAll(contents);
+        this.gridPane.getChildren().removeAll(contents);
         this.contents = new LinkedList<>();
 
         /* Generate */
         LocalDate iter = LocalDate.of(this.date.getYear(), this.date.getMonth(), 1);
-        Parent parent = null;
+        Parent parent;
         int offset = 0;
 
         if (iter.get(WeekFields.ISO.weekOfMonth()) == 0) { offset = 1; }
@@ -87,13 +74,13 @@ public final class MonthPage extends PageController {
             /* Generate days */
             parent = new DayCellController(iter).load();
             this.contents.add(parent);
-            this.grid.add(parent, iter.getDayOfWeek().getValue(), iter.get(WeekFields.ISO.weekOfMonth()) + offset);
+            this.gridPane.add(parent, iter.getDayOfWeek().getValue(), iter.get(WeekFields.ISO.weekOfMonth()) + offset);
 
             /* Generate weeks */
             if (iter.getDayOfWeek().getValue() == 1 || iter.getDayOfMonth() == 1) {
                 parent = new WeekCellController(iter).load();
                 this.contents.add(parent);
-                this.grid.add(parent, 0, iter.get(WeekFields.ISO.weekOfMonth()) + offset);
+                this.gridPane.add(parent, 0, iter.get(WeekFields.ISO.weekOfMonth()) + offset);
             }
 
             iter = iter.plusDays(1);
@@ -110,16 +97,11 @@ public final class MonthPage extends PageController {
         protected final @NotNull Button button;
 
         /**
-         * Associated date
-         */
-        protected final @NotNull LocalDate date;
-
-        /**
          * Creates a new cell controller
          * @param date The associated date
          */
         public CellController(@NotNull LocalDate date, @NotNull Button button) {
-            this.date = date;
+            super(date);
             this.button = button;
         }
 

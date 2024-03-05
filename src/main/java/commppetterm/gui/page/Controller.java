@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 
 /**
  * Controller superclass
@@ -21,9 +22,15 @@ public abstract class Controller {
     private @Nullable Parent parent;
 
     /**
+     * The controller's date
+     */
+    protected @NotNull LocalDate date;
+
+    /**
      * Creates a new controller
      */
-    public Controller() {
+    public Controller(@NotNull LocalDate date) {
+        this.date = date;
         this.parent = null;
     }
 
@@ -63,4 +70,6 @@ public abstract class Controller {
      * Returns the parent of this controller if loaded
      */
     public @Nullable Parent parent() { return this.parent; }
+
+    // TODO: [2] Restructure controller to not have date field
 }
