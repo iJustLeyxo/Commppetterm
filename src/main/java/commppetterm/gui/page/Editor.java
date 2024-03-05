@@ -98,8 +98,6 @@ public final class Editor extends Controller {
         Gui.get().stage().sizeToScene();
     }
 
-    // TODO: Add functionality for recurring event options
-
     @FXML
     private void yearly() {
         if (this.yearly.isSelected()) {
