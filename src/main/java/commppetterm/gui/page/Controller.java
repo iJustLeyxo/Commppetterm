@@ -1,16 +1,16 @@
 package commppetterm.gui.page;
 
-import commppetterm.gui.exception.FxmlLoadException;
-import commppetterm.gui.exception.ControllerLoadedException;
-import commppetterm.gui.exception.URLNotFoundException;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import java.io.IOException;
+import java.net.URL;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
-import java.net.URL;
-import java.time.LocalDate;
+import commppetterm.gui.exception.ControllerLoadedException;
+import commppetterm.gui.exception.FxmlLoadException;
+import commppetterm.gui.exception.URLNotFoundException;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 
 /**
  * Controller superclass

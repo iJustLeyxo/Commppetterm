@@ -1,5 +1,9 @@
 package commppetterm.gui.page;
 
+import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.material2.Material2AL;
+import org.kordamp.ikonli.material2.Material2MZ;
+
 import commppetterm.gui.Gui;
 import commppetterm.gui.exception.ControllerLoadedException;
 import commppetterm.gui.exception.FxmlLoadException;
@@ -10,12 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
-import org.jetbrains.annotations.NotNull;
-import org.kordamp.ikonli.javafx.FontIcon;
-import org.kordamp.ikonli.material2.Material2AL;
-import org.kordamp.ikonli.material2.Material2MZ;
 
-import java.time.LocalDate;
 
 /**
  * Controller for entry editor

@@ -1,7 +1,6 @@
 package commppetterm.gui;
 
 import java.net.URL;
-import java.time.LocalDate;
 
 import org.jetbrains.annotations.NotNull;
 

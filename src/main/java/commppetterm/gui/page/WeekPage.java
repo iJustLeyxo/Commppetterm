@@ -1,12 +1,13 @@
 package commppetterm.gui.page;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import commppetterm.App;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
+ 
 
 /**
  * Page for showing weeks
@@ -17,13 +18,13 @@ public final class WeekPage extends PageController {
 
     @Override
     void prev() {
-        this.date = this.date.minusWeeks(1);
+        App.date = App.date.minusWeeks(1);
         this.generate();
     }
 
     @Override
     void next() {
-        this.date = this.date.plusWeeks(1);
+        App.date = App.date.plusWeeks(1);
         this.generate();
     }
 

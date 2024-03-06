@@ -1,10 +1,10 @@
 package commppetterm;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.time.LocalDate;
 import java.util.Locale;
 import java.util.logging.Logger;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Root class for configs

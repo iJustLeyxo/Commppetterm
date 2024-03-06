@@ -1,5 +1,7 @@
 package commppetterm.gui.page;
 
+import org.jetbrains.annotations.NotNull;
+
 import commppetterm.gui.Gui;
 import commppetterm.gui.exception.ControllerLoadedException;
 import commppetterm.gui.exception.FxmlLoadException;
@@ -10,9 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Pane;
-import org.jetbrains.annotations.NotNull;
-
-import java.time.LocalDate;
 
 /**
  * Calendar controller class
