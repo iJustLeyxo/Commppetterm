@@ -29,7 +29,7 @@ public final class DayPage extends PageController {
 
     @Override
     protected void generate() {
-        // TODO: Add generate logic
+        // TODO: Generate contents
     }
 
     @Override

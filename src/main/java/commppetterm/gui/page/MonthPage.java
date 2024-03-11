@@ -79,8 +79,6 @@ public final class MonthPage extends PageController {
         } while (iter.getDayOfMonth() != 1);
     }
 
-
-
     /**
      * Controller for day cells
      */

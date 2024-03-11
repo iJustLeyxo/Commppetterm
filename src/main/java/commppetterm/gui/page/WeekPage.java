@@ -73,6 +73,8 @@ public final class WeekPage extends PageController {
 
             iter = iter.plusDays(1);
         } while (iter.getDayOfWeek().getValue() != 1);
+
+        // TODO: Generate contents
     }
 
     /**
