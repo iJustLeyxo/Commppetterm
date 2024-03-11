@@ -4,6 +4,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2AL;
 import org.kordamp.ikonli.material2.Material2MZ;
 
+import commppetterm.database.Event;
 import commppetterm.gui.Gui;
 import commppetterm.gui.exception.ControllerLoadedException;
 import commppetterm.gui.exception.FxmlLoadException;
@@ -39,7 +40,7 @@ public final class Editor extends Controller {
 
     @FXML
     private void save() {
-        // TODO: Add save logic
+        new Event().save();
     }
 
     @FXML
