@@ -1,5 +1,6 @@
 package commppetterm.gui.page;
 
+import commppetterm.App;
 import org.jetbrains.annotations.NotNull;
 
 import commppetterm.gui.Gui;
@@ -12,6 +13,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Pane;
+
+import java.util.logging.Logger;
 
 /**
  * Calendar controller class
@@ -80,35 +83,17 @@ public final class Calendar extends Controller {
 
     @FXML
     private void day() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        if (this.day.isSelected()) {
-            this.week.setSelected(false);
-            this.month.setSelected(false);
-            this.swap(new DayPage());
-        } else {
-            this.day.setSelected(true);
-        }
+        this.swap(new DayPage());
     };
 
     @FXML
     private void week() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        if (this.week.isSelected()) {
-            this.day.setSelected(false);
-            this.month.setSelected(false);
-            this.swap(new WeekPage());
-        } else {
-            this.week.setSelected(true);
-        }
+        this.swap(new WeekPage());
     };
 
     @FXML
     private void month() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        if (this.month.isSelected()) {
-            this.day.setSelected(false);
-            this.week.setSelected(false);
-            this.swap(new MonthPage());
-        } else {
-            this.month.setSelected(true);
-        }
+        this.swap(new MonthPage());
     };
 
     /**
@@ -122,6 +107,17 @@ public final class Calendar extends Controller {
             if (parent != null) {
                 this.pane.getChildren().remove(parent);
             }
+        }
+        
+        this.day.setSelected(false);
+        this.week.setSelected(false);
+        this.month.setSelected(false);
+
+        switch (pageController) {
+            case DayPage dayPage -> this.day.setSelected(true);
+            case WeekPage weekPage -> this.week.setSelected(true);
+            case MonthPage monthPage -> this.week.setSelected(true);
+            default -> App.logger.warning("Unexpected page controller: " + pageController.getClass().getName());
         }
 
         this.edit.setDisable(true);
