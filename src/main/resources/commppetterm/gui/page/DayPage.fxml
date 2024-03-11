@@ -3,28 +3,28 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.GridPane?>
 
-<GridPane fx:id="dayGrid" alignment="CENTER_LEFT" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
-    <Label text="01:00" GridPane.rowIndex="30" GridPane.rowSpan="60" />
-    <Label text="02:00" GridPane.rowIndex="90" GridPane.rowSpan="60" />
-    <Label text="03:00" GridPane.rowIndex="150" GridPane.rowSpan="60" />
-    <Label text="04:00" GridPane.rowIndex="210" GridPane.rowSpan="60" />
-    <Label text="05:00" GridPane.rowIndex="270" GridPane.rowSpan="60" />
-    <Label text="06:00" GridPane.rowIndex="330" GridPane.rowSpan="60" />
-    <Label text="07:00" GridPane.rowIndex="390" GridPane.rowSpan="60" />
-    <Label text="08:00" GridPane.rowIndex="450" GridPane.rowSpan="60" />
-    <Label text="09:00" GridPane.rowIndex="510" GridPane.rowSpan="60" />
-    <Label text="10:00" GridPane.rowIndex="570" GridPane.rowSpan="60" />
-    <Label text="11:00" GridPane.rowIndex="630" GridPane.rowSpan="60" />
-    <Label text="12:00" GridPane.rowIndex="690" GridPane.rowSpan="60" />
-    <Label text="13:00" GridPane.rowIndex="750" GridPane.rowSpan="60" />
-    <Label text="14:00" GridPane.rowIndex="810" GridPane.rowSpan="60" />
-    <Label text="15:00" GridPane.rowIndex="870" GridPane.rowSpan="60" />
-    <Label text="16:00" GridPane.rowIndex="930" GridPane.rowSpan="60" />
-    <Label text="17:00" GridPane.rowIndex="990" GridPane.rowSpan="60" />
-    <Label text="18:00" GridPane.rowIndex="1050" GridPane.rowSpan="60" />
-    <Label text="19:00" GridPane.rowIndex="1110" GridPane.rowSpan="60" />
-    <Label text="20:00" GridPane.rowIndex="1170" GridPane.rowSpan="60" />
-    <Label text="21:00" GridPane.rowIndex="1230" GridPane.rowSpan="60" />
-    <Label text="22:00" GridPane.rowIndex="1290" GridPane.rowSpan="60" />
-    <Label text="23:00" GridPane.rowIndex="1330" GridPane.rowSpan="60" />
+<GridPane fx:id="dayGrid" hgap="5.0" alignment="CENTER_LEFT" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <Label text="01:00" GridPane.rowIndex="31" GridPane.rowSpan="60" />
+    <Label text="02:00" GridPane.rowIndex="91" GridPane.rowSpan="60" />
+    <Label text="03:00" GridPane.rowIndex="151" GridPane.rowSpan="60" />
+    <Label text="04:00" GridPane.rowIndex="211" GridPane.rowSpan="60" />
+    <Label text="05:00" GridPane.rowIndex="271" GridPane.rowSpan="60" />
+    <Label text="06:00" GridPane.rowIndex="331" GridPane.rowSpan="60" />
+    <Label text="07:00" GridPane.rowIndex="391" GridPane.rowSpan="60" />
+    <Label text="08:00" GridPane.rowIndex="451" GridPane.rowSpan="60" />
+    <Label text="09:00" GridPane.rowIndex="511" GridPane.rowSpan="60" />
+    <Label text="10:00" GridPane.rowIndex="571" GridPane.rowSpan="60" />
+    <Label text="11:00" GridPane.rowIndex="631" GridPane.rowSpan="60" />
+    <Label text="12:00" GridPane.rowIndex="691" GridPane.rowSpan="60" />
+    <Label text="13:00" GridPane.rowIndex="751" GridPane.rowSpan="60" />
+    <Label text="14:00" GridPane.rowIndex="811" GridPane.rowSpan="60" />
+    <Label text="15:00" GridPane.rowIndex="871" GridPane.rowSpan="60" />
+    <Label text="16:00" GridPane.rowIndex="931" GridPane.rowSpan="60" />
+    <Label text="17:00" GridPane.rowIndex="991" GridPane.rowSpan="60" />
+    <Label text="18:00" GridPane.rowIndex="1051" GridPane.rowSpan="60" />
+    <Label text="19:00" GridPane.rowIndex="1111" GridPane.rowSpan="60" />
+    <Label text="20:00" GridPane.rowIndex="1171" GridPane.rowSpan="60" />
+    <Label text="21:00" GridPane.rowIndex="1231" GridPane.rowSpan="60" />
+    <Label text="22:00" GridPane.rowIndex="1291" GridPane.rowSpan="60" />
+    <Label text="23:00" GridPane.rowIndex="1331" GridPane.rowSpan="60" />
 </GridPane>

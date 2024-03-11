@@ -1,50 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.control.Button?>
 
-
-<GridPane fx:id="weekGrid" alignment="CENTER_LEFT" hgap="5.0" vgap="5.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
-    <Label text="00:00" GridPane.rowIndex="2" />
-    <Label text="01:00" GridPane.rowIndex="3" />
-    <Label text="02:00" GridPane.rowIndex="4" />
-    <Label text="03:00" GridPane.rowIndex="5" />
-    <Label text="04:00" GridPane.rowIndex="6" />
-    <Label text="05:00" GridPane.rowIndex="7" />
-    <Label text="06:00" GridPane.rowIndex="8" />
-    <Label text="07:00" GridPane.rowIndex="9" />
-    <Label text="08:00" GridPane.rowIndex="10" />
-    <Label text="09:00" GridPane.rowIndex="11" />
-    <Label text="10:00" GridPane.rowIndex="12" />
-    <Label text="11:00" GridPane.rowIndex="13" />
-    <Label text="12:00" GridPane.rowIndex="14" />
-    <Label text="13:00" GridPane.rowIndex="15" />
-    <Label text="14:00" GridPane.rowIndex="16" />
-    <Label text="15:00" GridPane.rowIndex="17" />
-    <Label text="16:00" GridPane.rowIndex="18" />
-    <Label text="17:00" GridPane.rowIndex="19" />
-    <Label text="18:00" GridPane.rowIndex="20" />
-    <Label text="19:00" GridPane.rowIndex="21" />
-    <Label text="20:00" GridPane.rowIndex="22" />
-    <Label text="21:00" GridPane.rowIndex="23" />
-    <Label text="22:00" GridPane.rowIndex="24" />
-    <Label text="23:00" GridPane.rowIndex="25" />
-    <Label text="00:00" GridPane.rowIndex="26" />
-    <Label text="Mo" GridPane.columnIndex="1" />
-    <Label text="Di" GridPane.columnIndex="2" />
-    <Label text="Mi" GridPane.columnIndex="3" />
-    <Label text="Do" GridPane.columnIndex="4" />
-    <Label text="Fr" GridPane.columnIndex="5" />
-    <Label text="Sa" GridPane.columnIndex="6" />
-    <Label text="So" GridPane.columnIndex="7" />
-    <Button mnemonicParsing="false" styleClass="small-cell" text="Dat1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-    <Button mnemonicParsing="false" styleClass="small-cell" text="Dat2" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-    <Button mnemonicParsing="false" styleClass="small-cell" text="Dat3" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-    <Button mnemonicParsing="false" styleClass="small-cell" text="Dat4" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-    <Button mnemonicParsing="false" styleClass="small-cell" text="Dat5" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-    <Button mnemonicParsing="false" styleClass="small-cell" text="Dat6" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-    <Button mnemonicParsing="false" styleClass="small-cell" text="Dat7" GridPane.columnIndex="7" GridPane.rowIndex="1" />
- </GridPane>
+<GridPane fx:id="weekGrid" hgap="5.0" alignment="CENTER_LEFT" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <Label text="01:00" GridPane.rowIndex="31" GridPane.rowSpan="60" />
+    <Label text="02:00" GridPane.rowIndex="91" GridPane.rowSpan="60" />
+    <Label text="03:00" GridPane.rowIndex="151" GridPane.rowSpan="60" />
+    <Label text="04:00" GridPane.rowIndex="211" GridPane.rowSpan="60" />
+    <Label text="05:00" GridPane.rowIndex="271" GridPane.rowSpan="60" />
+    <Label text="06:00" GridPane.rowIndex="331" GridPane.rowSpan="60" />
+    <Label text="07:00" GridPane.rowIndex="391" GridPane.rowSpan="60" />
+    <Label text="08:00" GridPane.rowIndex="451" GridPane.rowSpan="60" />
+    <Label text="09:00" GridPane.rowIndex="511" GridPane.rowSpan="60" />
+    <Label text="10:00" GridPane.rowIndex="571" GridPane.rowSpan="60" />
+    <Label text="11:00" GridPane.rowIndex="631" GridPane.rowSpan="60" />
+    <Label text="12:00" GridPane.rowIndex="691" GridPane.rowSpan="60" />
+    <Label text="13:00" GridPane.rowIndex="751" GridPane.rowSpan="60" />
+    <Label text="14:00" GridPane.rowIndex="811" GridPane.rowSpan="60" />
+    <Label text="15:00" GridPane.rowIndex="871" GridPane.rowSpan="60" />
+    <Label text="16:00" GridPane.rowIndex="931" GridPane.rowSpan="60" />
+    <Label text="17:00" GridPane.rowIndex="991" GridPane.rowSpan="60" />
+    <Label text="18:00" GridPane.rowIndex="1051" GridPane.rowSpan="60" />
+    <Label text="19:00" GridPane.rowIndex="1111" GridPane.rowSpan="60" />
+    <Label text="20:00" GridPane.rowIndex="1171" GridPane.rowSpan="60" />
+    <Label text="21:00" GridPane.rowIndex="1231" GridPane.rowSpan="60" />
+    <Label text="22:00" GridPane.rowIndex="1291" GridPane.rowSpan="60" />
+    <Label text="23:00" GridPane.rowIndex="1331" GridPane.rowSpan="60" />
+</GridPane>
