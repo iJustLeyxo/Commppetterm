@@ -8,6 +8,7 @@ import java.time.temporal.WeekFields;
 import java.util.LinkedList;
 import java.util.List;
 
+import commppetterm.entity.Entry;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
@@ -99,6 +100,32 @@ public abstract class PageController extends Controller {
         @Override
         public @NotNull Parent load() {
             return this.button;
+        }
+    }
+
+    /**
+     * Controller for day cells
+     */
+    public static class EntryController extends CellController {
+        /**
+         * Associated entry
+         */
+        private @NotNull final Entry entry;
+
+        /**
+         * Creates a new day cell controller
+         * @param entry The associated entry
+         */
+        public EntryController(@NotNull Entry entry) {
+            super(new Button(entry.title));
+            this.entry = entry;
+
+            this.button.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    App.entry = entry;
+                }
+            });
         }
     }
 }
