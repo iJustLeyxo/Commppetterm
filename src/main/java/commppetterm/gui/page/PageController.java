@@ -1,11 +1,7 @@
 package commppetterm.gui.page;
 
-// import java.time.LocalDate;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
-import java.time.temporal.WeekFields;
-import java.util.LinkedList;
 import java.util.List;
 
 import commppetterm.entity.Entry;
@@ -13,7 +9,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.Cell;
 import org.jetbrains.annotations.NotNull;
 
 import commppetterm.App;
