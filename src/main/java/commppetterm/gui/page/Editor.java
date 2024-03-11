@@ -1,14 +1,13 @@
 package commppetterm.gui.page;
 
 import commppetterm.App;
+import commppetterm.database.Database;
 import commppetterm.entity.Entry;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2AL;
 import org.kordamp.ikonli.material2.Material2MZ;
 
-import commppetterm.database.Event;
 import commppetterm.gui.Gui;
 import commppetterm.gui.exception.ControllerLoadedException;
 import commppetterm.gui.exception.FxmlLoadException;
@@ -61,12 +60,12 @@ public final class Editor extends Controller {
 
     @FXML
     private void save() {
-        new Event().save();
+        Database.save(this.generate());
     }
 
     @FXML
     private void delete() {
-        // TODO: Add delete logic
+        Database.delete(this.generate());
     }
 
     @FXML
@@ -162,8 +161,18 @@ public final class Editor extends Controller {
         this.recurring();
         this.yearly.setSelected(true);
         this.frequency.setText("1");
+
+        if (!this.edit) {
+            this.delete.setDisable(true);
+        } else {
+            // TODO: Load data from entry if in edit mode
+        }
     }
 
+    /**
+     * Generates an entry from the editor contents
+     * @return an entry object
+     */
     private @NotNull Entry generate() {
         /* Recurring */
         Entry.Repeat repeat = null;

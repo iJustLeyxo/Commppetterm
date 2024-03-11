@@ -25,7 +25,7 @@ public final class Database {
      * Creates or edits and entry
      * @param entry The entry to create or edit
      */
-    public static void update(@NotNull Entry entry) {
+    public static void save(@NotNull Entry entry) {
         // TODO: Update or create entry if it doesn't yet exist
     }
 
