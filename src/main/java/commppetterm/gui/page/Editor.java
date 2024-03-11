@@ -1,5 +1,9 @@
 package commppetterm.gui.page;
 
+import commppetterm.App;
+import commppetterm.entity.Entry;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2AL;
 import org.kordamp.ikonli.material2.Material2MZ;
@@ -16,11 +20,20 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 
 /**
  * Controller for entry editor
  */
 public final class Editor extends Controller {
+    /**
+     * Edit mode or create mode
+     */
+    private final boolean edit;
+
     @FXML
     private HBox startTime, endBox, endTime, recurringBox;
 
@@ -36,7 +49,15 @@ public final class Editor extends Controller {
     @FXML
     private TextField title, info,
             startDay, startMonth, startYear, startHour, startMinute,
-            endDay, endMonth, endYear, endHour, endMinute;
+            endDay, endMonth, endYear, endHour, endMinute, frequency;
+
+    /**
+     * Creates a new editor
+     * @param edit Edit or create mode?
+     */
+    public Editor(boolean edit) {
+        this.edit = edit;
+    }
 
     @FXML
     private void save() {
@@ -140,8 +161,87 @@ public final class Editor extends Controller {
         this.time();
         this.recurring();
         this.yearly.setSelected(true);
+        this.frequency.setText("1");
+    }
 
+    private @NotNull Entry generate() {
+        /* Recurring */
+        Entry.Repeat repeat = null;
 
+        if (this.recurring.isSelected()) {
+            Entry.Repeat.Type type;
+            if (this.yearly.isSelected()) {
+                type = Entry.Repeat.Type.YEAR;
+            } else if (this.monthly.isSelected()) {
+                type = Entry.Repeat.Type.MONTH;
+            } else if (this.weekly.isSelected()) {
+                type = Entry.Repeat.Type.WEEK;
+            } else {
+                type = Entry.Repeat.Type.DAY;
+            }
+            byte freq = Byte.parseByte(this.frequency.getText());
+            repeat = new Entry.Repeat(type, freq);
+        }
+
+        /* Start Date */
+        LocalDate startDate = LocalDate.of(
+                Integer.parseInt(this.startYear.getText()),
+                Integer.parseInt(this.startMonth.getText()),
+                Integer.parseInt(this.startDay.getText())
+        );
+
+        /* Start Time */
+        LocalTime startTime;
+        if (this.time.isSelected()) {
+            startTime = LocalTime.of(
+                    Integer.parseInt(this.startHour.getText()),
+                    Integer.parseInt(this.startMinute.getText())
+            );
+        } else {
+            startTime = LocalTime.of(0,0);
+        }
+
+        /* End Date */
+        LocalDate endDate;
+        if (this.end.isSelected()) {
+            endDate = LocalDate.of(
+                    Integer.parseInt(this.endYear.getText()),
+                    Integer.parseInt(this.endMonth.getText()),
+                    Integer.parseInt(this.endDay.getText())
+            );
+        } else {
+            endDate = startDate;
+        }
+
+        /* End Time */
+        LocalTime endTime;
+        if (this.end.isSelected() && this.time.isSelected()) {
+            endTime = LocalTime.of(
+                    Integer.parseInt(this.endHour.getText()),
+                    Integer.parseInt(this.endMinute.getText())
+            );
+        } else {
+            endTime = LocalTime.of(23,59);
+        }
+
+        /* ID */
+        Long id;
+        if (this.edit) {
+            assert App.entry != null;
+            id = App.entry.id;
+        } else {
+            id = null;
+        }
+
+        /* Generate entry */
+        return new Entry(
+                this.title.getText(),
+                this.info.getText(),
+                LocalDateTime.of(startDate, startTime),
+                LocalDateTime.of(endDate, endTime),
+                repeat,
+                id
+        );
     }
 
     /**
