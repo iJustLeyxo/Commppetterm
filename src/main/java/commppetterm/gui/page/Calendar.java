@@ -114,9 +114,9 @@ public final class Calendar extends Controller {
         this.month.setSelected(false);
 
         switch (pageController) {
-            case DayPage dayPage -> this.day.setSelected(true);
-            case WeekPage weekPage -> this.week.setSelected(true);
-            case MonthPage monthPage -> this.week.setSelected(true);
+            case DayPage page -> this.day.setSelected(true);
+            case WeekPage page -> this.week.setSelected(true);
+            case MonthPage page -> this.month.setSelected(true);
             default -> App.logger.warning("Unexpected page controller: " + pageController.getClass().getName());
         }
 

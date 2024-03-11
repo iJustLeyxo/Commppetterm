@@ -1,7 +1,7 @@
 package commppetterm.gui.page;
 
 import java.time.LocalDate;
-import java.time.temporal.WeekFields;
+import java.time.format.TextStyle;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -84,12 +84,12 @@ public final class WeekPage extends PageController {
          * @param date The associated date
          */
         public DayCellController(@NotNull LocalDate date) {
-            super(new Button(Integer.toString(date.getDayOfMonth())));
+            super(new Button(date.getDayOfWeek().getDisplayName(TextStyle.SHORT, App.locale) + "\n" + date.getDayOfMonth()));
 
             if (date.equals(LocalDate.now())) {
-                this.button.getStyleClass().addAll("cell-width", "small-cell-height");
+                this.button.getStyleClass().addAll("cell");
             } else  {
-                this.button.getStyleClass().addAll("cell-width", "small-cell-height", "alt-color");
+                this.button.getStyleClass().addAll("cell", "alt-color");
             }
 
             this.button.setOnAction(new EventHandler<ActionEvent>() {
