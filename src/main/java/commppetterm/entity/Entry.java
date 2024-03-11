@@ -10,6 +10,11 @@ import java.time.LocalDateTime;
  */
 public class Entry {
     /**
+     * Entry id
+     */
+    public final Long id;
+
+    /**
      * Entry title
      */
     public final @NotNull String title;
@@ -42,12 +47,13 @@ public class Entry {
      * @param end End time
      * @param repeat Repeat profile
      */
-    public Entry(@NotNull String title, @NotNull String info, @NotNull LocalDateTime start, @Nullable LocalDateTime end, @Nullable Repeat repeat) {
+    public Entry(@NotNull String title, @NotNull String info, @NotNull LocalDateTime start, @Nullable LocalDateTime end, @Nullable Repeat repeat, @Nullable Long id) {
         this.title = title;
         this.info = info;
         this.start = start;
         this.end = end;
         this.repeat = repeat;
+        this.id = id;
     }
 
     /**
