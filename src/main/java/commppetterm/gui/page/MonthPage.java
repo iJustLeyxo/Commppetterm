@@ -21,27 +21,21 @@ public final class MonthPage extends PageController {
     @FXML
     private GridPane grid;
 
-    /**
-     * List of all contents
-     */
-    private LinkedList<Parent> contents;
-
     @Override
     protected void init() {
-        this.contents = new LinkedList<>();
-        this.generate();
+        this.reload();
     }
 
     @Override
     void prev() {
         App.date = App.date.minusMonths(1);
-        this.generate();
+        this.reload();
     }
 
     @Override
     void next() {
         App.date = App.date.plusMonths(1);
-        this.generate();
+        this.reload();
     }
 
     @Override
@@ -50,10 +44,10 @@ public final class MonthPage extends PageController {
     }
 
     @Override
-    protected void generate() {
+    protected void reload() {
         /* Clear grid */
         this.grid.getChildren().removeAll(contents);
-        this.contents = new LinkedList<>();
+        this.contents.clear();
 
         /* Generate */
         LocalDate iter = LocalDate.of(App.date.getYear(), App.date.getMonth(), 1);
@@ -91,12 +85,12 @@ public final class MonthPage extends PageController {
             super(new Button(Integer.toString(date.getDayOfMonth())));
 
             if (date.equals(LocalDate.now())) {
-                this.button.getStyleClass().addAll("cell");
+                this.element.getStyleClass().addAll("cell");
             } else  {
-                this.button.getStyleClass().addAll("cell", "alt-color");
+                this.element.getStyleClass().addAll("cell", "alt-color");
             }
 
-            this.button.setOnAction(new EventHandler<ActionEvent>() {
+            this.element.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     DayPage page = new DayPage();
@@ -120,8 +114,8 @@ public final class MonthPage extends PageController {
          */
         public WeekCellController(@NotNull LocalDate date) {
             super(new Button(Integer.toString(date.get(WeekFields.ISO.weekOfYear()))));
-            this.button.getStyleClass().addAll("cell");
-            this.button.setOnAction(new EventHandler<ActionEvent>() {
+            this.element.getStyleClass().addAll("cell");
+            this.element.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     WeekPage page = new WeekPage();

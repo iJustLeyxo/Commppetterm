@@ -1,6 +1,5 @@
 package commppetterm.gui.page;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,7 +7,6 @@ import commppetterm.database.Database;
 import commppetterm.entity.Entry;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,44 +21,34 @@ public final class DayPage extends PageController {
     @FXML
     private GridPane grid;
 
-    /**
-     * List of all contents
-     */
-    private LinkedList<EntryController> entries;
-
     @Override
     protected void init() {
-        this.entries = new LinkedList<>();
-        this.generate();
+        this.reload();
     }
 
     @Override
     void prev() {
         App.date = App.date.minusDays(1);
-        this.generate();
+        this.reload();
     }
 
     @Override
     void next() {
         App.date  = App.date.plusDays(1);
-        this.generate();
+        this.reload();
     }
 
     @Override
-    protected void generate() {
+    protected void reload() {
         /* Clear grid */
-        for (EntryController e : entries) {
-            this.grid.getChildren().remove(e.parent());
-        }
-
-        this.entries = new LinkedList<>();
+        this.grid.getChildren().removeAll(contents);
+        this.contents.clear();
 
         /* Generate entries */
         int col = 1;
 
         for (Entry e : Database.entries(App.date)) {
             EntryController entry  = new EntryController(e);
-            this.entries.add(entry);
             int start, span;
 
             if (entry.entry.end != null) {
@@ -81,6 +69,7 @@ public final class DayPage extends PageController {
             }
 
             this.grid.add(entry.load(), col, start, 1, span);
+            this.contents.add(entry.parent());
             col++;
         }
     }
@@ -107,7 +96,7 @@ public final class DayPage extends PageController {
             super(new Button(entry.title));
             this.entry = entry;
 
-            this.button.setOnAction(new EventHandler<ActionEvent>() {
+            this.element.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     App.entry = entry;

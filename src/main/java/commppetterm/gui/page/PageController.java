@@ -2,6 +2,7 @@ package commppetterm.gui.page;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.util.LinkedList;
 import java.util.List;
 
 import commppetterm.entity.Entry;
@@ -9,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ToggleButton;
 import org.jetbrains.annotations.NotNull;
 
 import commppetterm.App;
@@ -21,6 +23,11 @@ public abstract class PageController extends Controller {
      * Formatter for label texts
      */
     protected DateTimeFormatter formatter;
+
+    /**
+     * List of all contents
+     */
+    protected LinkedList<Parent> contents;
 
     /**
      * Creates a new page
@@ -36,6 +43,7 @@ public abstract class PageController extends Controller {
         }
 
         this.formatter = dtfBuilder.toFormatter(App.locale);
+        this.contents = new LinkedList<>();
     }
 
     /**
@@ -48,7 +56,7 @@ public abstract class PageController extends Controller {
     /**
      * Generates the contents of the page
      */
-    protected void generate() {};
+    protected void reload() {};
 
     /**
      * Jumps to the previous timeframe of the page
@@ -83,44 +91,52 @@ public abstract class PageController extends Controller {
         /**
          * Cell button
          */
-        protected final @NotNull Button button;
+        protected final @NotNull Button element;
 
         /**
          * Creates a new cell controller
          */
-        public CellController(@NotNull Button button) {
-            this.button = button;
+        public CellController(@NotNull Button element) {
+            this.element = element;
         }
 
         @Override
         public @NotNull Parent load() {
-            return this.button;
+            return this.element;
         }
     }
 
     /**
      * Controller for day cells
      */
-    public static class EntryController extends CellController {
+    public static class EntryController extends Controller {
         /**
-         * Associated entry
+         * Cell button
          */
-        private @NotNull final Entry entry;
+        public final @NotNull ToggleButton element;
 
         /**
          * Creates a new day cell controller
          * @param entry The associated entry
          */
         public EntryController(@NotNull Entry entry) {
-            super(new Button(entry.title));
-            this.entry = entry;
+            this.element = new ToggleButton(entry.title);
 
-            this.button.setOnAction(new EventHandler<ActionEvent>() {
+            this.element.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    App.entry = entry;
+                    if (element.isSelected()) {
+                        App.entry = entry;
+                    } else {
+                        App.entry = null;
+                    }
                 }
             });
+        }
+
+        @Override
+        public @NotNull Parent load() {
+            return this.element;
         }
     }
 }

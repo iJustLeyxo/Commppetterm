@@ -25,33 +25,21 @@ public final class WeekPage extends PageController {
     @FXML
     private GridPane grid;
 
-    /**
-     * List of all contents
-     */
-    private LinkedList<Parent> contents;
-
-    /**
-     * List of all entries
-     */
-    private LinkedList<EntryController> entries;
-
     @Override
     protected void init() {
-        this.contents = new LinkedList<>();
-        this.entries = new LinkedList<>();
-        this.generate();
+        this.reload();
     }
 
     @Override
     void prev() {
         App.date = App.date.minusWeeks(1);
-        this.generate();
+        this.reload();
     }
 
     @Override
     void next() {
         App.date = App.date.plusWeeks(1);
-        this.generate();
+        this.reload();
     }
 
     @Override
@@ -64,14 +52,10 @@ public final class WeekPage extends PageController {
     }
 
     @Override
-    protected void generate() {
+    protected void reload() {
         /* Clear grid */
-        for (EntryController e : entries) {
-            this.grid.getChildren().remove(e.parent());
-        }
-
         this.grid.getChildren().removeAll(contents);
-        this.contents = new LinkedList<>();
+        this.contents.clear();
 
         /* Generate */
         LocalDate iter = App.date.minusDays(App.date.getDayOfWeek().getValue() - 1);
@@ -84,7 +68,6 @@ public final class WeekPage extends PageController {
             /* Generate entries */
             for (Entry e : Database.entries(iter)) {
                 EntryController entry  = new EntryController(e);
-                this.entries.add(entry);
                 int start, span;
 
                 if (entry.entry.end != null) {
@@ -105,6 +88,7 @@ public final class WeekPage extends PageController {
                 }
 
                 this.grid.add(entry.load(), startCol + colSpan, start, 1, span);
+                this.contents.add(entry.parent());
                 colSpan++;
             }
 
@@ -131,12 +115,12 @@ public final class WeekPage extends PageController {
             super(new Button(date.getDayOfWeek().getDisplayName(TextStyle.SHORT, App.locale) + "\n" + date.getDayOfMonth()));
 
             if (date.equals(LocalDate.now())) {
-                this.button.getStyleClass().addAll("cell");
+                this.element.getStyleClass().addAll("cell");
             } else  {
-                this.button.getStyleClass().addAll("cell", "alt-color");
+                this.element.getStyleClass().addAll("cell", "alt-color");
             }
 
-            this.button.setOnAction(new EventHandler<ActionEvent>() {
+            this.element.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     DayPage page = new DayPage();
@@ -168,7 +152,7 @@ public final class WeekPage extends PageController {
             super(new Button(entry.title));
             this.entry = entry;
 
-            this.button.setOnAction(new EventHandler<ActionEvent>() {
+            this.element.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     App.entry = entry;
