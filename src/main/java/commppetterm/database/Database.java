@@ -4,6 +4,7 @@ import commppetterm.entity.Entry;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ public final class Database {
      */
     public static List<Entry> entries(LocalDate date) {
         // TODO: Fetch entries of date
-        return null;
+        return new ArrayList<>();
     }
 
     /**

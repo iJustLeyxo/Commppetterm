@@ -5,6 +5,8 @@ import java.time.format.TextStyle;
 import java.util.LinkedList;
 import java.util.List;
 
+import commppetterm.database.Database;
+import commppetterm.entity.Entry;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
@@ -28,9 +30,15 @@ public final class WeekPage extends PageController {
      */
     private LinkedList<Parent> contents;
 
+    /**
+     * List of all entries
+     */
+    private LinkedList<EntryController> entries;
+
     @Override
     protected void init() {
         this.contents = new LinkedList<>();
+        this.entries = new LinkedList<>();
         this.generate();
     }
 
@@ -58,6 +66,10 @@ public final class WeekPage extends PageController {
     @Override
     protected void generate() {
         /* Clear grid */
+        for (EntryController e : entries) {
+            this.grid.getChildren().remove(e.parent());
+        }
+
         this.grid.getChildren().removeAll(contents);
         this.contents = new LinkedList<>();
 
@@ -66,15 +78,43 @@ public final class WeekPage extends PageController {
         Parent parent;
 
         do {
-            /* Generate day cells */
+            /* Generate entries */
+            int startCol = 1;
+            int colSpan = 0;
+
+            for (Entry e : Database.entries(iter)) {
+                EntryController entry  = new EntryController(e);
+                this.entries.add(entry);
+                int start, span;
+
+                if (entry.entry.end != null) {
+                    if (entry.entry.start.getDayOfYear() < App.date.getDayOfYear() || entry.entry.start.getYear() < App.date.getYear()) {
+                        start = 1;
+                    } else {
+                        start = entry.entry.start.getHour() * 60 + entry.entry.start.getMinute() + 1;
+                    }
+
+                    if (entry.entry.start.getDayOfYear() > App.date.getDayOfYear() || entry.entry.start.getYear() > App.date.getYear()) {
+                        span = (24 * 60 + 1) - start;
+                    } else {
+                        span = (entry.entry.end.getHour() * 60 + entry.entry.end.getMinute() + 1) - start;
+                    }
+                } else {
+                    start = 1;
+                    span = (24 * 60);
+                }
+
+                this.grid.add(entry.load(), startCol + colSpan, start, 1, span);
+                colSpan++;
+            }
+
+            /* Generate day cell */
             parent = new DayCellController(iter).load();
             this.contents.add(parent);
-            this.grid.add(parent, iter.getDayOfWeek().getValue(), 0);
+            this.grid.add(parent, startCol, 0, colSpan + 1, 1);
 
             iter = iter.plusDays(1);
         } while (iter.getDayOfWeek().getValue() != 1);
-
-        // TODO: Generate contents
     }
 
     /**
@@ -104,6 +144,32 @@ public final class WeekPage extends PageController {
                         App.logger.severe(e.toString());
                         e.printStackTrace(System.out);
                     }
+                }
+            });
+        }
+    }
+
+    /**
+     * Controller for day cells
+     */
+    public static class EntryController extends CellController {
+        /**
+         * Associated entry
+         */
+        private @NotNull final Entry entry;
+
+        /**
+         * Creates a new day cell controller
+         * @param entry The associated entry
+         */
+        public EntryController(@NotNull Entry entry) {
+            super(new Button(entry.title));
+            this.entry = entry;
+
+            this.button.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    App.entry = entry;
                 }
             });
         }

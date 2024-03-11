@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class MonthPage extends PageController {
     @FXML
-    private GridPane gridPane;
+    private GridPane grid;
 
     /**
      * List of all contents
@@ -52,7 +52,7 @@ public final class MonthPage extends PageController {
     @Override
     protected void generate() {
         /* Clear grid */
-        this.gridPane.getChildren().removeAll(contents);
+        this.grid.getChildren().removeAll(contents);
         this.contents = new LinkedList<>();
 
         /* Generate */
@@ -66,13 +66,13 @@ public final class MonthPage extends PageController {
             /* Generate days */
             parent = new DayCellController(iter).load();
             this.contents.add(parent);
-            this.gridPane.add(parent, iter.getDayOfWeek().getValue(), iter.get(WeekFields.ISO.weekOfMonth()) + offset);
+            this.grid.add(parent, iter.getDayOfWeek().getValue(), iter.get(WeekFields.ISO.weekOfMonth()) + offset);
 
             /* Generate weeks */
             if (iter.getDayOfWeek().getValue() == 1 || iter.getDayOfMonth() == 1) {
                 parent = new WeekCellController(iter).load();
                 this.contents.add(parent);
-                this.gridPane.add(parent, 0, iter.get(WeekFields.ISO.weekOfMonth()) + offset);
+                this.grid.add(parent, 0, iter.get(WeekFields.ISO.weekOfMonth()) + offset);
             }
 
             iter = iter.plusDays(1);
