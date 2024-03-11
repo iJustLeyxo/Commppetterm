@@ -1,60 +1,144 @@
 package commppetterm.gui.page;
 
-import java.time.LocalDate;
-import java.time.YearMonth;
-import java.time.format.TextStyle;
-import java.util.Locale;
+import commppetterm.App;
+import org.jetbrains.annotations.NotNull;
 
+import commppetterm.gui.Gui;
+import commppetterm.gui.exception.ControllerLoadedException;
+import commppetterm.gui.exception.FxmlLoadException;
+import commppetterm.gui.exception.URLNotFoundException;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.Pane;
 
+import java.util.logging.Logger;
 
-public class Calendar implements Controller{
+/**
+ * Calendar controller class
+ */
+public final class Calendar extends Controller {
+    /**
+     * This calendar controller
+     */
+    private static Calendar calendarController;
 
-    @Override
-    public String path() {
-        return "/commppetterm/gui/page/calendar.fxml";
+    /**
+     * Gets the calendar controller
+     */
+    public static Calendar get() { return calendarController; }
+
+    /**
+     * The contained page's controller
+     */
+    private PageController pageController;
+
+    @FXML
+    private Button edit, delete;
+
+    @FXML
+    private ToggleButton day, week, month;
+
+    @FXML
+    private Label label;
+
+    @FXML
+    private Pane pane;
+
+    /**
+     * Creates a new calendar
+     */
+    public Calendar() {
+        calendarController = this;
     }
 
     @FXML
-    private Label monthLabel;
-    @FXML
-    private GridPane calendarGrid;
+    private void create() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        Gui.get().swap(new Editor());
+    };
 
     @FXML
-    public void initialize() {
-        fillCalendar(YearMonth.now()); // Füllt den Kalender mit Tagen
+    private void edit() {
+        // TODO: Add editing
     }
 
-    @Override
-    public void preInit() {
-        // Optional: Code vor dem Laden
-    }
-    
-    @Override
-    public void postInit() {
-        // Optional: Code nach dem Laden
-    }
+    @FXML
+    private void delete() {
+        // TODO: Add deleting
+    };
 
-    private void fillCalendar(YearMonth yearMonth) {
-        LocalDate calendarDate = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
-        
-        String monthName = yearMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault());
-        monthLabel.setText(monthName + " " + yearMonth.getYear());
-        
-        int dayOfWeekOfFirst = calendarDate.getDayOfWeek().getValue();
-        int daysInMonth = yearMonth.lengthOfMonth();
-        
-        for (int i = 0, dayOfMonth = 1; dayOfMonth <= daysInMonth; i++) {
-            int col = (i + dayOfWeekOfFirst - 1) % 7;
-            int row = (i + dayOfWeekOfFirst - 1) / 7;
-            
-            Label dayLabel = new Label(Integer.toString(dayOfMonth));
-            dayLabel.getStyleClass().addAll("day-cell");
-            calendarGrid.add(dayLabel, col, row + 1); // +1 um unter den Wochentag-Headern zu beginnen
-    
-            dayOfMonth++;
+    @FXML
+    private void previous() {
+        this.pageController.prev();
+        this.reload();
+    };
+
+    @FXML
+    private void next() {
+        this.pageController.next();
+        this.reload();
+    };
+
+    @FXML
+    private void day() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        this.swap(new DayPage());
+    };
+
+    @FXML
+    private void week() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        this.swap(new WeekPage());
+    };
+
+    @FXML
+    private void month() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        this.swap(new MonthPage());
+    };
+
+    /**
+     * Swaps to a different page
+     * @param pageController The page to swap to
+     */
+    public void swap(@NotNull PageController pageController) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        if (this.pageController != null) {
+            Parent parent = this.pageController.parent();
+
+            if (parent != null) {
+                this.pane.getChildren().remove(parent);
+            }
         }
-    }   
+        
+        this.day.setSelected(false);
+        this.week.setSelected(false);
+        this.month.setSelected(false);
+
+        switch (pageController) {
+            case DayPage page -> this.day.setSelected(true);
+            case WeekPage page -> this.week.setSelected(true);
+            case MonthPage page -> this.month.setSelected(true);
+            default -> App.logger.warning("Unexpected page controller: " + pageController.getClass().getName());
+        }
+
+        this.edit.setDisable(true);
+        this.delete.setDisable(true);
+
+        this.pageController = pageController;
+        this.pane.getChildren().add(this.pageController.load());
+        this.reload();
+    }
+
+    /**
+     * Reloads the calendar contents
+     */
+    private void reload() {
+        this.label.setText(this.pageController.label());
+        Gui.get().stage().sizeToScene();
+    }
+
+    @Override
+    protected void init() throws ControllerLoadedException, FxmlLoadException, URLNotFoundException {
+        this.month.setSelected(true);
+        this.swap(new MonthPage());
+    }
 }

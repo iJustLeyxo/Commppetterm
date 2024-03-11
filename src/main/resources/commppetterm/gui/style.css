@@ -1,105 +1,67 @@
 *{
-    /* Color */
-    color: #1460c9;
-    background: #202020;
-    -fx-color: #1460c9;
-    -hover-color: #1c70e6;
-    -pressed-color: #2e7ce8;
-    -focused-color: #408df7;
-	-fx-background: #202020;
+    -fx-base: #ff9500;
+    -fx-color: derive(-fx-base, -20%);
+    -fx-hover-color: derive(-fx-color, 20%);
+    -fx-pressed-color: derive(-fx-hover-color, 20%);
+    -fx-selected-color: -fx-hover-color;
 
-	/* Text */
-    fill: #d0d0d0;
-	-fx-fill: #d0d0d0;
-	-fx-prompt-text-fill: #d0d0d0;
-	-fx-highlight-fill: #d0d0d0;
-	-fx-highlight-text-fill: #202020;
+    -fx-disabled-color: #404040;
+    -fx-foreground-color: #d0d0d0;
+    -fx-background-color: #202020;
 
-	/* Shapes */
-	-fx-focus-color: transparent;
-	-fx-faint-focus-color: transparent;
-	-fx-body-color: -fx-color;
+    -fx-text-fill: -fx-foreground-color;
+    -fx-prompt-text-fill: derive(-fx-text-fill, -20%);
+    -fx-highlight-fill: derive(-fx-base, -20%);
+    -fx-highlight-text-fill: -fx-foreground-color;
+    -fx-font-size: 13px;
+    -fx-icon-size: 20px;
+    -fx-icon-color: -fx-foreground-color;
 }
 
-.button{
-    -fx-background-insets: 0;
-    -fx-background-radius: 2.5;
+.alt-color, .toggle-button{
+    -fx-color: #404040;
 }
 
-.button:hover{
-    color: #1460c9;
-    -fx-color: -hover-color;
-}
-
-.button:pressed{
-    color: #1460c9;
-    -fx-color: -pressed-color
-    ;
-}
-
-.button:focused{
+.button, .toggle-button{
+    -fx-cursor: hand;
+    -fx-background-color: -fx-color;
     -fx-background-insets: 0;
 }
 
-.text-field{
-    background-color: #202020;
-    -fx-background-color: #303030;
-    -fx-background-radius: 2.5;
+.button:hover, .toggle-button:hover{
+    -fx-background-color: -fx-hover-color;
 }
 
-
-.month-label {
-    font-size: 24;
-    font-weight: bold;
-    padding: 20px 20px 5px 20px;
-    -fx-font-size: 24px;
-    -fx-font-weight: bold;
-    -fx-padding: 20px 20px 5px 20px;
-    -fx-text-alignment: center;
+.button:pressed, .toggle-button:pressed{
+    -fx-background-color: -fx-pressed-color;
 }
 
-.day-of-week {
-    font-weight: 100;
-    padding: 0%;
-    background-color: #1460c9;
-    border-color: #1460c9;
-    -fx-alignment: center;
-    -fx-font-weight: bold;
-    -fx-background-color: #282788;
-    -fx-padding: 5px;
-    -fx-border-color: black;
+.button:disabled, .toggle-button:disabled{
+    -fx-background-color: -fx-disabled-color;
 }
 
-
-.day-cell {
-    padding: 0%;
-    border-color: #1460c9;
-    -fx-padding: 10px;
-    -fx-border-color: #d0d0d0;
-    -fx-text-alignment: center;
+.toggle-button:focus{
+    -fx-background-color: -fx-color;
 }
 
-.grid-pane {
-    -fx-hgap: 10px; /* Horizontaler Abstand zwischen Zellen */
-    -fx-vgap: 10px; /* Vertikaler Abstand zwischen Zellen */
-    padding: auto;
-    -fx-padding: 20px; /* Fügt Padding hinzu */
+.toggle-button:selected{
+    -fx-background-color: derive(-fx-base, -20%);
 }
 
-.grid-pane .row {
-    -fx-pref-height: 40px; /* Bevorzugte Höhe jeder Zeile */
+.cell{
+    -fx-pref-width: 50px;
+    -fx-pref-height: 50px;
 }
 
-.day-of-week, .day-cell {
-    border-color: #1460c9;
-    -fx-alignment: center;
-    -fx-pref-width: 40px; /* Bevorzugte Breite für Wochentagslabels und Tage */
-    -fx-pref-height: 40px; /* Bevorzugte Höhe */
-    -fx-border-color: black; /* Fügt einen Rand hinzu, um Zellen sichtbar zu machen */
+.small-cell{
+    -fx-pref-width: 50px;
+    -fx-pref-height: 33px;
 }
 
-.vbox-container {
-    padding: auto;
-    -fx-padding: 20px; /* Fügt Padding hinzu */
-    -fx-spacing: 10px; /* Abstand zwischen den Kind-Elementen */
+.large-cell-width{
+    -fx-pref-width: 55px;
+}
+
+.medium-cell-width{
+    -fx-pref-width: 42px;
 }

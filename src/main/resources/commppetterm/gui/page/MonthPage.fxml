@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.GridPane?>
+
+<GridPane fx:id="gridPane" alignment="CENTER" hgap="5.0" stylesheets="@../style.css" vgap="5.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <Button mnemonicParsing="false" styleClass="cell" text="Mo" GridPane.columnIndex="1" />
+   <Button mnemonicParsing="false" styleClass="cell" text="Di" GridPane.columnIndex="2" />
+   <Button mnemonicParsing="false" styleClass="cell" text="Mi" GridPane.columnIndex="3" />
+   <Button mnemonicParsing="false" styleClass="cell" text="Do" GridPane.columnIndex="4" />
+   <Button mnemonicParsing="false" styleClass="cell" text="Fr" GridPane.columnIndex="5" />
+   <Button mnemonicParsing="false" styleClass="cell" text="Sa" GridPane.columnIndex="6" />
+   <Button mnemonicParsing="false" styleClass="cell" text="So" GridPane.columnIndex="7" />
+</GridPane>
