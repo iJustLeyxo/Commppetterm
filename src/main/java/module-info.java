@@ -15,5 +15,7 @@ module commppetterm {
     opens commppetterm.gui.page to javafx.fxml;
     exports commppetterm.gui.exception;
     opens commppetterm.gui.exception to javafx.fxml;
+    exports commppetterm.entity;
+    opens commppetterm.entity to javafx.fxml;
 }
 
