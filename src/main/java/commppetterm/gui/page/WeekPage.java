@@ -77,11 +77,11 @@ public final class WeekPage extends PageController {
         LocalDate iter = App.date.minusDays(App.date.getDayOfWeek().getValue() - 1);
         Parent parent;
 
+        int startCol = 1;
+        int colSpan = 0;
+
         do {
             /* Generate entries */
-            int startCol = 1;
-            int colSpan = 0;
-
             for (Entry e : Database.entries(iter)) {
                 EntryController entry  = new EntryController(e);
                 this.entries.add(entry);
@@ -113,6 +113,8 @@ public final class WeekPage extends PageController {
             this.contents.add(parent);
             this.grid.add(parent, startCol, 0, colSpan + 1, 1);
 
+            startCol = startCol + colSpan + 1;
+            colSpan = 0;
             iter = iter.plusDays(1);
         } while (iter.getDayOfWeek().getValue() != 1);
     }

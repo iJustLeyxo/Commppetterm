@@ -140,6 +140,8 @@ public final class Editor extends Controller {
         this.time();
         this.recurring();
         this.yearly.setSelected(true);
+
+
     }
 
     /**
