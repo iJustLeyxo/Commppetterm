@@ -69,15 +69,13 @@ public final class Calendar extends Controller {
     @FXML
     private void previous() {
         this.pageController.prev();
-        this.label.setText(this.pageController.label());
-        Gui.get().stage().sizeToScene();
+        this.reload();
     };
 
     @FXML
     private void next() {
         this.pageController.next();
-        this.label.setText(this.pageController.label());
-        Gui.get().stage().sizeToScene();
+        this.reload();
     };
 
     @FXML
@@ -131,6 +129,13 @@ public final class Calendar extends Controller {
 
         this.pageController = pageController;
         this.pane.getChildren().add(this.pageController.load());
+        this.reload();
+    }
+
+    /**
+     * Reloads the calendar contents
+     */
+    private void reload() {
         this.label.setText(this.pageController.label());
         Gui.get().stage().sizeToScene();
     }
