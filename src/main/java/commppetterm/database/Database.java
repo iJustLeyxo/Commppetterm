@@ -2,6 +2,7 @@ package commppetterm.database;
 
 import commppetterm.entity.Entry;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public final class Database {
      * Creates or edits and entry
      * @param entry The entry to create or edit
      */
-    public static void save(@NotNull Entry entry) {
+    public static void save(@Nullable Entry entry) {
         // TODO: Update or create entry if it doesn't yet exist
     }
 
