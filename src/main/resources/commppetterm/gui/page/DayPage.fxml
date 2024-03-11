@@ -3,30 +3,28 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.GridPane?>
 
-<GridPane fx:id="dayGrid" alignment="CENTER_LEFT" hgap="5.0" vgap="5.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
-    <Label text="00:00" />
-    <Label text="01:00" GridPane.rowIndex="1" />
-    <Label text="02:00" GridPane.rowIndex="2" />
-    <Label text="03:00" GridPane.rowIndex="3" />
-    <Label text="04:00" GridPane.rowIndex="4" />
-    <Label text="05:00" GridPane.rowIndex="5" />
-    <Label text="06:00" GridPane.rowIndex="6" />
-    <Label text="07:00" GridPane.rowIndex="7" />
-    <Label text="08:00" GridPane.rowIndex="8" />
-    <Label text="09:00" GridPane.rowIndex="9" />
-    <Label text="10:00" GridPane.rowIndex="10" />
-    <Label text="11:00" GridPane.rowIndex="11" />
-    <Label text="12:00" GridPane.rowIndex="12" />
-    <Label text="13:00" GridPane.rowIndex="13" />
-    <Label text="14:00" GridPane.rowIndex="14" />
-    <Label text="15:00" GridPane.rowIndex="15" />
-    <Label text="16:00" GridPane.rowIndex="16" />
-    <Label text="17:00" GridPane.rowIndex="17" />
-    <Label text="18:00" GridPane.rowIndex="18" />
-    <Label text="19:00" GridPane.rowIndex="19" />
-    <Label text="20:00" GridPane.rowIndex="20" />
-    <Label text="21:00" GridPane.rowIndex="21" />
-    <Label text="22:00" GridPane.rowIndex="22" />
-    <Label text="23:00" GridPane.rowIndex="23" />
-    <Label text="00:00" GridPane.rowIndex="24" />
+<GridPane fx:id="dayGrid" alignment="CENTER_LEFT" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <Label text="01:00" GridPane.rowIndex="30" GridPane.rowSpan="60" />
+    <Label text="02:00" GridPane.rowIndex="90" GridPane.rowSpan="60" />
+    <Label text="03:00" GridPane.rowIndex="150" GridPane.rowSpan="60" />
+    <Label text="04:00" GridPane.rowIndex="210" GridPane.rowSpan="60" />
+    <Label text="05:00" GridPane.rowIndex="270" GridPane.rowSpan="60" />
+    <Label text="06:00" GridPane.rowIndex="330" GridPane.rowSpan="60" />
+    <Label text="07:00" GridPane.rowIndex="390" GridPane.rowSpan="60" />
+    <Label text="08:00" GridPane.rowIndex="450" GridPane.rowSpan="60" />
+    <Label text="09:00" GridPane.rowIndex="510" GridPane.rowSpan="60" />
+    <Label text="10:00" GridPane.rowIndex="570" GridPane.rowSpan="60" />
+    <Label text="11:00" GridPane.rowIndex="630" GridPane.rowSpan="60" />
+    <Label text="12:00" GridPane.rowIndex="690" GridPane.rowSpan="60" />
+    <Label text="13:00" GridPane.rowIndex="750" GridPane.rowSpan="60" />
+    <Label text="14:00" GridPane.rowIndex="810" GridPane.rowSpan="60" />
+    <Label text="15:00" GridPane.rowIndex="870" GridPane.rowSpan="60" />
+    <Label text="16:00" GridPane.rowIndex="930" GridPane.rowSpan="60" />
+    <Label text="17:00" GridPane.rowIndex="990" GridPane.rowSpan="60" />
+    <Label text="18:00" GridPane.rowIndex="1050" GridPane.rowSpan="60" />
+    <Label text="19:00" GridPane.rowIndex="1110" GridPane.rowSpan="60" />
+    <Label text="20:00" GridPane.rowIndex="1170" GridPane.rowSpan="60" />
+    <Label text="21:00" GridPane.rowIndex="1230" GridPane.rowSpan="60" />
+    <Label text="22:00" GridPane.rowIndex="1290" GridPane.rowSpan="60" />
+    <Label text="23:00" GridPane.rowIndex="1330" GridPane.rowSpan="60" />
 </GridPane>

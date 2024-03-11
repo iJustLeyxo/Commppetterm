@@ -28,9 +28,12 @@ public final class DayPage extends PageController {
     }
 
     @Override
+    protected void generate() {
+        // TODO: Add generate logic
+    }
+
+    @Override
     @NotNull List<DtfElement> formatting() {
         return List.of(new DtfElement(DtfElement.Type.PATTERN, "dd.MM.yyyy"));
     }
-
-
 }
