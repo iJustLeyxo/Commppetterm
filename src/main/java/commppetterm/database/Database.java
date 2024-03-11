@@ -2,8 +2,10 @@ package commppetterm.database;
 
 import commppetterm.entity.Entry;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,14 +19,14 @@ public final class Database {
      */
     public static List<Entry> entries(LocalDate date) {
         // TODO: Fetch entries of date
-        return null;
+        return new ArrayList<>();
     }
 
     /**
      * Creates or edits and entry
      * @param entry The entry to create or edit
      */
-    public static void update(@NotNull Entry entry) {
+    public static void save(@Nullable Entry entry) {
         // TODO: Update or create entry if it doesn't yet exist
     }
 

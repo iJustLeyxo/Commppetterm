@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.util.Locale;
 import java.util.logging.Logger;
 
+import commppetterm.entity.Entry;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Root class for configs
@@ -29,6 +31,11 @@ public final class App {
      * Global date
      */
     public static @NotNull LocalDate date = LocalDate.now();
+
+    /**
+     * Global entry reference
+     */
+    public static @Nullable Entry entry = null;
 
     /**
      * Application logger

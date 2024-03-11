@@ -56,17 +56,17 @@ public final class Calendar extends Controller {
 
     @FXML
     private void create() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        Gui.get().swap(new Editor());
+        Gui.get().swap(new Editor(Editor.Mode.CREATE));
     };
 
     @FXML
-    private void edit() {
-        // TODO: Add editing
+    private void edit() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        Gui.get().swap(new Editor(Editor.Mode.EDIT));
     }
 
     @FXML
-    private void delete() {
-        // TODO: Add deleting
+    private void delete() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        Gui.get().swap(new Editor(Editor.Mode.EDIT));
     };
 
     @FXML

@@ -59,7 +59,7 @@ public class Entry {
     /**
      * Repeat profile class
      */
-    public class Repeat {
+    public static class Repeat {
         /**
          * Repeat timeframe
          */

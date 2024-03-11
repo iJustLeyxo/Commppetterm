@@ -1,5 +1,10 @@
 package commppetterm.gui.page;
 
+import commppetterm.App;
+import commppetterm.database.Database;
+import commppetterm.entity.Entry;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2AL;
 import org.kordamp.ikonli.material2.Material2MZ;
@@ -15,11 +20,20 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 
 /**
  * Controller for entry editor
  */
 public final class Editor extends Controller {
+    /**
+     * Edit mode or create mode
+     */
+    private final @NotNull Mode mode;
+
     @FXML
     private HBox startTime, endBox, endTime, recurringBox;
 
@@ -35,16 +49,24 @@ public final class Editor extends Controller {
     @FXML
     private TextField title, info,
             startDay, startMonth, startYear, startHour, startMinute,
-            endDay, endMonth, endYear, endHour, endMinute;
+            endDay, endMonth, endYear, endHour, endMinute, frequency;
 
-    @FXML
-    private void save() {
-        // TODO: Add save logic
+    /**
+     * Creates a new editor
+     * @param mode Edit or create mode?
+     */
+    public Editor(@NotNull Mode mode) {
+        this.mode = mode;
     }
 
     @FXML
-    private void delete() {
-        // TODO: Add delete logic
+    private void save() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        Database.save(this.generate());
+    }
+
+    @FXML
+    private void delete() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        Database.delete(this.generate());
     }
 
     @FXML
@@ -139,6 +161,103 @@ public final class Editor extends Controller {
         this.time();
         this.recurring();
         this.yearly.setSelected(true);
+        this.frequency.setText("1");
+
+        if (this.mode == Mode.EDIT) {
+            this.delete.setDisable(true);
+        } else {
+            // TODO: Load data from entry if in edit mode
+        }
+    }
+
+    /**
+     * Generates an entry from the editor contents
+     * @return an entry object
+     */
+    private @Nullable Entry generate() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        try {
+            /* Recurring */
+            Entry.Repeat repeat = null;
+
+            if (this.recurring.isSelected()) {
+                Entry.Repeat.Type type;
+                if (this.yearly.isSelected()) {
+                    type = Entry.Repeat.Type.YEAR;
+                } else if (this.monthly.isSelected()) {
+                    type = Entry.Repeat.Type.MONTH;
+                } else if (this.weekly.isSelected()) {
+                    type = Entry.Repeat.Type.WEEK;
+                } else {
+                    type = Entry.Repeat.Type.DAY;
+                }
+                byte freq = Byte.parseByte(this.frequency.getText());
+                repeat = new Entry.Repeat(type, freq);
+            }
+
+            /* Start Date */
+            LocalDate startDate = LocalDate.of(
+                    Integer.parseInt(this.startYear.getText()),
+                    Integer.parseInt(this.startMonth.getText()),
+                    Integer.parseInt(this.startDay.getText())
+            );
+
+            /* Start Time */
+            LocalTime startTime;
+            if (this.time.isSelected()) {
+                startTime = LocalTime.of(
+                        Integer.parseInt(this.startHour.getText()),
+                        Integer.parseInt(this.startMinute.getText())
+                );
+            } else {
+                startTime = LocalTime.of(0, 0);
+            }
+
+            /* End Date */
+            LocalDate endDate;
+            if (this.end.isSelected()) {
+                endDate = LocalDate.of(
+                        Integer.parseInt(this.endYear.getText()),
+                        Integer.parseInt(this.endMonth.getText()),
+                        Integer.parseInt(this.endDay.getText())
+                );
+            } else {
+                endDate = startDate;
+            }
+
+            /* End Time */
+            LocalTime endTime;
+            if (this.end.isSelected() && this.time.isSelected()) {
+                endTime = LocalTime.of(
+                        Integer.parseInt(this.endHour.getText()),
+                        Integer.parseInt(this.endMinute.getText())
+                );
+            } else {
+                endTime = LocalTime.of(23, 59);
+            }
+
+            /* ID */
+            Long id;
+            if (this.mode == Mode.EDIT) {
+                assert App.entry != null;
+                id = App.entry.id;
+            } else {
+                id = null;
+            }
+
+            Gui.get().swap(new MonthPage());
+
+            /* Generate entry */
+            return new Entry(
+                    this.title.getText(),
+                    this.info.getText(),
+                    LocalDateTime.of(startDate, startTime),
+                    LocalDateTime.of(endDate, endTime),
+                    repeat,
+                    id
+            );
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
     /**
@@ -150,4 +269,9 @@ public final class Editor extends Controller {
         node.setVisible(value);
         node.setManaged(value);
     }
+
+    /**
+     * Editor mode
+     */
+    public static enum Mode {CREATE, EDIT}
 }

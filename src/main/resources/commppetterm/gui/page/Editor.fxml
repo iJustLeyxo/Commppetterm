@@ -111,7 +111,7 @@
                <FontIcon iconLiteral="mdrmz-view_agenda"/>
             </graphic>
          </ToggleButton>
-         <TextField promptText="N" styleClass="large-cell-width"/>
+         <TextField fx:id="frequency" promptText="f" styleClass="large-cell-width"/>
       </HBox>
    </GridPane>
 </VBox>
