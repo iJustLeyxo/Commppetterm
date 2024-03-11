@@ -13,7 +13,7 @@ import javafx.scene.layout.GridPane;
  */
 public final class DayPage extends PageController {
     @FXML
-    private GridPane dayGrid;
+    private GridPane grid;
 
     @Override
     void prev() {

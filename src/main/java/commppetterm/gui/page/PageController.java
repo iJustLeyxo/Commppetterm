@@ -1,10 +1,18 @@
 package commppetterm.gui.page;
 
 // import java.time.LocalDate;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.WeekFields;
+import java.util.LinkedList;
 import java.util.List;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.Cell;
 import org.jetbrains.annotations.NotNull;
 
 import commppetterm.App;
@@ -69,6 +77,28 @@ public abstract class PageController extends Controller {
     public record DtfElement(@NotNull Type type, @NotNull String contents) {
         public enum Type {
             LITERAL, PATTERN;
+        }
+    }
+
+    /**
+     * Controller for cells
+     */
+    public abstract static class CellController extends Controller {
+        /**
+         * Cell button
+         */
+        protected final @NotNull Button button;
+
+        /**
+         * Creates a new cell controller
+         */
+        public CellController(@NotNull Button button) {
+            this.button = button;
+        }
+
+        @Override
+        public @NotNull Parent load() {
+            return this.button;
         }
     }
 }

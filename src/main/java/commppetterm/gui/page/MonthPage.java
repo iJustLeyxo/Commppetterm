@@ -22,7 +22,7 @@ public final class MonthPage extends PageController {
     private GridPane gridPane;
 
     /**
-     * List of all contents in  the grid
+     * List of all contents
      */
     private LinkedList<Parent> contents;
 
@@ -51,7 +51,7 @@ public final class MonthPage extends PageController {
 
     @Override
     protected void generate() {
-        /* Clear grid pane */
+        /* Clear grid */
         this.gridPane.getChildren().removeAll(contents);
         this.contents = new LinkedList<>();
 
@@ -79,32 +79,12 @@ public final class MonthPage extends PageController {
         } while (iter.getDayOfMonth() != 1);
     }
 
-    /**
-     * Controller for cells
-     */
-    private abstract static class CellController extends Controller {
-        /**
-         * Cell button
-         */
-        protected final @NotNull Button button;
 
-        /**
-         * Creates a new cell controller
-         */
-        public CellController(@NotNull Button button) {
-            this.button = button;
-        }
-
-        @Override
-        public @NotNull Parent load() {
-            return this.button;
-        }
-    }
 
     /**
      * Controller for day cells
      */
-    private static class DayCellController extends CellController {
+    public static class DayCellController extends CellController {
         /**
          * Creates a new day cell controller
          * @param date The associated date
@@ -136,7 +116,7 @@ public final class MonthPage extends PageController {
     /**
      * Controller for week cells
      */
-    private static class WeekCellController extends CellController {
+    public static class WeekCellController extends CellController {
         /**
          * Creates a new day cell controller
          */
