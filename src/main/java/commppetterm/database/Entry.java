@@ -112,6 +112,7 @@ public record Entry(
                 return this.start.toLocalDate().isEqual(date);
             }
         } else {
+                return startDate.isEqual(date) && endDate.isEqual(date);
             // TODO: Add detection for repeating events
             return false;
         }
