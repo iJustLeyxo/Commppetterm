@@ -6,6 +6,7 @@ import java.util.List;
 
 import commppetterm.database.Database;
 import commppetterm.database.Entry;
+import commppetterm.gui.Gui;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
@@ -31,13 +32,13 @@ public final class WeekPage extends PageController {
 
     @Override
     void prev() {
-        App.date = App.date.minusWeeks(1);
+        Gui.date = Gui.date.minusWeeks(1);
         this.reload();
     }
 
     @Override
     void next() {
-        App.date = App.date.plusWeeks(1);
+        Gui.date = Gui.date.plusWeeks(1);
         this.reload();
     }
 
@@ -57,7 +58,7 @@ public final class WeekPage extends PageController {
         this.contents.clear();
 
         /* Generate */
-        LocalDate iter = App.date.minusDays(App.date.getDayOfWeek().getValue() - 1);
+        LocalDate iter = Gui.date.minusDays(Gui.date.getDayOfWeek().getValue() - 1);
         List<Entry> entries = Database.weekEntries(iter);
         Parent parent;
         int colStep = 1;
@@ -69,17 +70,17 @@ public final class WeekPage extends PageController {
                 EntryController controller  = new EntryController(entry);
                 int rowStart, rowSpan;
 
-                if (entry.end != null) {
-                    if (entry.start.toLocalDate().isBefore(App.date)) {
+                if (entry.end() != null) {
+                    if (entry.start().toLocalDate().isBefore(Gui.date)) {
                         rowStart = 1;
                     } else {
-                        rowStart = entry.start.getHour() * 60 + entry.start.getMinute() + 1;
+                        rowStart = entry.start().getHour() * 60 + entry.start().getMinute() + 1;
                     }
 
-                    if (entry.end.toLocalDate().isAfter(App.date)) {
+                    if (entry.end().toLocalDate().isAfter(Gui.date)) {
                         rowSpan = (24 * 60 + 1) - rowStart;
                     } else {
-                        rowSpan = (entry.end.getHour() * 60 + entry.end.getMinute() + 1) - rowStart;
+                        rowSpan = (entry.end().getHour() * 60 + entry.end().getMinute() + 1) - rowStart;
                     }
                 } else {
                     rowStart = 1;
@@ -142,22 +143,16 @@ public final class WeekPage extends PageController {
      */
     public static class EntryController extends CellController {
         /**
-         * Associated entry
-         */
-        private @NotNull final Entry entry;
-
-        /**
          * Creates a new day cell controller
          * @param entry The associated entry
          */
         public EntryController(@NotNull Entry entry) {
-            super(new Button(entry.title));
-            this.entry = entry;
+            super(new Button(entry.title()));
 
             this.element.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    App.entry = entry;
+                    Gui.entry = entry;
                 }
             });
         }

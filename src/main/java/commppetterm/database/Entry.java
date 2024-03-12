@@ -38,6 +38,36 @@ public record Entry(@NotNull String title, @NotNull String info,
     }
 
     /**
+     * @return the entry title
+     */
+    public String title() { return this.title; }
+
+    /**
+     * @return the entry info
+     */
+    public String info() { return this.info; }
+
+    /**
+     * @return the entry start
+     */
+    public LocalDateTime start() { return this.start; }
+
+    /**
+     * @return the entry end
+     */
+    public LocalDateTime end() { return this.end; }
+
+    /**
+     * @return the entry repeat profile
+     */
+    public Repeat repeat() { return this.repeat; }
+
+    /**
+     * @return the entry id
+     */
+    public Long id() { return this.id; }
+
+    /**
      * Repeat profile class
      * @param type Repeat timeframe
      * @param space Space between repetitions

@@ -1,7 +1,9 @@
 package commppetterm.gui;
 
 import java.net.URL;
+import java.time.LocalDate;
 
+import commppetterm.database.Entry;
 import org.jetbrains.annotations.NotNull;
 
 import commppetterm.App;
@@ -14,6 +16,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Main class
@@ -23,6 +26,16 @@ public final class Gui extends Application {
      * The gui handler class
      */
     private static Gui gui;
+
+    /**
+     * Gui date
+     */
+    public static @NotNull LocalDate date = LocalDate.now();
+
+    /**
+     * Gui entry reference
+     */
+    public static @Nullable Entry entry = null;
 
     /**
      * Main method

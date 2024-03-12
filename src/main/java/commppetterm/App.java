@@ -28,16 +28,6 @@ public final class App {
     public static final Locale locale = Locale.GERMANY;
 
     /**
-     * Global date
-     */
-    public static @NotNull LocalDate date = LocalDate.now();
-
-    /**
-     * Global entry reference
-     */
-    public static @Nullable Entry entry = null;
-
-    /**
      * Application logger
      */
     public static final Logger logger = Logger.getLogger(App.class.getName());

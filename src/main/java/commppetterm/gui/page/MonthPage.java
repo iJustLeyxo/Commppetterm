@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import commppetterm.App;
+import commppetterm.gui.Gui;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -28,13 +29,13 @@ public final class MonthPage extends PageController {
 
     @Override
     void prev() {
-        App.date = App.date.minusMonths(1);
+        Gui.date = Gui.date.minusMonths(1);
         this.reload();
     }
 
     @Override
     void next() {
-        App.date = App.date.plusMonths(1);
+        Gui.date = Gui.date.plusMonths(1);
         this.reload();
     }
 
@@ -50,7 +51,7 @@ public final class MonthPage extends PageController {
         this.contents.clear();
 
         /* Generate */
-        LocalDate iter = LocalDate.of(App.date.getYear(), App.date.getMonth(), 1);
+        LocalDate iter = LocalDate.of(Gui.date.getYear(), Gui.date.getMonth(), 1);
         Parent parent;
         int offset = 0;
 

@@ -238,8 +238,8 @@ public final class Editor extends Controller {
             /* ID */
             Long id;
             if (this.mode == Mode.EDIT) {
-                assert App.entry != null;
-                id = App.entry.id;
+                assert Gui.entry != null;
+                id = Gui.entry.id();
             } else {
                 id = null;
             }
