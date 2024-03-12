@@ -1,5 +1,6 @@
 package commppetterm.gui.page;
 
+import commppetterm.database.Database;
 import commppetterm.gui.Gui;
 import commppetterm.gui.exception.ControllerLoadedException;
 import commppetterm.gui.exception.FxmlLoadException;
@@ -11,16 +12,18 @@ import javafx.scene.control.TextField;
 /**
  * Settings controller
  */
-public class Settings extends Controller {
+public final class Settings extends Controller {
     @FXML
-    private TextField link, name;
+    private TextField link, user;
 
     @FXML
     private PasswordField password;
 
     @FXML
     private void save() {
-        // TODO: Save settings
+        Database.link = this.link.getText();
+        Database.user = this.user.getText();
+        Database.password = this.password.getText();
     }
 
     @FXML

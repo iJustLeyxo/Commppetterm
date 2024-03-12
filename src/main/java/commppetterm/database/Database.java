@@ -11,6 +11,12 @@ import java.util.List;
  * Database handler
  */
 public final class Database {
+    public static @NotNull String link = "defaultLink";
+
+    public static @NotNull String user = "defaultUser";
+
+    public static @NotNull String password = "defaultPassword";
+
     /**
      * Fetches the entries of a day
      * @param date The day to fetch the entries of
