@@ -36,7 +36,7 @@ public final class Calendar extends Controller {
     private PageController pageController;
 
     @FXML
-    private Button edit, delete;
+    private Button edit;
 
     @FXML
     private ToggleButton day, week, month;
@@ -65,8 +65,8 @@ public final class Calendar extends Controller {
     }
 
     @FXML
-    private void delete() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        Gui.get().swap(new Editor(Editor.Mode.EDIT));
+    private void settings() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        Gui.get().swap(new Settings());
     };
 
     @FXML
@@ -121,7 +121,7 @@ public final class Calendar extends Controller {
         }
 
         this.edit.setDisable(true);
-        this.delete.setDisable(true);
+        // TODO: Enable edit button when entry is selected
 
         this.pageController = pageController;
         this.pane.getChildren().add(this.pageController.load());

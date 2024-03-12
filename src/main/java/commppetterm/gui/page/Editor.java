@@ -1,6 +1,5 @@
 package commppetterm.gui.page;
 
-import commppetterm.App;
 import commppetterm.database.Database;
 import commppetterm.database.Entry;
 import org.jetbrains.annotations.NotNull;

@@ -21,9 +21,9 @@
             <FontIcon iconLiteral="mdral-create" />
          </graphic>
       </Button>
-      <Button fx:id="delete" mnemonicParsing="false" onAction="#delete" styleClass="small-cell">
+      <Button mnemonicParsing="false" onAction="#settings" styleClass="small-cell">
          <graphic>
-            <FontIcon iconLiteral="mdral-delete" />
+            <FontIcon iconLiteral="mdrmz-settings" />
          </graphic>
       </Button>
       <Button mnemonicParsing="false" onAction="#previous" styleClass="small-cell">
