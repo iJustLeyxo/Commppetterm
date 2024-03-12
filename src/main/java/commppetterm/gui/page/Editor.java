@@ -1,6 +1,5 @@
 package commppetterm.gui.page;
 
-import commppetterm.database.Database;
 import commppetterm.database.Entry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -60,12 +59,12 @@ public final class Editor extends Controller {
 
     @FXML
     private void save() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        Database.save(this.generate());
+        App.get().database().save(this.generate());
     }
 
     @FXML
     private void delete() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        Database.delete(this.generate());
+        App.get().database().delete(this.generate());
     }
 
     @FXML

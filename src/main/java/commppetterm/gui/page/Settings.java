@@ -21,9 +21,7 @@ public final class Settings extends Controller {
 
     @FXML
     private void save() {
-        Database.link = this.link.getText();
-        Database.user = this.user.getText();
-        Database.password = this.password.getText();
+        App.get().database().settings(this.link.getText(), this.user.getText(), this.password.getText());
     }
 
     @FXML

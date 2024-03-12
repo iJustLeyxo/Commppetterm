@@ -56,14 +56,14 @@ public final class WeekPage extends PageController {
 
         /* Generate */
         LocalDate iter = App.get().date().minusDays(App.get().date().getDayOfWeek().getValue() - 1);
-        List<Entry> entries = Database.weekEntries(iter);
+        List<Entry> entries = App.get().database().weekEntries(iter);
         Parent parent;
         int colStep = 1;
         int colSpan = 0;
 
         do {
             /* Generate entries */
-            for (Entry entry : Database.dayEntries(iter)) {
+            for (Entry entry : App.get().database().dayEntries(iter)) {
                 EntryController controller  = new EntryController(entry);
                 int rowStart, rowSpan;
 

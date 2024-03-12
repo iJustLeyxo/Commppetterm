@@ -47,7 +47,7 @@ public final class DayPage extends PageController {
         Parent parent;
         int colIter = 1;
 
-        for (Entry entry : Database.dayEntries(App.get().date())) {
+        for (Entry entry : App.get().database().dayEntries(App.get().date())) {
             EntryController controller  = new EntryController(entry);
             int rowStart, rowSpan;
 

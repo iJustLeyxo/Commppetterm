@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Locale;
 import java.util.logging.Logger;
 
+import commppetterm.database.Database;
 import commppetterm.database.Entry;
 import org.jetbrains.annotations.NotNull;
 
@@ -67,6 +68,11 @@ public final class App extends Application {
     private Stage stage;
 
     /**
+     * Database interface
+     */
+    private Database database;
+
+    /**
      * Gui date
      */
     private @NotNull LocalDate date = LocalDate.now();
@@ -82,6 +88,11 @@ public final class App extends Application {
      */
     @Override
     public void start(@NotNull Stage stage) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        /* Configs */
+        app = this;
+        this.database = new Database();
+
+        /* GUI setup */
         this.stage = stage;
         this.stage.setTitle(this.name);
         String iconFile = "icon.png";
@@ -99,16 +110,14 @@ public final class App extends Application {
     }
 
     /**
-     * Creates a gui application
-     */
-    public App() {
-        app = this;
-    }
-
-    /**
      * @return the application stage
      */
     public Stage stage() { return this.stage; }
+
+    /**
+     * @return the application database interface
+     */
+    public Database database() { return this.database; }
 
     /**
      * @return the selected date
