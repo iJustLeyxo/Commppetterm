@@ -60,44 +60,44 @@ public final class WeekPage extends PageController {
         /* Generate */
         LocalDate iter = App.date.minusDays(App.date.getDayOfWeek().getValue() - 1);
         Parent parent;
-
-        int startCol = 1;
+        int colStep = 1;
         int colSpan = 0;
 
         do {
             /* Generate entries */
-            for (Entry e : Database.entries(iter)) {
-                EntryController entry  = new EntryController(e);
-                int start, span;
+            for (Entry entry : Database.entries(iter)) {
+                EntryController controller  = new EntryController(entry);
+                int rowStart, rowSpan;
 
-                if (entry.entry.end != null) {
-                    if (entry.entry.start.getDayOfYear() < App.date.getDayOfYear() || entry.entry.start.getYear() < App.date.getYear()) {
-                        start = 1;
+                if (entry.end != null) {
+                    if (entry.start.toLocalDate().isBefore(App.date)) {
+                        rowStart = 1;
                     } else {
-                        start = entry.entry.start.getHour() * 60 + entry.entry.start.getMinute() + 1;
+                        rowStart = entry.start.getHour() * 60 + entry.start.getMinute() + 1;
                     }
 
-                    if (entry.entry.start.getDayOfYear() > App.date.getDayOfYear() || entry.entry.start.getYear() > App.date.getYear()) {
-                        span = (24 * 60 + 1) - start;
+                    if (entry.end.toLocalDate().isAfter(App.date)) {
+                        rowSpan = (24 * 60 + 1) - rowStart;
                     } else {
-                        span = (entry.entry.end.getHour() * 60 + entry.entry.end.getMinute() + 1) - start;
+                        rowSpan = (entry.end.getHour() * 60 + entry.end.getMinute() + 1) - rowStart;
                     }
                 } else {
-                    start = 1;
-                    span = (24 * 60);
+                    rowStart = 1;
+                    rowSpan = (24 * 60);
                 }
 
-                this.grid.add(entry.load(), startCol + colSpan, start, 1, span);
-                this.contents.add(entry.parent());
+                this.grid.add(controller.load(), colStep + rowSpan, rowStart, 1, rowSpan);
+                this.contents.add(controller.parent());
                 colSpan++;
             }
 
             /* Generate day cell */
             parent = new DayCellController(iter).load();
             this.contents.add(parent);
-            this.grid.add(parent, startCol, 0, colSpan + 1, 1);
+            this.grid.add(parent, colStep, 0, colSpan + 1, 1);
 
-            startCol = startCol + colSpan + 1;
+            /* Increment iterators */
+            colStep = colStep + colSpan + 1;
             colSpan = 0;
             iter = iter.plusDays(1);
         } while (iter.getDayOfWeek().getValue() != 1);

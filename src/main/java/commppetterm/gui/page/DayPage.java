@@ -7,6 +7,7 @@ import commppetterm.database.Database;
 import commppetterm.entity.Entry;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,32 +46,33 @@ public final class DayPage extends PageController {
         this.contents.clear();
 
         /* Generate entries */
-        int col = 1;
+        Parent parent;
+        int colIter = 1;
 
-        for (Entry e : Database.entries(App.date)) {
-            EntryController entry  = new EntryController(e);
-            int start, span;
+        for (Entry entry : Database.entries(App.date)) {
+            EntryController controller  = new EntryController(entry);
+            int rowStart, rowSpan;
 
-            if (entry.entry.end != null) {
-                if (entry.entry.start.getDayOfYear() < App.date.getDayOfYear() || entry.entry.start.getYear() < App.date.getYear()) {
-                    start = 1;
+            if (entry.end != null) {
+                if (entry.start.getDayOfYear() < App.date.getDayOfYear() || entry.start.getYear() < App.date.getYear()) {
+                    rowStart = 1;
                 } else {
-                    start = entry.entry.start.getHour() * 60 + entry.entry.start.getMinute() + 1;
+                    rowStart = entry.start.getHour() * 60 + entry.start.getMinute() + 1;
                 }
 
-                if (entry.entry.start.getDayOfYear() > App.date.getDayOfYear() || entry.entry.start.getYear() > App.date.getYear()) {
-                    span = (24 * 60 + 1) - start;
+                if (entry.start.getDayOfYear() > App.date.getDayOfYear() || entry.start.getYear() > App.date.getYear()) {
+                    rowSpan = (24 * 60 + 1) - rowStart;
                 } else {
-                    span = (entry.entry.end.getHour() * 60 + entry.entry.end.getMinute() + 1) - start;
+                    rowSpan = (entry.end.getHour() * 60 + entry.end.getMinute() + 1) - rowStart;
                 }
             } else {
-                start = 1;
-                span = (24 * 60);
+                rowStart = 1;
+                rowSpan = (24 * 60);
             }
 
-            this.grid.add(entry.load(), col, start, 1, span);
-            this.contents.add(entry.parent());
-            col++;
+            this.grid.add(controller.load(), colIter, rowStart, 1, rowSpan);
+            this.contents.add(controller.parent());
+            colIter++;
         }
     }
 
