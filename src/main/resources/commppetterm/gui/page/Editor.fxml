@@ -53,7 +53,7 @@
          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
       </columnConstraints>
       <TextField fx:id="title" promptText="Titel" GridPane.columnIndex="1" />
-      <TextField fx:id="details" promptText="Details" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <TextField fx:id="info" promptText="Details" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <HBox alignment="CENTER_LEFT">
             <TextField fx:id="startDay" promptText="T" styleClass="medium-cell-width" />
