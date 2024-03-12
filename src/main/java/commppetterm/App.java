@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.Locale;
 import java.util.logging.Logger;
 
-import commppetterm.entity.Entry;
+import commppetterm.database.Entry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

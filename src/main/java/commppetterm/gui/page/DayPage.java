@@ -3,7 +3,7 @@ package commppetterm.gui.page;
 import java.util.List;
 
 import commppetterm.database.Database;
-import commppetterm.entity.Entry;
+import commppetterm.database.Entry;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;

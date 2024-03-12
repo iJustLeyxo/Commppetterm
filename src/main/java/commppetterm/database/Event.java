@@ -5,8 +5,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-import commppetterm.entity.Entry;
-
 public class Event{
     private Boolean fullDay;
     private long start;

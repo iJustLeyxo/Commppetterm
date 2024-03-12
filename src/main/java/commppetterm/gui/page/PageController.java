@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.util.LinkedList;
 import java.util.List;
 
-import commppetterm.entity.Entry;
+import commppetterm.database.Entry;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;

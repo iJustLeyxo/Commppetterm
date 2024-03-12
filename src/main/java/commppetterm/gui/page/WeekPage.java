@@ -5,7 +5,7 @@ import java.time.format.TextStyle;
 import java.util.List;
 
 import commppetterm.database.Database;
-import commppetterm.entity.Entry;
+import commppetterm.database.Entry;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
@@ -58,6 +58,7 @@ public final class WeekPage extends PageController {
 
         /* Generate */
         LocalDate iter = App.date.minusDays(App.date.getDayOfWeek().getValue() - 1);
+        List<Entry> entries = Database.weekEntries(iter);
         Parent parent;
         int colStep = 1;
         int colSpan = 0;

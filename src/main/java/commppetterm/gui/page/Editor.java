@@ -2,7 +2,7 @@ package commppetterm.gui.page;
 
 import commppetterm.App;
 import commppetterm.database.Database;
-import commppetterm.entity.Entry;
+import commppetterm.database.Entry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.kordamp.ikonli.javafx.FontIcon;
