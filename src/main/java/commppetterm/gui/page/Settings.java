@@ -1,7 +1,7 @@
 package commppetterm.gui.page;
 
 import commppetterm.database.Database;
-import commppetterm.gui.Gui;
+import commppetterm.gui.App;
 import commppetterm.gui.exception.ControllerLoadedException;
 import commppetterm.gui.exception.FxmlLoadException;
 import commppetterm.gui.exception.URLNotFoundException;
@@ -28,6 +28,6 @@ public final class Settings extends Controller {
 
     @FXML
     private void cancel() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        Gui.get().swap(new Calendar());
+        App.get().swap(new Calendar());
     }
 }

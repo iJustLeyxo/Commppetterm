@@ -1,17 +1,17 @@
 package commppetterm.gui.page;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import commppetterm.database.Database;
 import commppetterm.database.Entry;
-import commppetterm.gui.Gui;
+import commppetterm.gui.App;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import org.jetbrains.annotations.NotNull;
 
-import commppetterm.App;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 
@@ -28,15 +28,13 @@ public final class DayPage extends PageController {
     }
 
     @Override
-    void prev() {
-        Gui.date = Gui.date.minusDays(1);
-        this.reload();
+    @NotNull LocalDate prev(@NotNull LocalDate date) {
+        return date.minusDays(1);
     }
 
     @Override
-    void next() {
-        Gui.date  = Gui.date.plusDays(1);
-        this.reload();
+    @NotNull LocalDate next(@NotNull LocalDate date) {
+        return date.plusDays(1);
     }
 
     @Override
@@ -49,18 +47,18 @@ public final class DayPage extends PageController {
         Parent parent;
         int colIter = 1;
 
-        for (Entry entry : Database.dayEntries(Gui.date)) {
+        for (Entry entry : Database.dayEntries(App.get().date())) {
             EntryController controller  = new EntryController(entry);
             int rowStart, rowSpan;
 
             if (entry.end() != null) {
-                if (entry.start().getDayOfYear() < Gui.date.getDayOfYear() || entry.start().getYear() < Gui.date.getYear()) {
+                if (entry.start().getDayOfYear() < App.get().date().getDayOfYear() || entry.start().getYear() < App.get().date().getYear()) {
                     rowStart = 1;
                 } else {
                     rowStart = entry.start().getHour() * 60 + entry.start().getMinute() + 1;
                 }
 
-                if (entry.start().getDayOfYear() > Gui.date.getDayOfYear() || entry.start().getYear() > Gui.date.getYear()) {
+                if (entry.start().getDayOfYear() > App.get().date().getDayOfYear() || entry.start().getYear() > App.get().date().getYear()) {
                     rowSpan = (24 * 60 + 1) - rowStart;
                 } else {
                     rowSpan = (entry.end().getHour() * 60 + entry.end().getMinute() + 1) - rowStart;
@@ -97,7 +95,7 @@ public final class DayPage extends PageController {
             this.element.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    Gui.entry = entry;
+                    App.get().entry(entry);
                 }
             });
         }

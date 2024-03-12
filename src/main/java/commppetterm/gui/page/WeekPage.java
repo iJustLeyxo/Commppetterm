@@ -6,14 +6,13 @@ import java.util.List;
 
 import commppetterm.database.Database;
 import commppetterm.database.Entry;
-import commppetterm.gui.Gui;
+import commppetterm.gui.App;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import org.jetbrains.annotations.NotNull;
 
-import commppetterm.App;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
  
@@ -31,15 +30,13 @@ public final class WeekPage extends PageController {
     }
 
     @Override
-    void prev() {
-        Gui.date = Gui.date.minusWeeks(1);
-        this.reload();
+    @NotNull LocalDate prev(@NotNull LocalDate date) {
+        return date.minusWeeks(1);
     }
 
     @Override
-    void next() {
-        Gui.date = Gui.date.plusWeeks(1);
-        this.reload();
+    @NotNull LocalDate next(@NotNull LocalDate date) {
+        return date.plusWeeks(1);
     }
 
     @Override
@@ -58,7 +55,7 @@ public final class WeekPage extends PageController {
         this.contents.clear();
 
         /* Generate */
-        LocalDate iter = Gui.date.minusDays(Gui.date.getDayOfWeek().getValue() - 1);
+        LocalDate iter = App.get().date().minusDays(App.get().date().getDayOfWeek().getValue() - 1);
         List<Entry> entries = Database.weekEntries(iter);
         Parent parent;
         int colStep = 1;
@@ -71,13 +68,13 @@ public final class WeekPage extends PageController {
                 int rowStart, rowSpan;
 
                 if (entry.end() != null) {
-                    if (entry.start().toLocalDate().isBefore(Gui.date)) {
+                    if (entry.start().toLocalDate().isBefore(App.get().date())) {
                         rowStart = 1;
                     } else {
                         rowStart = entry.start().getHour() * 60 + entry.start().getMinute() + 1;
                     }
 
-                    if (entry.end().toLocalDate().isAfter(Gui.date)) {
+                    if (entry.end().toLocalDate().isAfter(App.get().date())) {
                         rowSpan = (24 * 60 + 1) - rowStart;
                     } else {
                         rowSpan = (entry.end().getHour() * 60 + entry.end().getMinute() + 1) - rowStart;
@@ -115,7 +112,7 @@ public final class WeekPage extends PageController {
          * @param date The associated date
          */
         public DayCellController(@NotNull LocalDate date) {
-            super(new Button(date.getDayOfWeek().getDisplayName(TextStyle.SHORT, App.locale) + "\n" + date.getDayOfMonth()));
+            super(new Button(date.getDayOfWeek().getDisplayName(TextStyle.SHORT, App.get().locale) + "\n" + date.getDayOfMonth()));
 
             if (date.equals(LocalDate.now())) {
                 this.element.getStyleClass().addAll("cell");
@@ -130,7 +127,7 @@ public final class WeekPage extends PageController {
                     try {
                         Calendar.get().swap(page);
                     } catch (Exception e) {
-                        App.logger.severe(e.toString());
+                        App.get().logger.severe(e.toString());
                         e.printStackTrace(System.out);
                     }
                 }
@@ -152,7 +149,7 @@ public final class WeekPage extends PageController {
             this.element.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    Gui.entry = entry;
+                    App.get().entry(entry);
                 }
             });
         }

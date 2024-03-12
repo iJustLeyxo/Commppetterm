@@ -1,20 +1,19 @@
 package commppetterm.gui.page;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.LinkedList;
 import java.util.List;
 
 import commppetterm.database.Entry;
-import commppetterm.gui.Gui;
+import commppetterm.gui.App;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import org.jetbrains.annotations.NotNull;
-
-import commppetterm.App;
 
 /**
  * Controller for a page of the calendar
@@ -43,7 +42,7 @@ public abstract class PageController extends Controller {
             }
         }
 
-        this.formatter = dtfBuilder.toFormatter(App.locale);
+        this.formatter = dtfBuilder.toFormatter(App.get().locale);
         this.contents = new LinkedList<>();
     }
 
@@ -51,7 +50,7 @@ public abstract class PageController extends Controller {
      * Returns the label text to show in the calendar
      */
     public @NotNull String label() {
-        return this.formatter.format(Gui.date);
+        return this.formatter.format(App.get().date());
     }
 
     /**
@@ -62,12 +61,12 @@ public abstract class PageController extends Controller {
     /**
      * Jumps to the previous timeframe of the page
      */
-    abstract void prev();
+    abstract @NotNull LocalDate prev(@NotNull LocalDate date);
 
     /**
      * Jumps to the next timeframe of the page
      */
-    abstract void next();
+    abstract @NotNull LocalDate next(@NotNull LocalDate date);
 
     /**
      * Returns the pattern to use for date formatting
@@ -126,7 +125,7 @@ public abstract class PageController extends Controller {
             this.element.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    Gui.entry = entry;
+                    App.get().entry(entry);
                 }
             });
         }

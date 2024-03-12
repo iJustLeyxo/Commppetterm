@@ -8,7 +8,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2AL;
 import org.kordamp.ikonli.material2.Material2MZ;
 
-import commppetterm.gui.Gui;
+import commppetterm.gui.App;
 import commppetterm.gui.exception.ControllerLoadedException;
 import commppetterm.gui.exception.FxmlLoadException;
 import commppetterm.gui.exception.URLNotFoundException;
@@ -70,7 +70,7 @@ public final class Editor extends Controller {
 
     @FXML
     private void cancel() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        Gui.get().swap(new Calendar());
+        App.get().swap(new Calendar());
     };
 
     @FXML
@@ -88,7 +88,7 @@ public final class Editor extends Controller {
 
         this.enabled(this.endIcon, this.end.isSelected());
         this.enabled(this.endBox, this.end.isSelected());
-        Gui.get().stage().sizeToScene();
+        App.get().stage().sizeToScene();
     }
 
     @FXML
@@ -100,14 +100,14 @@ public final class Editor extends Controller {
 
         this.enabled(this.startTime, this.time.isSelected());
         this.enabled(this.endTime, this.time.isSelected());
-        Gui.get().stage().sizeToScene();
+        App.get().stage().sizeToScene();
     }
 
     @FXML
     private void recurring() {
         this.enabled(recurringIcon, this.recurring.isSelected());
         this.enabled(recurringBox, this.recurring.isSelected());
-        Gui.get().stage().sizeToScene();
+        App.get().stage().sizeToScene();
     }
 
     @FXML
@@ -237,13 +237,13 @@ public final class Editor extends Controller {
             /* ID */
             Long id;
             if (this.mode == Mode.EDIT) {
-                assert Gui.entry != null;
-                id = Gui.entry.id();
+                assert App.get().entry() != null;
+                id = App.get().entry().id();
             } else {
                 id = null;
             }
 
-            Gui.get().swap(new MonthPage());
+            App.get().swap(new MonthPage());
 
             /* Generate entry */
             return new Entry(

@@ -49,7 +49,7 @@ public final class Database {
      * Deletes an entry
      * @param entry The entry to delete
      */
-    public static void delete(@NotNull Entry entry) {
+    public static void delete(@Nullable Entry entry) {
         // TODO: Delete entry
     }
 }

@@ -15,9 +15,11 @@ import java.time.LocalDateTime;
  * @param end Entry end
  * @param repeat Entry repeat profile
  */
-public record Entry(@NotNull String title, @NotNull String info,
-                    @NotNull LocalDateTime start, @Nullable LocalDateTime end,
-                    @Nullable Repeat repeat, Long id) {
+public record Entry(
+        @NotNull String title, @NotNull String info,
+        @NotNull LocalDateTime start, @Nullable LocalDateTime end,
+        @Nullable Repeat repeat, Long id
+) {
     /**
      * Creates a new entry
      * @param title Title text
