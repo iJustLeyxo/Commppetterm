@@ -18,7 +18,7 @@ public final class Database {
      * @return a list of entries
      */
     public static List<Entry> entries(LocalDate date) {
-        // TODO: Fetch entries of date
+        // TODO: Fetch relevant entries of date
         return new ArrayList<>();
     }
 
