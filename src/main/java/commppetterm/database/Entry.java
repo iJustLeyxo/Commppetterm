@@ -3,6 +3,7 @@ package commppetterm.database;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -56,5 +57,31 @@ public record Entry(@NotNull String title, @NotNull String info,
          * Repeat timeframe
          */
         public enum Type { YEAR, MONTH, WEEK, DAY; }
+    }
+
+    /**
+     * Determines whether the entry lies on a date
+     * @param date The date to test for
+     * @return {@code true} if the entry is on the date, otherwise {@code false}
+     */
+    public boolean on(LocalDate date) {
+        LocalDate startDate = start.toLocalDate();
+        LocalDate endDate = null;
+
+        if (this.end != null) {
+            endDate = end.toLocalDate();
+        }
+
+        if (this.repeat == null) {
+            if (endDate != null) {
+                return (startDate.isBefore(date) || startDate.isEqual(date)) &&
+                        (endDate.isAfter(date) || endDate.isEqual(date));
+            } else {
+                return this.start.toLocalDate().isEqual(date);
+            }
+        } else {
+            // TODO: Add detection for repeating events
+            return false;
+        }
     }
 }
