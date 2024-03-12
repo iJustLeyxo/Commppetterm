@@ -41,23 +41,6 @@ public final class App extends Application {
         launch(args);
     }
 
-    /* == == == == == */
-
-    /**
-     * The application stage
-     */
-    private Stage stage;
-
-    /**
-     * Gui date
-     */
-    private @NotNull LocalDate date = LocalDate.now();
-
-    /**
-     * Gui entry reference
-     */
-    private @Nullable Entry entry = null;
-
     /**
      * App name
      */
@@ -77,6 +60,21 @@ public final class App extends Application {
      * Application logger
      */
     public final Logger logger = Logger.getLogger(App.class.getName());
+
+    /**
+     * The application stage
+     */
+    private Stage stage;
+
+    /**
+     * Gui date
+     */
+    private @NotNull LocalDate date = LocalDate.now();
+
+    /**
+     * Gui entry reference
+     */
+    private @Nullable Entry entry = null;
 
     /**
      * Initialize the stage

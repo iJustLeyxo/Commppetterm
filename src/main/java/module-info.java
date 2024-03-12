@@ -7,8 +7,6 @@ module commppetterm {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.ikonli.material2;
 
-    exports commppetterm;
-    opens commppetterm to javafx.fxml;
     exports commppetterm.gui;
     opens commppetterm.gui to javafx.fxml;
     exports commppetterm.gui.page;
