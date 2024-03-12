@@ -1,15 +1,13 @@
 package commppetterm.gui.page;
 
-import commppetterm.App;
-import commppetterm.database.Database;
-import commppetterm.entity.Entry;
+import commppetterm.database.Entry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2AL;
 import org.kordamp.ikonli.material2.Material2MZ;
 
-import commppetterm.gui.Gui;
+import commppetterm.gui.App;
 import commppetterm.gui.exception.ControllerLoadedException;
 import commppetterm.gui.exception.FxmlLoadException;
 import commppetterm.gui.exception.URLNotFoundException;
@@ -38,7 +36,7 @@ public final class Editor extends Controller {
     private HBox startTime, endBox, endTime, recurringBox;
 
     @FXML
-    private Button save, delete;
+    private Button delete;
 
     @FXML
     private ToggleButton end, time, recurring, yearly, monthly, weekly, daily;
@@ -49,7 +47,8 @@ public final class Editor extends Controller {
     @FXML
     private TextField title, info,
             startDay, startMonth, startYear, startHour, startMinute,
-            endDay, endMonth, endYear, endHour, endMinute, frequency;
+            endDay, endMonth, endYear, endHour, endMinute,
+            frequency;
 
     /**
      * Creates a new editor
@@ -61,17 +60,17 @@ public final class Editor extends Controller {
 
     @FXML
     private void save() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        Database.save(this.generate());
+        App.get().database().save(this.generate());
     }
 
     @FXML
     private void delete() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        Database.delete(this.generate());
+        App.get().database().delete(this.generate());
     }
 
     @FXML
     private void cancel() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        Gui.get().swap(new Calendar());
+        App.get().swap(new Calendar());
     };
 
     @FXML
@@ -89,7 +88,7 @@ public final class Editor extends Controller {
 
         this.enabled(this.endIcon, this.end.isSelected());
         this.enabled(this.endBox, this.end.isSelected());
-        Gui.get().stage().sizeToScene();
+        App.get().stage().sizeToScene();
     }
 
     @FXML
@@ -101,14 +100,14 @@ public final class Editor extends Controller {
 
         this.enabled(this.startTime, this.time.isSelected());
         this.enabled(this.endTime, this.time.isSelected());
-        Gui.get().stage().sizeToScene();
+        App.get().stage().sizeToScene();
     }
 
     @FXML
     private void recurring() {
         this.enabled(recurringIcon, this.recurring.isSelected());
         this.enabled(recurringBox, this.recurring.isSelected());
-        Gui.get().stage().sizeToScene();
+        App.get().stage().sizeToScene();
     }
 
     @FXML
@@ -163,10 +162,54 @@ public final class Editor extends Controller {
         this.yearly.setSelected(true);
         this.frequency.setText("1");
 
-        if (this.mode == Mode.EDIT) {
+        if (this.mode == Mode.EDIT && App.get().entry() != null) {
+            Entry entry = App.get().entry();
+
+            boolean end = entry.end() != null;
+            boolean recurring = entry.recurring() != null;
+            boolean time = (entry.start().getHour() == 0 && entry.start().getMinute() == 0) &&
+                    (entry.end() == null || (entry.end().getHour() == 23 && entry.end().getMinute() == 59));
+
+            this.title.setText(entry.title());
+            this.info.setText(entry.info());
+
+            this.startDay.setText(Integer.toString(entry.start().getDayOfMonth()));
+            this.startMonth.setText(Integer.toString(entry.start().getMonthValue()));
+            this.startYear.setText(Integer.toString(entry.start().getYear()));
+            this.startHour.setText(Integer.toString(entry.start().getHour()));
+            this.startMinute.setText(Integer.toString(entry.start().getMinute()));
+
+            if (end) {
+                this.endDay.setText(Integer.toString(entry.start().getDayOfMonth()));
+                this.endMonth.setText(Integer.toString(entry.start().getMonthValue()));
+                this.endYear.setText(Integer.toString(entry.start().getYear()));
+                this.endHour.setText(Integer.toString(entry.end().getHour()));
+                this.endMinute.setText(Integer.toString(entry.end().getMinute()));
+            }
+
+            if (recurring) {
+                switch (entry.recurring().type()) {
+                    case DAY -> this.daily.setSelected(true);
+                    case WEEK -> this.weekly.setSelected(true);
+                    case MONTH -> this.monthly.setSelected(true);
+                    case YEAR -> this.yearly.setSelected(true);
+                }
+
+                this.frequency.setText(Byte.toString(entry.recurring().frequency()));
+            }
+
+            this.enabled(this.startTime, time);
+            this.enabled(this.endTime, time);
+            this.enabled(this.endBox, end);
+            this.enabled(this.recurringBox, recurring);
+
             this.delete.setDisable(true);
+
+            this.end.setSelected(end);
+            this.time.setSelected(time);
+            this.recurring.setSelected(recurring);
         } else {
-            // TODO: Load data from entry if in edit mode
+
         }
     }
 
@@ -177,21 +220,21 @@ public final class Editor extends Controller {
     private @Nullable Entry generate() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         try {
             /* Recurring */
-            Entry.Repeat repeat = null;
+            Entry.Recurrence recurrence = null;
 
             if (this.recurring.isSelected()) {
-                Entry.Repeat.Type type;
+                Entry.Recurrence.Type type;
                 if (this.yearly.isSelected()) {
-                    type = Entry.Repeat.Type.YEAR;
+                    type = Entry.Recurrence.Type.YEAR;
                 } else if (this.monthly.isSelected()) {
-                    type = Entry.Repeat.Type.MONTH;
+                    type = Entry.Recurrence.Type.MONTH;
                 } else if (this.weekly.isSelected()) {
-                    type = Entry.Repeat.Type.WEEK;
+                    type = Entry.Recurrence.Type.WEEK;
                 } else {
-                    type = Entry.Repeat.Type.DAY;
+                    type = Entry.Recurrence.Type.DAY;
                 }
                 byte freq = Byte.parseByte(this.frequency.getText());
-                repeat = new Entry.Repeat(type, freq);
+                recurrence = new Entry.Recurrence(type, freq);
             }
 
             /* Start Date */
@@ -238,13 +281,13 @@ public final class Editor extends Controller {
             /* ID */
             Long id;
             if (this.mode == Mode.EDIT) {
-                assert App.entry != null;
-                id = App.entry.id;
+                assert App.get().entry() != null;
+                id = App.get().entry().id();
             } else {
                 id = null;
             }
 
-            Gui.get().swap(new MonthPage());
+            App.get().swap(new MonthPage());
 
             /* Generate entry */
             return new Entry(
@@ -252,7 +295,7 @@ public final class Editor extends Controller {
                     this.info.getText(),
                     LocalDateTime.of(startDate, startTime),
                     LocalDateTime.of(endDate, endTime),
-                    repeat,
+                    recurrence,
                     id
             );
         } catch (NumberFormatException e) {

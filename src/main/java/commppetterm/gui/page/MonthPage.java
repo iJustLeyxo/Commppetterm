@@ -2,10 +2,9 @@ package commppetterm.gui.page;
 
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
-import java.util.LinkedList;
 import java.util.List;
 
-import commppetterm.App;
+import commppetterm.gui.App;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -27,15 +26,13 @@ public final class MonthPage extends PageController {
     }
 
     @Override
-    void prev() {
-        App.date = App.date.minusMonths(1);
-        this.reload();
+    @NotNull LocalDate prev(@NotNull LocalDate date) {
+        return date.minusMonths(1);
     }
 
     @Override
-    void next() {
-        App.date = App.date.plusMonths(1);
-        this.reload();
+    @NotNull LocalDate next(@NotNull LocalDate date) {
+        return date.plusMonths(1);
     }
 
     @Override
@@ -50,7 +47,7 @@ public final class MonthPage extends PageController {
         this.contents.clear();
 
         /* Generate */
-        LocalDate iter = LocalDate.of(App.date.getYear(), App.date.getMonth(), 1);
+        LocalDate iter = LocalDate.of(App.get().date().getYear(), App.get().date().getMonth(), 1);
         Parent parent;
         int offset = 0;
 
@@ -97,7 +94,7 @@ public final class MonthPage extends PageController {
                     try {
                         Calendar.get().swap(page);
                     } catch (Exception e) {
-                        App.logger.severe(e.toString());
+                        App.get().logger.severe(e.toString());
                         e.printStackTrace(System.out);
                     }
                 }
@@ -122,7 +119,7 @@ public final class MonthPage extends PageController {
                     try {
                         Calendar.get().swap(page);
                     } catch (Exception e) {
-                        App.logger.severe(e.toString());
+                        App.get().logger.severe(e.toString());
                         e.printStackTrace(System.out);
                     }
                 }

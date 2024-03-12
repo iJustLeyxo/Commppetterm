@@ -1,9 +1,8 @@
 package commppetterm.gui.page;
 
-import commppetterm.App;
 import org.jetbrains.annotations.NotNull;
 
-import commppetterm.gui.Gui;
+import commppetterm.gui.App;
 import commppetterm.gui.exception.ControllerLoadedException;
 import commppetterm.gui.exception.FxmlLoadException;
 import commppetterm.gui.exception.URLNotFoundException;
@@ -13,8 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Pane;
-
-import java.util.logging.Logger;
 
 /**
  * Calendar controller class
@@ -36,7 +33,7 @@ public final class Calendar extends Controller {
     private PageController pageController;
 
     @FXML
-    private Button edit, delete;
+    private Button edit;
 
     @FXML
     private ToggleButton day, week, month;
@@ -56,28 +53,28 @@ public final class Calendar extends Controller {
 
     @FXML
     private void create() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        Gui.get().swap(new Editor(Editor.Mode.CREATE));
+        App.get().swap(new Editor(Editor.Mode.CREATE));
     };
 
     @FXML
     private void edit() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        Gui.get().swap(new Editor(Editor.Mode.EDIT));
+        App.get().swap(new Editor(Editor.Mode.EDIT));
     }
 
     @FXML
-    private void delete() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        Gui.get().swap(new Editor(Editor.Mode.EDIT));
+    private void settings() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        App.get().swap(new Settings());
     };
 
     @FXML
     private void previous() {
-        this.pageController.prev();
+        App.get().date(this.pageController.prev(App.get().date()));
         this.reload();
     };
 
     @FXML
     private void next() {
-        this.pageController.next();
+        App.get().date(this.pageController.next(App.get().date()));
         this.reload();
     };
 
@@ -117,11 +114,11 @@ public final class Calendar extends Controller {
             case DayPage page -> this.day.setSelected(true);
             case WeekPage page -> this.week.setSelected(true);
             case MonthPage page -> this.month.setSelected(true);
-            default -> App.logger.warning("Unexpected page controller: " + pageController.getClass().getName());
+            default -> App.get().logger.warning("Unexpected page controller: " + pageController.getClass().getName());
         }
 
         this.edit.setDisable(true);
-        this.delete.setDisable(true);
+        // TODO: Enable edit button when entry is selected
 
         this.pageController = pageController;
         this.pane.getChildren().add(this.pageController.load());
@@ -132,8 +129,9 @@ public final class Calendar extends Controller {
      * Reloads the calendar contents
      */
     private void reload() {
+        this.pageController.reload();
         this.label.setText(this.pageController.label());
-        Gui.get().stage().sizeToScene();
+        App.get().stage().sizeToScene();
     }
 
     @Override

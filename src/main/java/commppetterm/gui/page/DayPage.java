@@ -1,16 +1,17 @@
 package commppetterm.gui.page;
 
-import java.util.LinkedList;
+import java.time.LocalDate;
 import java.util.List;
 
 import commppetterm.database.Database;
-import commppetterm.entity.Entry;
+import commppetterm.database.Entry;
+import commppetterm.gui.App;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import org.jetbrains.annotations.NotNull;
 
-import commppetterm.App;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 
@@ -27,15 +28,13 @@ public final class DayPage extends PageController {
     }
 
     @Override
-    void prev() {
-        App.date = App.date.minusDays(1);
-        this.reload();
+    @NotNull LocalDate prev(@NotNull LocalDate date) {
+        return date.minusDays(1);
     }
 
     @Override
-    void next() {
-        App.date  = App.date.plusDays(1);
-        this.reload();
+    @NotNull LocalDate next(@NotNull LocalDate date) {
+        return date.plusDays(1);
     }
 
     @Override
@@ -45,32 +44,35 @@ public final class DayPage extends PageController {
         this.contents.clear();
 
         /* Generate entries */
-        int col = 1;
+        Parent parent;
+        int colIter = 1;
 
-        for (Entry e : Database.entries(App.date)) {
-            EntryController entry  = new EntryController(e);
-            int start, span;
+        for (Entry entry : App.get().database().dayEntries(App.get().date())) {
+            EntryController controller  = new EntryController(entry);
+            int rowStart, rowSpan;
 
-            if (entry.entry.end != null) {
-                if (entry.entry.start.getDayOfYear() < App.date.getDayOfYear() || entry.entry.start.getYear() < App.date.getYear()) {
-                    start = 1;
+            if (entry.end() != null) {
+                if (entry.start().getDayOfYear() < App.get().date().getDayOfYear() || entry.start().getYear() < App.get().date().getYear()) {
+                    rowStart = 1;
                 } else {
-                    start = entry.entry.start.getHour() * 60 + entry.entry.start.getMinute() + 1;
+                    rowStart = entry.start().getHour() * 60 + entry.start().getMinute() + 1;
                 }
 
-                if (entry.entry.start.getDayOfYear() > App.date.getDayOfYear() || entry.entry.start.getYear() > App.date.getYear()) {
-                    span = (24 * 60 + 1) - start;
+                if (entry.start().getDayOfYear() > App.get().date().getDayOfYear() || entry.start().getYear() > App.get().date().getYear()) {
+                    rowSpan = (24 * 60 + 1) - rowStart;
                 } else {
-                    span = (entry.entry.end.getHour() * 60 + entry.entry.end.getMinute() + 1) - start;
+                    rowSpan = (entry.end().getHour() * 60 + entry.end().getMinute() + 1) - rowStart;
                 }
             } else {
-                start = 1;
-                span = (24 * 60);
+                rowStart = 1;
+                rowSpan = (24 * 60);
             }
 
-            this.grid.add(entry.load(), col, start, 1, span);
-            this.contents.add(entry.parent());
-            col++;
+            // TODO: Detect full day entries
+
+            this.grid.add(controller.load(), colIter, rowStart, 1, rowSpan);
+            this.contents.add(controller.parent());
+            colIter++;
         }
     }
 
@@ -84,22 +86,16 @@ public final class DayPage extends PageController {
      */
     public static class EntryController extends CellController {
         /**
-         * Associated entry
-         */
-        private @NotNull final Entry entry;
-
-        /**
          * Creates a new day cell controller
          * @param entry The associated entry
          */
         public EntryController(@NotNull Entry entry) {
-            super(new Button(entry.title));
-            this.entry = entry;
+            super(new Button(entry.title()));
 
             this.element.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    App.entry = entry;
+                    App.get().entry(entry);
                 }
             });
         }
