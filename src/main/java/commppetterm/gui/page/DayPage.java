@@ -1,6 +1,5 @@
 package commppetterm.gui.page;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import commppetterm.database.Database;
@@ -49,7 +48,7 @@ public final class DayPage extends PageController {
         Parent parent;
         int colIter = 1;
 
-        for (Entry entry : Database.entries(App.date)) {
+        for (Entry entry : Database.dayEntries(App.date)) {
             EntryController controller  = new EntryController(entry);
             int rowStart, rowSpan;
 
@@ -69,6 +68,8 @@ public final class DayPage extends PageController {
                 rowStart = 1;
                 rowSpan = (24 * 60);
             }
+
+            // TODO: Detect full day entries
 
             this.grid.add(controller.load(), colIter, rowStart, 1, rowSpan);
             this.contents.add(controller.parent());

@@ -17,8 +17,18 @@ public final class Database {
      * @param date The day to fetch the entries of
      * @return a list of entries
      */
-    public static List<Entry> entries(LocalDate date) {
-        // TODO: Fetch relevant entries of date
+    public static List<Entry> dayEntries(LocalDate date) {
+        // TODO: Fetch relevant entries of date, also recurring ones
+        return new ArrayList<>();
+    }
+
+    /**
+     * Fetches the entries of a week
+     * @param date The first day of the week to fetch the entries of
+     * @return a list of entries
+     */
+    public static List<Entry> weekEntries(LocalDate date) {
+        // TODO: Fetch relevant entries of date, also recurring ones
         return new ArrayList<>();
     }
 

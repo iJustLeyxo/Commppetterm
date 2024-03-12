@@ -2,7 +2,6 @@ package commppetterm.gui.page;
 
 import java.time.LocalDate;
 import java.time.format.TextStyle;
-import java.util.LinkedList;
 import java.util.List;
 
 import commppetterm.database.Database;
@@ -65,7 +64,7 @@ public final class WeekPage extends PageController {
 
         do {
             /* Generate entries */
-            for (Entry entry : Database.entries(iter)) {
+            for (Entry entry : Database.dayEntries(iter)) {
                 EntryController controller  = new EntryController(entry);
                 int rowStart, rowSpan;
 
@@ -90,6 +89,8 @@ public final class WeekPage extends PageController {
                 this.contents.add(controller.parent());
                 colSpan++;
             }
+
+            // TODO: Detect full week events
 
             /* Generate day cell */
             parent = new DayCellController(iter).load();
