@@ -13,12 +13,12 @@ import java.time.LocalDateTime;
  * @param info Entry info
  * @param start Entry start
  * @param end Entry end
- * @param repeat Entry repeat profile
+ * @param recurring Entry recurring profile
  */
 public record Entry(
         @NotNull String title, @NotNull String info,
         @NotNull LocalDateTime start, @Nullable LocalDateTime end,
-        @Nullable Repeat repeat, Long id
+        @Nullable Entry.Recurrence recurring, Long id
 ) {
     /**
      * Creates a new entry
@@ -26,16 +26,16 @@ public record Entry(
      * @param info Info Text
      * @param start Start time
      * @param end End time
-     * @param repeat Repeat profile
+     * @param recurring Recurrence profile
      */
     public Entry(@NotNull String title, @NotNull String info,
                  @NotNull LocalDateTime start, @Nullable LocalDateTime end,
-                 @Nullable Repeat repeat, @Nullable Long id) {
+                 @Nullable Entry.Recurrence recurring, @Nullable Long id) {
         this.title = title;
         this.info = info;
         this.start = start;
         this.end = end;
-        this.repeat = repeat;
+        this.recurring = recurring;
         this.id = id;
     }
 
@@ -60,9 +60,9 @@ public record Entry(
     public LocalDateTime end() { return this.end; }
 
     /**
-     * @return the entry repeat profile
+     * @return the entry recurring profile
      */
-    public Repeat repeat() { return this.repeat; }
+    public Recurrence recurring() { return this.recurring; }
 
     /**
      * @return the entry id
@@ -72,17 +72,17 @@ public record Entry(
     /**
      * Repeat profile class
      * @param type Repeat timeframe
-     * @param space Space between repetitions
+     * @param frequency Space between repetitions
      */
-    public record Repeat(@NotNull Type type, byte space) {
+    public record Recurrence(@NotNull Type type, byte frequency) {
         /**
-         * Creates a new repeat profile
+         * Creates a new recurring profile
          * @param type  Repeat timeframe
-         * @param space Repetition space
+         * @param frequency Repetition frequency
          */
-        public Repeat(@NotNull Type type, byte space) {
+        public Recurrence(@NotNull Type type, byte frequency) {
             this.type = type;
-            this.space = space;
+            this.frequency = frequency;
         }
 
         /**
@@ -104,7 +104,7 @@ public record Entry(
             endDate = end.toLocalDate();
         }
 
-        if (this.repeat == null) {
+        if (this.recurring == null) {
             if (endDate != null) {
                 return (startDate.isBefore(date) || startDate.isEqual(date)) &&
                         (endDate.isAfter(date) || endDate.isEqual(date));
