@@ -11,11 +11,11 @@ import java.util.List;
  * Database handler
  */
 public final class Database {
-    private @NotNull String link = "defaultLink";
+    private @NotNull String link = "jdbc:mysql://sql11.freemysqlhosting.net/sql11688847";
 
-    private @NotNull String user = "defaultUser";
+    private @NotNull String user = "sql11688847";
 
-    private @NotNull String password = "defaultPassword";
+    private @NotNull String password = "RhiGnaQxx1";
 
     /**
      * Updates the database settings
