@@ -3,7 +3,6 @@ package commppetterm.database;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.Connector;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.time.LocalDate;
@@ -22,16 +21,15 @@ public final class Database {
 
     private @NotNull String password = "RhiGnaQxx1";
 
-    private Connector con;
+    private Connection connection;
 
     /**
-     * Sets the Connector 
-     * @param con Connector
-     * @return Succsess of the Conection
+     * Sets the Connector
+     * @return {@code true} if the connection could be established
      */
     public boolean getConnection(){
         try {
-            this.con = DriverManager.getConnection(link, user, password);
+            this.connection = DriverManager.getConnection(link, user, password);
             return true;
         } catch (Exception e) {
             System.out.println("There is an error with the SQL database: " + e.getMessage());
