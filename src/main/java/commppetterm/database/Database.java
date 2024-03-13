@@ -79,7 +79,7 @@ public final class Database {
                     "info TEXT NOT NULL," +
                     "start DATETIME NOT NULL," +
                     "end DATETIME," +
-                    "recurringType TEXT CHECK(recurring IN (null, 'YEAR', 'MONTH', 'WEEK', 'DAY')," +
+                    "recurringType TEXT CHECK(recurringType IN (null, 'YEAR', 'MONTH', 'WEEK', 'DAY')," +
                     "recurringFrequency INTEGER));";
             this.statement.execute(sql);
         } catch (Exception ignored) {}
