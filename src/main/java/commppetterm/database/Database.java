@@ -80,7 +80,7 @@ public final class Database {
 
         try{
             sql = "CREATE TABLE IF NOT EXISTS " + this.table + "(" +
-                    "id INTEGER PRIMARY KEY," +
+                    "id INTEGER AUTOINCREMENT PRIMARY KEY," +
                     "title TEXT NOT NULL," +
                     "info TEXT NOT NULL," +
                     "start DATETIME NOT NULL," +
