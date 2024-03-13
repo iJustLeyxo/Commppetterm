@@ -32,6 +32,13 @@ public final class Database {
     private boolean isConnected;
 
     /**
+     * Initialize a new database
+     */
+    public Database() {
+        generate();
+    }
+
+    /**
      * Generates the database and table
      */
     public void generate() {
