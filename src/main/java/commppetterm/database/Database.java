@@ -40,7 +40,9 @@ public final class Database {
         // TODO: Fetch relevant entries of date, also recurring ones
 
         LinkedList<Entry> entries = new LinkedList<>();
-        entries.add(new Entry("Test Title", "Test Info", LocalDateTime.of(2024, 3, 13, 0, 0), LocalDateTime.of(2024, 3, 13, 23, 59), null, 0L));
+        entries.add(new Entry("Test Title A", "Test Info A", LocalDateTime.of(2024, 3, 13, 0, 0), LocalDateTime.of(2024, 3, 13, 23, 59), null, 0L));
+        entries.add(new Entry("Test Title B", "Test Info B", LocalDateTime.of(2024, 3, 13, 5, 0), LocalDateTime.of(2024, 3, 13, 10, 0), null, 0L));
+        entries.add(new Entry("Test Title C", "Test Info C", LocalDateTime.of(2024, 3, 14, 7, 0), LocalDateTime.of(2024, 3, 14, 20, 0), null, 0L));
         return entries;
     }
 

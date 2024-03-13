@@ -49,32 +49,34 @@ public final class DayPage extends PageController {
         int rowStart, rowSpan;
 
         for (Entry entry : App.get().database().dayEntries(App.get().date())) {
-            EntryController controller  = new EntryController(entry);
+            if (entry.on(App.get().date())) {
+                EntryController controller = new EntryController(entry);
 
-            if (entry.end() != null) {
-                if (entry.start().getDayOfYear() < App.get().date().getDayOfYear() || entry.start().getYear() < App.get().date().getYear()) {
+                if (entry.end() != null) {
+                    if (entry.start().getDayOfYear() < App.get().date().getDayOfYear() || entry.start().getYear() < App.get().date().getYear()) {
+                        rowStart = 0;
+                    } else {
+                        rowStart = entry.start().getHour() * 60 + entry.start().getMinute();
+                    }
+
+                    if (entry.start().getDayOfYear() > App.get().date().getDayOfYear() || entry.start().getYear() > App.get().date().getYear()) {
+                        rowSpan = (24 * 60) - rowStart;
+                    } else {
+                        rowSpan = (entry.end().getHour() * 60 + entry.end().getMinute()) - rowStart;
+                    }
+                } else {
                     rowStart = 0;
-                } else {
-                    rowStart = entry.start().getHour() * 60 + entry.start().getMinute() ;
+                    rowSpan = (24 * 60);
                 }
 
-                if (entry.start().getDayOfYear() > App.get().date().getDayOfYear() || entry.start().getYear() > App.get().date().getYear()) {
-                    rowSpan = (24 * 60) - rowStart;
-                } else {
-                    rowSpan = (entry.end().getHour() * 60 + entry.end().getMinute()) - rowStart;
-                }
-            } else {
-                rowStart = 0;
-                rowSpan = (24 * 60);
+                rowStart += rowOffset;
+
+                // TODO: Detect full day entries
+
+                this.grid.add(controller.load(), colStep, rowStart, 1, rowSpan);
+                this.contents.add(controller.parent());
+                colStep++;
             }
-
-            rowStart += rowOffset;
-
-            // TODO: Detect full day entries
-
-            this.grid.add(controller.load(), colStep, rowStart, 1, rowSpan);
-            this.contents.add(controller.parent());
-            colStep++;
         }
     }
 
