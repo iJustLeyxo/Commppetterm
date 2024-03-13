@@ -97,12 +97,13 @@ public final class Database {
         }else if (entry.recurring().getType()==Recurrence.Type.YEAR){
             Wiederholung = (int) entry.recurring().getFrequency() * 365;
         }
-         String Time_Start = entry.start();
+         /*String Time_Start = entry.start();
         if(this.isConnected==true){
             String SQLStament = "INSERT INTO `Termine` VALUES ('"+ entry.id() +"', "+ entry.title()+"', '"+ Wiederholung +"', 1', " + 
         }else{
 
         }
+        */
     }
 
     /**

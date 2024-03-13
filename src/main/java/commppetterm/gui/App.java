@@ -87,15 +87,19 @@ public final class App extends Application {
     private @Nullable Entry entry = null;
 
     /**
+     * Initializes a new app
+     */
+    public App() {
+        app = this;
+        this.database = new Database();
+    }
+
+    /**
      * Initialize the stage
      * @param stage Application stage
      */
     @Override
     public void start(@NotNull Stage stage) throws URLNotFoundException, FxmlLoadException {
-        /* Configs */
-        app = this;
-        this.database = new Database();
-
         /* GUI setup */
         this.stage = stage;
         this.stage.setTitle(this.NAME);
