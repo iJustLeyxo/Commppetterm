@@ -97,7 +97,7 @@ public record Entry(
      * @return {@code true} if the entry is on the date, otherwise {@code false}
      */
     public boolean on(LocalDate date) {
-        LocalDate startDate = start.toLocalDate();
+        LocalDate startDate = this.start.toLocalDate();
 
         if (this.end != null) {
             LocalDate endDate = this.end.toLocalDate();

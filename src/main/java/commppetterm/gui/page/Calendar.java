@@ -70,12 +70,14 @@ public final class Calendar extends Controller {
     private void previous() {
         App.get().date(this.pageController.prev(App.get().date()));
         this.pageController.reload();
+        this.reload();
     };
 
     @FXML
     private void next() {
         App.get().date(this.pageController.next(App.get().date()));
         this.pageController.reload();
+        this.reload();
     };
 
     @FXML
