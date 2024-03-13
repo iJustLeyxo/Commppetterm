@@ -133,6 +133,9 @@ public final class Database {
             try {
                 ResultSet result = statement.executeQuery(SQLStatement);
                 while (result.next()) {
+                    DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+                    LocalDateTime Time_Start = LocalDateTime.parse(result.getString("DatumStart"), dtf2);
+                    LocalDateTime Time_Ende = LocalDateTime.parse(result.getString("DatumEnde"), dtf2);
                     entries.add(new Entry(result.getString("Name"), result.getString("Notiz"), LocalDateTime.of(2024, 3, 13, 0, 0),
                     LocalDateTime.of(2024, 3, 13, 23, 59), null, 0L));
                 }  
