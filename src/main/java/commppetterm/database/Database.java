@@ -3,13 +3,13 @@ package commppetterm.database;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import commppetterm.database.Entry.Recurrence;
-
-//import java.sql.Connector;
-//import java.sql.Connection;
-//import java.sql.DriverManager;
+import java.sql.Connector;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -59,7 +59,12 @@ public final class Database {
      */
     public List<Entry> dayEntries(LocalDate date) {
         // TODO: Fetch relevant entries of date, also recurring ones
-        return new ArrayList<>();
+
+        LinkedList<Entry> entries = new LinkedList<>();
+        entries.add(new Entry("Test Title A", "Test Info A", LocalDateTime.of(2024, 3, 13, 0, 0), LocalDateTime.of(2024, 3, 13, 23, 59), null, 0L));
+        entries.add(new Entry("Test Title B", "Test Info B", LocalDateTime.of(2024, 3, 13, 5, 0), LocalDateTime.of(2024, 3, 13, 10, 0), null, 0L));
+        entries.add(new Entry("Test Title C", "Test Info C", LocalDateTime.of(2024, 3, 14, 7, 0), LocalDateTime.of(2024, 3, 14, 20, 0), null, 0L));
+        return entries;
     }
 
     /**

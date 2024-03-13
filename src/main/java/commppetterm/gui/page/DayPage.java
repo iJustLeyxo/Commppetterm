@@ -22,8 +22,10 @@ public final class DayPage extends PageController {
     @FXML
     private GridPane grid;
 
-    @Override
-    protected void init() {
+    /**
+     * Initializes a new day page
+     */
+    public DayPage() {
         this.reload();
     }
 
@@ -45,59 +47,43 @@ public final class DayPage extends PageController {
 
         /* Generate entries */
         Parent parent;
-        int colIter = 1;
+        int colStep = 1;
+        int rowOffset = 0;
+        int rowStart, rowSpan;
 
         for (Entry entry : App.get().database().dayEntries(App.get().date())) {
-            EntryController controller  = new EntryController(entry);
-            int rowStart, rowSpan;
+            if (entry.on(App.get().date())) {
+                if (entry.end() != null) {
+                    if (entry.start().getDayOfYear() < App.get().date().getDayOfYear() || entry.start().getYear() < App.get().date().getYear()) {
+                        rowStart = 0;
+                    } else {
+                        rowStart = entry.start().getHour() + entry.start().getMinute() % 30;
+                    }
 
-            if (entry.end() != null) {
-                if (entry.start().getDayOfYear() < App.get().date().getDayOfYear() || entry.start().getYear() < App.get().date().getYear()) {
-                    rowStart = 1;
+                    if (entry.start().getDayOfYear() > App.get().date().getDayOfYear() || entry.start().getYear() > App.get().date().getYear()) {
+                        rowSpan = 24 - rowStart;
+                    } else {
+                        rowSpan = entry.end().getHour() + entry.end().getMinute() % 30 - rowStart;
+                    }
                 } else {
-                    rowStart = entry.start().getHour() * 60 + entry.start().getMinute() + 1;
+                    rowStart = 0;
+                    rowSpan = 24;
                 }
 
-                if (entry.start().getDayOfYear() > App.get().date().getDayOfYear() || entry.start().getYear() > App.get().date().getYear()) {
-                    rowSpan = (24 * 60 + 1) - rowStart;
-                } else {
-                    rowSpan = (entry.end().getHour() * 60 + entry.end().getMinute() + 1) - rowStart;
-                }
-            } else {
-                rowStart = 1;
-                rowSpan = (24 * 60);
+                rowStart += rowOffset;
+
+                // TODO: Detect full day entries
+
+                parent = new EntryController(entry).parent();
+                this.contents.add(parent);
+                this.grid.add(parent, colStep, rowStart, 1, rowSpan);
+                colStep++;
             }
-
-            // TODO: Detect full day entries
-
-            this.grid.add(controller.load(), colIter, rowStart, 1, rowSpan);
-            this.contents.add(controller.parent());
-            colIter++;
         }
     }
 
     @Override
     @NotNull List<DtfElement> formatting() {
         return List.of(new DtfElement(DtfElement.Type.PATTERN, "dd.MM.yyyy"));
-    }
-
-    /**
-     * Controller for day cells
-     */
-    public static class EntryController extends CellController {
-        /**
-         * Creates a new day cell controller
-         * @param entry The associated entry
-         */
-        public EntryController(@NotNull Entry entry) {
-            super(new Button(entry.title()));
-
-            this.element.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    App.get().entry(entry);
-                }
-            });
-        }
     }
 }
