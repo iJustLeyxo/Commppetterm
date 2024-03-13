@@ -124,10 +124,8 @@ public abstract class PageController extends Controller {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     App.get().entry(entry);
-
-                    if (App.get().controller() != null && App.get().controller() instanceof Calendar calendar) {
-                        calendar.enableEdit();
-                    }
+                    assert App.get().controller() != null;
+                    ((Calendar) App.get().controller()).enableEdit();
                 }
             });
         }
