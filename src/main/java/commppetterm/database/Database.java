@@ -26,8 +26,17 @@ public final class Database {
     private @NotNull String password = "RhiGnaQxx1";
 
     private Connection connection;
+
     private Statement statement;
+
     private boolean isConnected;
+
+    /**
+     * Generates the database and table
+     */
+    public void create() {
+        // TODO: Generate database
+    }
 
     /**
      * Sets the Connector
