@@ -138,8 +138,7 @@ public final class Database {
                     DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
                     LocalDateTime Time_Start = LocalDateTime.parse(result.getString("DatumStart"), dtf2);
                     LocalDateTime Time_Ende = LocalDateTime.parse(result.getString("DatumEnde"), dtf2);
-                    entries.add(new Entry(result.getString("Name"), result.getString("Notiz"), LocalDateTime.of(2024, 3, 13, 0, 0),
-                    LocalDateTime.of(2024, 3, 13, 23, 59), null, 0L));
+                    entries.add(new Entry(result.getString("Name"), result.getString("Notiz"), Time_Start, Time_Ende, null, result.getLong("TerimNr")));
                 }  
             } catch (Exception e) {
                 System.out.println("Konnte keine ergebnisse laden:" + e);
@@ -147,14 +146,6 @@ public final class Database {
         }else{
 
         }
-
-        
-        entries.add(new Entry("Test Title A", "Test Info A", LocalDateTime.of(2024, 3, 13, 0, 0),
-                LocalDateTime.of(2024, 3, 13, 23, 59), null, 0L));
-        entries.add(new Entry("Test Title B", "Test Info B", LocalDateTime.of(2024, 3, 13, 5, 0),
-                LocalDateTime.of(2024, 3, 13, 10, 0), null, 0L));
-        entries.add(new Entry("Test Title C", "Test Info C", LocalDateTime.of(2024, 3, 14, 7, 0),
-                LocalDateTime.of(2024, 3, 14, 20, 0), null, 0L));
         return entries;
     }
 
