@@ -7,6 +7,7 @@ import commppetterm.database.Entry.Recurrence;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,38 +20,81 @@ import java.util.List;
  * Database handler
  */
 public final class Database {
+    /**
+     * Database link
+     */
     private @NotNull String link = "jdbc:mysql://sql11.freemysqlhosting.net/sql11688847";
 
+    /**
+     * Database user
+     */
     private @NotNull String user = "sql11688847";
 
+    /**
+     * Database password
+     */
     private @NotNull String password = "RhiGnaQxx1";
 
-    private Connection connection;
+    /**
+     * Database connection
+     */
+    private @Nullable Connection connection;
 
-    private Statement statement;
+    /**
+     * Database statement
+     */
+    private @Nullable Statement statement;
 
+    /**
+     * Database connection status
+     */
     private boolean isConnected;
 
     /**
-     * Generates the database and table
+     * Initialize a new database
      */
-    public void create() {
+    public Database() {
+        this.connection = null;
+        connect();
+    }
+
+    /**
+     * Connects to the database
+     */
+    public void connect() {
+        if (this.connected()) {
+            try {
+                this.disconnect();
+            } catch (SQLException ignored) {}
+        }
+
+        try {
+            this.connection = DriverManager.getConnection(link, user, password);
+            this.statement = this.connection.createStatement();
+        } catch (SQLException ignored) {}
+
         // TODO: Generate database
     }
 
     /**
-     * Sets the Connector and the Stament
-     * 
+     * Disconnects from the database
      */
-    public void getConnection() {
-        try {
-            this.connection = DriverManager.getConnection(link, user, password);
-            this.statement = this.connection.createStatement();
-            this.isConnected = true;
-        } catch (Exception e) {
-            this.isConnected = false;
+    public void disconnect() throws SQLException {
+        if (this.statement != null) {
+            this.statement.close();
+            this.statement = null;
+        }
+        
+        if (this.connection != null) {
+            this.connection.close();
+            this.connection = null;
         }
     }
+
+    /**
+     * @return {@code true} if the database has been connected
+     */
+    public boolean connected() { return this.connection != null && this.statement != null; }
 
     /**
      * @return the database urö
@@ -141,7 +185,6 @@ public final class Database {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
         String Time_Start = dtf.format(entry.start());
         String Time_Ende = dtf.format(entry.end());
-        getConnection();
         if (this.isConnected == true) {
             String SQLStament = "INSERT INTO `Termine`(`Name`, `Wiederholung`, `Farbe`, `DatumStart`, `DatumEnde`, `Notiz`, `Ort`, `Benutzer`) VALUES ('" + entry.title() + "', '"
                     + Wiederholung + "', '0', '" + Time_Start + "', '" + Time_Ende + "', '" + entry.info()
