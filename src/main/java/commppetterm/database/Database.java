@@ -205,7 +205,10 @@ public final class Database {
     public void CreateDatabase(String NameDatabase, String NameTable){
         String SQLStatement = "Create Database if not exists " + NameDatabase;
         try {
-            
+            this.statement.execute(SQLStatement);
+            SQLStatement = "Create table if not exists " + 
+            NameTable +
+            "(title TEXT NOT NULL, info TEXT NOT NULL, start DATETIME NOT NULL, end DATETIME, type TEXT, id INTEGER PRIMARY KEY);";
         } catch (Exception e) {
             // TODO: handle exception
         }
