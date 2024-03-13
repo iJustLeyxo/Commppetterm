@@ -1,18 +1,16 @@
 package commppetterm.gui.page;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.TextStyle;
 import java.util.List;
 
-import commppetterm.database.Database;
 import commppetterm.database.Entry;
 import commppetterm.gui.App;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 
 import javafx.fxml.FXML;
@@ -24,7 +22,7 @@ import javafx.scene.layout.GridPane;
  */
 public final class WeekPage extends PageController {
     @FXML
-    private GridPane grid;
+    private GridPane entries;
 
     @Override
     protected void init() {
@@ -53,7 +51,7 @@ public final class WeekPage extends PageController {
     @Override
     protected void reload() {
         /* Clear grid */
-        this.grid.getChildren().removeAll(contents);
+        this.entries.getChildren().removeAll(contents);
         this.contents.clear();
 
         /* Generate */
@@ -61,8 +59,8 @@ public final class WeekPage extends PageController {
         Parent parent;
         int colStep = 1;
         int colSpan = 0;
-        int rowStart;
-        int rowSpan;
+        int rowOffset = 2;
+        int rowStart, rowSpan;
 
         do {
             /* Generate entries */
@@ -72,22 +70,24 @@ public final class WeekPage extends PageController {
 
                     if (entry.end() != null) {
                         if (entry.start().toLocalDate().isBefore(iter)) {
-                            rowStart = 1;
+                            rowStart = 0;
                         } else {
-                            rowStart = entry.start().getHour() * 60 + entry.start().getMinute() + 1;
+                            rowStart = entry.start().getHour() * 60 + entry.start().getMinute();
                         }
 
                         if (entry.end().toLocalDate().isAfter(iter)) {
-                            rowSpan = (24 * 60 + 1) - rowStart;
+                            rowSpan = (24 * 60) - rowStart;
                         } else {
-                            rowSpan = (entry.end().getHour() * 60 + entry.end().getMinute() + 1) - rowStart;
+                            rowSpan = (entry.end().getHour() * 60 + entry.end().getMinute()) - rowStart;
                         }
                     } else {
-                        rowStart = 1;
+                        rowStart = 31;
                         rowSpan = (24 * 60);
                     }
 
-                    this.grid.add(controller.load(), colStep + colSpan, rowStart, 1, rowSpan);
+                    rowStart += rowOffset;
+
+                    this.entries.add(controller.load(), colStep + colSpan, rowStart, 1, rowSpan);
                     this.contents.add(controller.parent());
                     colSpan++;
                 }
@@ -100,7 +100,7 @@ public final class WeekPage extends PageController {
             /* Generate day cell */
             parent = new DayCellController(iter).load();
             this.contents.add(parent);
-            this.grid.add(parent, colStep, 0, colSpan, 1);
+            this.entries.add(parent, colStep, 0, colSpan, 1);
 
             /* Increment iterators */
             colStep = colStep + colSpan;
