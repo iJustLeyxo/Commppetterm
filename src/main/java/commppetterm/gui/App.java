@@ -69,7 +69,7 @@ public final class App extends Application {
     /**
      * Database interface
      */
-    private @Nullable Database database;
+    private final @Nullable Database database;
 
     /**
      * Current controller
@@ -157,6 +157,7 @@ public final class App extends Application {
      * @param controller The controller to swap to
      */
     public void controller(@NotNull Controller controller) throws URLNotFoundException, FxmlLoadException {
+        assert this.stage != null;
         this.stage.setScene(new Scene(controller.parent()));
         this.controller = controller;
     }
