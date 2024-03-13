@@ -29,6 +29,7 @@ public final class Settings extends Controller {
     @FXML
     private void save() {
         App.get().database().settings(this.link.getText(), this.user.getText(), this.password.getText());
+        App.get().controller(new Calendar());
     }
 
     @FXML
