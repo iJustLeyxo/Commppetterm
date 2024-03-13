@@ -80,7 +80,7 @@ public final class Database {
 
         try{
             sql = "CREATE TABLE IF NOT EXISTS " + this.table + "(" +
-                    "id INTEGER AUTOINCREMENT PRIMARY KEY," +
+                    "id INTEGER AUTO_INCREMENT PRIMARY KEY," +
                     "title TEXT NOT NULL," +
                     "info TEXT NOT NULL," +
                     "start DATETIME NOT NULL," +
@@ -192,7 +192,7 @@ public final class Database {
             return;
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String id = null;
         String title = entry.title();
         String info = entry.info();
