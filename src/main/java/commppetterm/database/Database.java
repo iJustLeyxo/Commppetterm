@@ -62,6 +62,12 @@ public final class Database {
      * Connects to the database
      */
     public void connect() {
+        if (this.connected()) {
+            try {
+                this.disconnect();
+            } catch (SQLException ignored) {}
+        }
+
         try {
             this.connection = DriverManager.getConnection(link, user, password);
             this.statement = this.connection.createStatement();
@@ -75,8 +81,14 @@ public final class Database {
      *
      */
     public void disconnect() throws SQLException {
+        if (this.statement != null) {
+            this.statement.close();
+            this.statement = null;
+        }
+        
         if (this.connection != null) {
             this.connection.close();
+            this.connection = null;
         }
     }
 
