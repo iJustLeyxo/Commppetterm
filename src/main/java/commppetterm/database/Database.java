@@ -19,16 +19,34 @@ import java.util.List;
  * Database handler
  */
 public final class Database {
+    /**
+     * Database link
+     */
     private @NotNull String link = "jdbc:mysql://sql11.freemysqlhosting.net/sql11688847";
 
+    /**
+     * Database user
+     */
     private @NotNull String user = "sql11688847";
 
+    /**
+     * Database password
+     */
     private @NotNull String password = "RhiGnaQxx1";
 
-    private Connection connection;
+    /**
+     * Database connection
+     */
+    private @Nullable Connection connection;
 
-    private Statement statement;
+    /**
+     * Database statement
+     */
+    private @Nullable Statement statement;
 
+    /**
+     * Database connection status
+     */
     private boolean isConnected;
 
     /**
