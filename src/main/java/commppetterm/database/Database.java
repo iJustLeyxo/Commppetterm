@@ -237,7 +237,7 @@ public final class Database {
      * @param entry The entry to delete
      */
     public void delete(@Nullable Entry entry) {
-        String SQLStatement = "Delete";
+        String SQLStatement = "DELETE FROM '"+table+"' WHERE";
         try {
             
         } catch (Exception e) {
