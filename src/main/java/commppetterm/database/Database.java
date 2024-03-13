@@ -192,13 +192,14 @@ public final class Database {
         }
 
         try {
-            String SQLStatement = "INSERT INTO Termine (" +
-                    "Name, Notiz, DatumStart, DatumEnde, Wiederholung, Farbe, Ort, Benutzer" +
+            String SQLStatement = "INSERT INTO " + this.table + " (" +
+                    "title, info, start, end, recurringType, recurringFrequency" +
                     ") VALUES ('" +
                     title + "', '" +
                     info + "', '" +
                     start + "', '" +
                     end + "', '" +
+                    recurringType + "', '" +
                     recurringFrequency + "', '0', 'Null', '0')";
             this.statement.execute(SQLStatement);
         } catch (SQLException e) {
