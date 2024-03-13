@@ -71,11 +71,11 @@
       </HBox>
       <HBox fx:id="endBox" alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <HBox alignment="CENTER_LEFT">
-            <TextField fx:id="endDayTF" promptText="T" styleClass="medium-cell-width" />
+            <TextField fx:id="endDay" promptText="T" styleClass="medium-cell-width" />
             <Label text="." />
-            <TextField fx:id="endMonthTF" promptText="M" styleClass="medium-cell-width" />
+            <TextField fx:id="endMonth" promptText="M" styleClass="medium-cell-width" />
             <Label text="." />
-            <TextField fx:id="endYearTF" promptText="J" styleClass="large-cell-width" />
+            <TextField fx:id="endYear" promptText="J" styleClass="large-cell-width" />
          </HBox>
          <HBox fx:id="endTime" alignment="CENTER_LEFT">
             <Label text="," />

@@ -97,24 +97,16 @@ public record Entry(
      * @return {@code true} if the entry is on the date, otherwise {@code false}
      */
     public boolean on(LocalDate date) {
-        LocalDate startDate = start.toLocalDate();
-        LocalDate endDate = null;
+        LocalDate startDate = this.start.toLocalDate();
 
         if (this.end != null) {
-            endDate = end.toLocalDate();
+            LocalDate endDate = this.end.toLocalDate();
+
+            return (!(startDate.isAfter(date) || endDate.isBefore(date)));
+        } else {
+            return this.start.toLocalDate().isEqual(date);
         }
 
-        if (this.recurring == null) {
-            if (endDate != null) {
-                return (startDate.isBefore(date) || startDate.isEqual(date)) &&
-                        (endDate.isAfter(date) || endDate.isEqual(date));
-            } else {
-                return this.start.toLocalDate().isEqual(date);
-            }
-        } else {
-                return startDate.isEqual(date) && endDate.isEqual(date);
-            // TODO: Add detection for repeating events
-            return false;
-        }
+        // TODO: Add recurring logic
     }
 }

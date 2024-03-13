@@ -1,8 +1,6 @@
 package commppetterm.gui.page;
 
-import commppetterm.database.Database;
 import commppetterm.gui.App;
-import commppetterm.gui.exception.ControllerLoadedException;
 import commppetterm.gui.exception.FxmlLoadException;
 import commppetterm.gui.exception.URLNotFoundException;
 import javafx.fxml.FXML;
@@ -19,13 +17,18 @@ public final class Settings extends Controller {
     @FXML
     private PasswordField password;
 
+    /**
+     * Creates a new settings controller
+     */
+    public Settings() throws URLNotFoundException, FxmlLoadException {}
+
     @FXML
     private void save() {
         App.get().database().settings(this.link.getText(), this.user.getText(), this.password.getText());
     }
 
     @FXML
-    private void cancel() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        App.get().swap(new Calendar());
+    private void cancel() throws URLNotFoundException, FxmlLoadException {
+        App.get().controller(new Calendar());
     }
 }

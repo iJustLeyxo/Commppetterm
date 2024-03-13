@@ -4,8 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.net.URL;
 
-public class FxmlLoadException extends Exception {
+public class FxmlLoadException extends RuntimeException {
     public FxmlLoadException(@NotNull URL url, @NotNull Throwable cause) {
-        super("Failed to load fxml resource from " + url.toString(), cause);
+        super("Failed to load fxml resource from " + url, cause);
     }
 }

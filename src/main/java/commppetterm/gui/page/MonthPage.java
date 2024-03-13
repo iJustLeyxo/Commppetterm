@@ -5,6 +5,8 @@ import java.time.temporal.WeekFields;
 import java.util.List;
 
 import commppetterm.gui.App;
+import commppetterm.gui.exception.FxmlLoadException;
+import commppetterm.gui.exception.URLNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,8 +22,10 @@ public final class MonthPage extends PageController {
     @FXML
     private GridPane grid;
 
-    @Override
-    protected void init() {
+    /**
+     * Initializes a new month page
+     */
+    public MonthPage() {
         this.reload();
     }
 
@@ -55,13 +59,13 @@ public final class MonthPage extends PageController {
 
         do {
             /* Generate days */
-            parent = new DayCellController(iter).load();
+            parent = new DayCellController(iter).parent();
             this.contents.add(parent);
             this.grid.add(parent, iter.getDayOfWeek().getValue(), iter.get(WeekFields.ISO.weekOfMonth()) + offset);
 
             /* Generate weeks */
             if (iter.getDayOfWeek().getValue() == 1 || iter.getDayOfMonth() == 1) {
-                parent = new WeekCellController(iter).load();
+                parent = new WeekCellController(iter).parent();
                 this.contents.add(parent);
                 this.grid.add(parent, 0, iter.get(WeekFields.ISO.weekOfMonth()) + offset);
             }
@@ -90,11 +94,11 @@ public final class MonthPage extends PageController {
             this.element.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    DayPage page = new DayPage();
                     try {
-                        Calendar.get().swap(page);
+                        App.get().date(date);
+                        Calendar.get().swap(new DayPage());
                     } catch (Exception e) {
-                        App.get().logger.severe(e.toString());
+                        App.get().LOGGER.severe(e.toString());
                         e.printStackTrace(System.out);
                     }
                 }
@@ -115,11 +119,16 @@ public final class MonthPage extends PageController {
             this.element.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    WeekPage page = new WeekPage();
+                    WeekPage page = null;
+                    try {
+                        page = new WeekPage();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                     try {
                         Calendar.get().swap(page);
                     } catch (Exception e) {
-                        App.get().logger.severe(e.toString());
+                        App.get().LOGGER.severe(e.toString());
                         e.printStackTrace(System.out);
                     }
                 }

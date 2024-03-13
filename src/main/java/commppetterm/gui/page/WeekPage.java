@@ -4,9 +4,10 @@ import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.List;
 
-import commppetterm.database.Database;
 import commppetterm.database.Entry;
 import commppetterm.gui.App;
+import commppetterm.gui.exception.FxmlLoadException;
+import commppetterm.gui.exception.URLNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
@@ -22,12 +23,12 @@ import javafx.scene.layout.GridPane;
  */
 public final class WeekPage extends PageController {
     @FXML
-    private GridPane grid;
+    private GridPane entries;
 
-    @Override
-    protected void init() {
-        this.reload();
-    }
+    /**
+     * Initializes a new week page
+     */
+    public WeekPage() throws URLNotFoundException, FxmlLoadException {}
 
     @Override
     @NotNull LocalDate prev(@NotNull LocalDate date) {
@@ -51,53 +52,58 @@ public final class WeekPage extends PageController {
     @Override
     protected void reload() {
         /* Clear grid */
-        this.grid.getChildren().removeAll(contents);
+        this.entries.getChildren().removeAll(contents);
         this.contents.clear();
 
         /* Generate */
         LocalDate iter = App.get().date().minusDays(App.get().date().getDayOfWeek().getValue() - 1);
-        List<Entry> entries = App.get().database().weekEntries(iter);
         Parent parent;
         int colStep = 1;
         int colSpan = 0;
+        int rowOffset = 2;
+        int rowStart, rowSpan;
 
         do {
             /* Generate entries */
             for (Entry entry : App.get().database().dayEntries(iter)) {
-                EntryController controller  = new EntryController(entry);
-                int rowStart, rowSpan;
+                if (entry.on(iter)) {
+                    if (entry.end() != null) {
+                        if (entry.start().toLocalDate().isBefore(iter)) {
+                            rowStart = 0;
+                        } else {
+                            rowStart = entry.start().getHour() + entry.start().getMinute() % 30;
+                        }
 
-                if (entry.end() != null) {
-                    if (entry.start().toLocalDate().isBefore(App.get().date())) {
-                        rowStart = 1;
+                        if (entry.end().toLocalDate().isAfter(iter)) {
+                            rowSpan = 24 - rowStart;
+                        } else {
+                            rowSpan = entry.end().getHour() + entry.end().getMinute() % 30 - rowStart;
+                        }
                     } else {
-                        rowStart = entry.start().getHour() * 60 + entry.start().getMinute() + 1;
+                        rowStart = 31;
+                        rowSpan = 24;
                     }
 
-                    if (entry.end().toLocalDate().isAfter(App.get().date())) {
-                        rowSpan = (24 * 60 + 1) - rowStart;
-                    } else {
-                        rowSpan = (entry.end().getHour() * 60 + entry.end().getMinute() + 1) - rowStart;
-                    }
-                } else {
-                    rowStart = 1;
-                    rowSpan = (24 * 60);
+                    rowStart += rowOffset;
+
+                    parent = new EntryController(entry).parent();
+                    this.contents.add(parent);
+                    this.entries.add(parent, colStep + colSpan, rowStart, 1, rowSpan);
+                    colSpan++;
                 }
-
-                this.grid.add(controller.load(), colStep + rowSpan, rowStart, 1, rowSpan);
-                this.contents.add(controller.parent());
-                colSpan++;
             }
 
             // TODO: Detect full week events
 
+            if (colSpan == 0) { colSpan = 1; }
+
             /* Generate day cell */
-            parent = new DayCellController(iter).load();
+            parent = new DayCellController(iter).parent();
             this.contents.add(parent);
-            this.grid.add(parent, colStep, 0, colSpan + 1, 1);
+            this.entries.add(parent, colStep, 0, colSpan, 1);
 
             /* Increment iterators */
-            colStep = colStep + colSpan + 1;
+            colStep = colStep + colSpan;
             colSpan = 0;
             iter = iter.plusDays(1);
         } while (iter.getDayOfWeek().getValue() != 1);
@@ -112,7 +118,9 @@ public final class WeekPage extends PageController {
          * @param date The associated date
          */
         public DayCellController(@NotNull LocalDate date) {
-            super(new Button(date.getDayOfWeek().getDisplayName(TextStyle.SHORT, App.get().locale) + "\n" + date.getDayOfMonth()));
+            super(new Button(date.getDayOfWeek().getDisplayName(TextStyle.SHORT, App.get().LOCALE) + "\n" + date.getDayOfMonth()));
+
+            this.element.setMaxSize(Double.MAX_VALUE, 50);
 
             if (date.equals(LocalDate.now())) {
                 this.element.getStyleClass().addAll("cell");
@@ -123,33 +131,13 @@ public final class WeekPage extends PageController {
             this.element.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    DayPage page = new DayPage();
                     try {
-                        Calendar.get().swap(page);
+                        App.get().date(date);
+                        Calendar.get().swap(new DayPage());
                     } catch (Exception e) {
-                        App.get().logger.severe(e.toString());
+                        App.get().LOGGER.severe(e.toString());
                         e.printStackTrace(System.out);
                     }
-                }
-            });
-        }
-    }
-
-    /**
-     * Controller for day cells
-     */
-    public static class EntryController extends CellController {
-        /**
-         * Creates a new day cell controller
-         * @param entry The associated entry
-         */
-        public EntryController(@NotNull Entry entry) {
-            super(new Button(entry.title()));
-
-            this.element.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    App.get().entry(entry);
                 }
             });
         }

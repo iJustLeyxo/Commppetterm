@@ -9,7 +9,6 @@ import commppetterm.database.Database;
 import commppetterm.database.Entry;
 import org.jetbrains.annotations.NotNull;
 
-import commppetterm.gui.exception.ControllerLoadedException;
 import commppetterm.gui.exception.FxmlLoadException;
 import commppetterm.gui.exception.URLNotFoundException;
 import commppetterm.gui.page.Calendar;
@@ -45,22 +44,22 @@ public final class App extends Application {
     /**
      * App name
      */
-    public final String name = "Commppetterm";
+    public final String NAME = "Commppetterm";
 
     /**
      * Application version
      */
-    public final String ver = "0.0.2a";
+    public final String VERSION = "0.0.2a";
 
     /**
      * Application locale
      */
-    public final Locale locale = Locale.GERMANY;
+    public final Locale LOCALE = Locale.GERMANY;
 
     /**
      * Application logger
      */
-    public final Logger logger = Logger.getLogger(App.class.getName());
+    public final Logger LOGGER = Logger.getLogger(App.class.getName());
 
     /**
      * The application stage
@@ -71,6 +70,11 @@ public final class App extends Application {
      * Database interface
      */
     private Database database;
+
+    /**
+     * Current controller
+     */
+    private Controller controller;
 
     /**
      * Gui date
@@ -87,25 +91,25 @@ public final class App extends Application {
      * @param stage Application stage
      */
     @Override
-    public void start(@NotNull Stage stage) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+    public void start(@NotNull Stage stage) throws URLNotFoundException, FxmlLoadException {
         /* Configs */
         app = this;
         this.database = new Database();
 
         /* GUI setup */
         this.stage = stage;
-        this.stage.setTitle(this.name);
+        this.stage.setTitle(this.NAME);
         String iconFile = "icon.png";
         URL iconUrl = App.class.getResource(iconFile);
 
         if (iconUrl == null) {
-            this.logger.warning("Failed to load icon " + iconFile + " from " + App.class.getCanonicalName());
+            this.LOGGER.warning("Failed to load icon " + iconFile + " from " + App.class.getCanonicalName());
         } else {
             Image icon = new Image(iconUrl.toString());
             this.stage.getIcons().add(icon);
         }
 
-        this.swap(new Calendar());
+        this.controller(new Calendar());
         this.stage.show();
     }
 
@@ -140,10 +144,16 @@ public final class App extends Application {
     public void entry(@Nullable Entry entry) { this.entry = entry; }
 
     /**
+     * @return the current controller
+     */
+    public @Nullable Controller controller() { return this.controller; }
+
+    /**
      * Swaps to a controller
      * @param controller The controller to swap to
      */
-    public void swap(@NotNull Controller controller) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        this.stage.setScene(new Scene(controller.load()));
+    public void controller(@NotNull Controller controller) throws URLNotFoundException, FxmlLoadException {
+        this.stage.setScene(new Scene(controller.parent()));
+        this.controller = controller;
     }
 }
