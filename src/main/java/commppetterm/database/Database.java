@@ -39,10 +39,8 @@ public final class Database {
     }
 
     /**
-     * Sets the Connector
+     * Sets the Connector and the Stament
      * 
-     * @param con Connector
-     * @return Succsess of the Conection
      */
     public void getConnection() {
         try {
@@ -89,7 +87,17 @@ public final class Database {
      * @return a list of entries
      */
     public List<Entry> dayEntries(LocalDate date) {
-        // TODO: Fetch relevant entries of date, also recurring ones
+        getConnection();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String Time = dtf.format(date); 
+        if(isConnected==true){
+            String SQLStament = "SELECT * FROM `Termine` WHERE DatumStart<='" + Time + "' AND DatumEnde>='" + Time + "';";
+            ResultSet result = statement.executeQuery(SQLStament);
+        }else{
+
+        }
+
+
 
         LinkedList<Entry> entries = new LinkedList<>();
         entries.add(new Entry("Test Title A", "Test Info A", LocalDateTime.of(2024, 3, 13, 0, 0),
