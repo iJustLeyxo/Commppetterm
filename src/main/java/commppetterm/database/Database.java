@@ -125,16 +125,25 @@ public final class Database {
      * @return a list of entries
      */
     public List<Entry> dayEntries(LocalDate date) throws SQLException {
+        LinkedList<Entry> entries = new LinkedList<>();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String Time = dtf.format(date); 
         if(this.connected()){
             String SQLStatement = "SELECT * FROM `Termine` WHERE DatumStart<='" + Time + "' AND DatumEnde>='" + Time + "';";
-            ResultSet result = statement.executeQuery(SQLStatement);
+            try {
+                ResultSet result = statement.executeQuery(SQLStatement);
+                while (result.next()) {
+                    entries.add(new Entry(result.getString("Name"), result.getString("Notiz"), LocalDateTime.of(2024, 3, 13, 0, 0),
+                    LocalDateTime.of(2024, 3, 13, 23, 59), null, 0L));
+                }  
+            } catch (Exception e) {
+                System.out.println("Konnte keine ergebnisse laden:" + e);
+            }
         }else{
 
         }
 
-        LinkedList<Entry> entries = new LinkedList<>();
+        
         entries.add(new Entry("Test Title A", "Test Info A", LocalDateTime.of(2024, 3, 13, 0, 0),
                 LocalDateTime.of(2024, 3, 13, 23, 59), null, 0L));
         entries.add(new Entry("Test Title B", "Test Info B", LocalDateTime.of(2024, 3, 13, 5, 0),
