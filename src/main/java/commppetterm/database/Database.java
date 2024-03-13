@@ -5,10 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 import commppetterm.database.Entry.Recurrence;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -44,11 +41,6 @@ public final class Database {
      * Database statement
      */
     private @Nullable Statement statement;
-
-    /**
-     * Database connection status
-     */
-    private boolean isConnected;
 
     /**
      * Initialize a new database
@@ -113,9 +105,8 @@ public final class Database {
 
     /**
      * Updates the database settings
-     * 
-     * @param link     The new database link
-     * @param user     The new database user
+     * @param link The new database link
+     * @param user The new database user
      * @param password The new database password
      */
     public void settings(@NotNull String link, @NotNull String user, @NotNull String password) {
@@ -126,22 +117,18 @@ public final class Database {
 
     /**
      * Fetches the entries of a day
-     * 
      * @param date The day to fetch the entries of
      * @return a list of entries
      */
-    public List<Entry> dayEntries(LocalDate date) {
-        getConnection();
+    public List<Entry> dayEntries(LocalDate date) throws SQLException {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String Time = dtf.format(date); 
-        if(isConnected==true){
-            String SQLStament = "SELECT * FROM `Termine` WHERE DatumStart<='" + Time + "' AND DatumEnde>='" + Time + "';";
-            ResultSet result = statement.executeQuery(SQLStament);
+        if(this.connected()){
+            String SQLStatement = "SELECT * FROM `Termine` WHERE DatumStart<='" + Time + "' AND DatumEnde>='" + Time + "';";
+            ResultSet result = statement.executeQuery(SQLStatement);
         }else{
 
         }
-
-
 
         LinkedList<Entry> entries = new LinkedList<>();
         entries.add(new Entry("Test Title A", "Test Info A", LocalDateTime.of(2024, 3, 13, 0, 0),
@@ -155,7 +142,6 @@ public final class Database {
 
     /**
      * Fetches the entries of a week
-     * 
      * @param date The first day of the week to fetch the entries of
      * @return a list of entries
      */
@@ -166,11 +152,10 @@ public final class Database {
 
     /**
      * Creates or edits and entry
-     * 
      * @param entry The entry to create or edit
      */
     public void save(@Nullable Entry entry) {
-        Integer Wiederholung = 0;
+        int Wiederholung = 0;
         if (entry.recurring()!=null){
             if (entry.recurring().type() == Recurrence.Type.DAY) {
                 Wiederholung = (int) entry.recurring().frequency();
@@ -185,14 +170,14 @@ public final class Database {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
         String Time_Start = dtf.format(entry.start());
         String Time_Ende = dtf.format(entry.end());
-        if (this.isConnected == true) {
-            String SQLStament = "INSERT INTO `Termine`(`Name`, `Wiederholung`, `Farbe`, `DatumStart`, `DatumEnde`, `Notiz`, `Ort`, `Benutzer`) VALUES ('" + entry.title() + "', '"
+        if (this.connected()) {
+            String SQLStatement = "INSERT INTO `Termine`(`Name`, `Wiederholung`, `Farbe`, `DatumStart`, `DatumEnde`, `Notiz`, `Ort`, `Benutzer`) VALUES ('" + entry.title() + "', '"
                     + Wiederholung + "', '0', '" + Time_Start + "', '" + Time_Ende + "', '" + entry.info()
                     + "', 'Null', '0')";
             try {
-                this.statement.execute(SQLStament);
+                this.statement.execute(SQLStatement);
             } catch (Exception e) {
-                System.out.println("Konnte eintarg nicht Speichern: " + e);
+                System.out.println("Konnte eintrag nicht Speichern: " + e);
             }
         } else {
 
@@ -201,7 +186,6 @@ public final class Database {
 
     /**
      * Deletes an entry
-     * 
      * @param entry The entry to delete
      */
     public void delete(@Nullable Entry entry) {
