@@ -80,24 +80,4 @@ public final class DayPage extends PageController {
     @NotNull List<DtfElement> formatting() {
         return List.of(new DtfElement(DtfElement.Type.PATTERN, "dd.MM.yyyy"));
     }
-
-    /**
-     * Controller for day cells
-     */
-    public static class EntryController extends CellController {
-        /**
-         * Creates a new day cell controller
-         * @param entry The associated entry
-         */
-        public EntryController(@NotNull Entry entry) {
-            super(new Button(entry.title()));
-
-            this.element.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    App.get().entry(entry);
-                }
-            });
-        }
-    }
 }

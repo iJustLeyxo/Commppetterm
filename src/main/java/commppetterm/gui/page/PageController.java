@@ -109,30 +109,24 @@ public abstract class PageController extends Controller {
     /**
      * Controller for day cells
      */
-    public static class EntryController extends Controller {
-        /**
-         * Cell button
-         */
-        public final @NotNull ToggleButton element;
-
+    public static class EntryController extends CellController {
         /**
          * Creates a new day cell controller
          * @param entry The associated entry
          */
         public EntryController(@NotNull Entry entry) {
-            this.element = new ToggleButton(entry.title());
+            super(new Button(entry.title()));
 
             this.element.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     App.get().entry(entry);
+
+                    if (App.get().controller() != null && App.get().controller() instanceof Calendar calendar) {
+                        calendar.enableEdit();
+                    }
                 }
             });
-        }
-
-        @Override
-        public @NotNull Parent load() {
-            return this.element;
         }
     }
 }

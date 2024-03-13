@@ -53,17 +53,17 @@ public final class Calendar extends Controller {
 
     @FXML
     private void create() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        App.get().swap(new Editor(Editor.Mode.CREATE));
+        App.get().controller(new Editor(Editor.Mode.CREATE));
     };
 
     @FXML
     private void edit() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        App.get().swap(new Editor(Editor.Mode.EDIT));
+        App.get().controller(new Editor(Editor.Mode.EDIT));
     }
 
     @FXML
     private void settings() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        App.get().swap(new Settings());
+        App.get().controller(new Settings());
     };
 
     @FXML
@@ -118,7 +118,6 @@ public final class Calendar extends Controller {
         }
 
         this.edit.setDisable(true);
-        // TODO: Enable edit button when entry is selected
 
         this.pageController = pageController;
         this.pane.getChildren().add(this.pageController.load());
@@ -138,5 +137,12 @@ public final class Calendar extends Controller {
     protected void init() throws ControllerLoadedException, FxmlLoadException, URLNotFoundException {
         this.month.setSelected(true);
         this.swap(new MonthPage());
+    }
+
+    /**
+     * Enable editing
+     */
+    public void enableEdit() {
+        this.edit.setDisable(false);
     }
 }

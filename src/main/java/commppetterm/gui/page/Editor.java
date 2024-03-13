@@ -70,7 +70,7 @@ public final class Editor extends Controller {
 
     @FXML
     private void cancel() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        App.get().swap(new Calendar());
+        App.get().controller(new Calendar());
     };
 
     @FXML
@@ -287,7 +287,7 @@ public final class Editor extends Controller {
                 id = null;
             }
 
-            App.get().swap(new MonthPage());
+            App.get().controller(new MonthPage());
 
             /* Generate entry */
             return new Entry(

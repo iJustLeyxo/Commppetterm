@@ -73,6 +73,11 @@ public final class App extends Application {
     private Database database;
 
     /**
+     * Current controller
+     */
+    private Controller controller;
+
+    /**
      * Gui date
      */
     private @NotNull LocalDate date = LocalDate.now();
@@ -105,7 +110,7 @@ public final class App extends Application {
             this.stage.getIcons().add(icon);
         }
 
-        this.swap(new Calendar());
+        this.controller(new Calendar());
         this.stage.show();
     }
 
@@ -140,10 +145,16 @@ public final class App extends Application {
     public void entry(@Nullable Entry entry) { this.entry = entry; }
 
     /**
+     * @return the current controller
+     */
+    public @Nullable Controller controller() { return this.controller; }
+
+    /**
      * Swaps to a controller
      * @param controller The controller to swap to
      */
-    public void swap(@NotNull Controller controller) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+    public void controller(@NotNull Controller controller) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
         this.stage.setScene(new Scene(controller.load()));
+        this.controller = controller;
     }
 }
