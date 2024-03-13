@@ -3,7 +3,6 @@ package commppetterm.database;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.Connector;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.time.LocalDate;
@@ -24,15 +23,15 @@ public final class Database {
 
     private Connector con;
 
-    private boolean isConnected = false;
-
     /**
-     * Sets the Connector con and the isConnected
+     * Sets the Connector 
+     * @param con Connector
+     * @return Succsess of the Conection
      */
     public void getConnection() {
         try {
             this.con = DriverManager.getConnection(link, user, password);
-            this.isConnected = true;
+            return true;
         } catch (Exception e) {
             this.isConnected = false;
         }

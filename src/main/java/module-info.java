@@ -6,6 +6,7 @@ module commppetterm {
     requires org.jetbrains.annotations;
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.ikonli.material2;
+    requires java.sql;
 
     exports commppetterm.gui;
     opens commppetterm.gui to javafx.fxml;
