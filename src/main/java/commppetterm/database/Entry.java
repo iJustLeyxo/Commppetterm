@@ -91,20 +91,16 @@ public record Entry(
         public enum Type { YEAR, MONTH, WEEK, DAY; }
 
         /**
-         * Methode zur Rückgabe des Typs der Wiederholung
-         *
-         * @return der Typ der Wiederholung
+         * @return type of recurrence
          */
-        public Type getType() {
+        public Type type() {
             return type;
         }
 
         /**
-         * Methode zur Rückgabe der Frequenz
-         *
-         * @return die Frequenz
+         * @return frequency of recurrence
          */
-        public byte getFrequency() {
+        public byte frequency() {
             return frequency;
         }
     }

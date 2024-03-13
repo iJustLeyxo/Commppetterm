@@ -7,7 +7,6 @@ import commppetterm.database.Entry.Recurrence;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -110,14 +109,14 @@ public final class Database {
      */
     public void save(@Nullable Entry entry) {
         Integer Wiederholung = 0;
-        if (entry.recurring().getType() == Recurrence.Type.DAY) {
-            Wiederholung = (int) entry.recurring().getFrequency();
-        } else if (entry.recurring().getType() == Recurrence.Type.WEEK) {
-            Wiederholung = (int) entry.recurring().getFrequency() * 7;
-        } else if (entry.recurring().getType() == Recurrence.Type.MONTH) {
-            Wiederholung = (int) entry.recurring().getFrequency() * 31;
-        } else if (entry.recurring().getType() == Recurrence.Type.YEAR) {
-            Wiederholung = (int) entry.recurring().getFrequency() * 365;
+        if (entry.recurring().type() == Recurrence.Type.DAY) {
+            Wiederholung = (int) entry.recurring().frequency();
+        } else if (entry.recurring().type() == Recurrence.Type.WEEK) {
+            Wiederholung = (int) entry.recurring().frequency() * 7;
+        } else if (entry.recurring().type() == Recurrence.Type.MONTH) {
+            Wiederholung = (int) entry.recurring().frequency() * 31;
+        } else if (entry.recurring().type() == Recurrence.Type.YEAR) {
+            Wiederholung = (int) entry.recurring().frequency() * 365;
         }
         String Time_Start = entry.start().toString();
         String Time_Ende = entry.end().toString();
