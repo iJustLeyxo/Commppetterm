@@ -1,6 +1,7 @@
 package commppetterm.gui.page;
 
 import commppetterm.database.Entry;
+import commppetterm.gui.exception.EditorException;
 import org.jetbrains.annotations.NotNull;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2AL;
@@ -113,12 +114,18 @@ public final class Editor extends Controller {
 
     @FXML
     private void save() throws URLNotFoundException, FxmlLoadException {
-        App.get().database().save(this.entry());
+        try {
+            App.get().database().save(this.entry());
+            App.get().controller(new Calendar());
+        } catch (EditorException ignored) {}
     }
 
     @FXML
     private void delete() throws URLNotFoundException, FxmlLoadException {
-        App.get().database().delete(this.entry());
+        try {
+            App.get().database().delete(this.entry());
+            App.get().controller(new Calendar());
+        } catch (EditorException ignored) {}
     }
 
     @FXML
@@ -227,48 +234,57 @@ public final class Editor extends Controller {
                 type = Entry.Recurrence.Type.DAY;
             }
             byte freq = Byte.parseByte(this.frequency.getText());
+
+            if (freq < 1) {
+                throw new EditorException("Negative recurrence frequency is not allowed.");
+            }
+
             recurrence = new Entry.Recurrence(type, freq);
         }
 
-        /* Start Date */
-        LocalDate startDate = LocalDate.of(
-                Integer.parseInt(this.startYear.getText()),
-                Integer.parseInt(this.startMonth.getText()),
-                Integer.parseInt(this.startDay.getText())
-        );
+        LocalDate startDate, endDate;
+        LocalTime startTime, endTime;
 
-        /* Start Time */
-        LocalTime startTime;
-        if (this.time.isSelected()) {
-            startTime = LocalTime.of(
-                    Integer.parseInt(this.startHour.getText()),
-                    Integer.parseInt(this.startMinute.getText())
+        try {
+            /* Start Date */
+            startDate = LocalDate.of(
+                    Integer.parseInt(this.startYear.getText()),
+                    Integer.parseInt(this.startMonth.getText()),
+                    Integer.parseInt(this.startDay.getText())
             );
-        } else {
-            startTime = LocalTime.of(0, 0);
-        }
 
-        /* End Date */
-        LocalDate endDate;
-        if (this.end.isSelected()) {
-            endDate = LocalDate.of(
-                    Integer.parseInt(this.endYear.getText()),
-                    Integer.parseInt(this.endMonth.getText()),
-                    Integer.parseInt(this.endDay.getText())
-            );
-        } else {
-            endDate = startDate;
-        }
+            /* Start Time */
+            if (this.time.isSelected()) {
+                startTime = LocalTime.of(
+                        Integer.parseInt(this.startHour.getText()),
+                        Integer.parseInt(this.startMinute.getText())
+                );
+            } else {
+                startTime = LocalTime.of(0, 0);
+            }
 
-        /* End Time */
-        LocalTime endTime;
-        if (this.end.isSelected() && this.time.isSelected()) {
-            endTime = LocalTime.of(
-                    Integer.parseInt(this.endHour.getText()),
-                    Integer.parseInt(this.endMinute.getText())
-            );
-        } else {
-            endTime = LocalTime.of(23, 59);
+            /* End Date */
+            if (this.end.isSelected()) {
+                endDate = LocalDate.of(
+                        Integer.parseInt(this.endYear.getText()),
+                        Integer.parseInt(this.endMonth.getText()),
+                        Integer.parseInt(this.endDay.getText())
+                );
+            } else {
+                endDate = startDate;
+            }
+
+            /* End Time */
+            if (this.end.isSelected() && this.time.isSelected()) {
+                endTime = LocalTime.of(
+                        Integer.parseInt(this.endHour.getText()),
+                        Integer.parseInt(this.endMinute.getText())
+                );
+            } else {
+                endTime = LocalTime.of(23, 59);
+            }
+        } catch (DateTimeException | NumberFormatException e) {
+            throw new EditorException(e);
         }
 
         /* ID */
