@@ -16,16 +16,6 @@ import javafx.scene.layout.Pane;
  */
 public final class Calendar extends Controller {
     /**
-     * This calendar controller
-     */
-    private static Calendar calendarController;
-
-    /**
-     * Gets the calendar controller
-     */
-    public static Calendar get() { return calendarController; }
-
-    /**
      * The contained page's controller
      */
     private PageController pageController;
@@ -46,7 +36,6 @@ public final class Calendar extends Controller {
      * Creates a new calendar
      */
     public Calendar() throws URLNotFoundException, FxmlLoadException {
-        calendarController = this;
         this.month.setSelected(true);
         this.swap(new MonthPage());
     }
