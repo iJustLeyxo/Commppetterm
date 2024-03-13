@@ -126,6 +126,15 @@ public final class App extends Application {
     }
 
     /**
+     * Shutdown application logic
+     */
+    @Override
+    public void stop() throws SQLException {
+        assert this.database != null;
+        this.database.disconnect();
+    }
+
+    /**
      * @return the application stage
      */
     public Stage stage() { return this.stage; }
