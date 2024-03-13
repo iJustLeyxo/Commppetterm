@@ -185,6 +185,7 @@ public final class Database {
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        String id = null;
         String title = entry.title();
         String info = entry.info();
         String start = formatter.format(entry.start());
@@ -192,22 +193,41 @@ public final class Database {
         String recurringType = "NULL";
         String recurringFrequency = "1";
 
+        if (entry.id() != null) {
+            id = Long.toString(entry.id());
+        }
+
         if (entry.recurring() != null) {
             recurringType = entry.recurring().type().toString();
             recurringFrequency = Integer.toString(entry.recurring().frequency());
         }
 
         try {
-            String SQLStatement = "INSERT INTO " + this.table + " (" +
-                    "title, info, start, end, recurringType, recurringFrequency" +
-                    ") VALUES ('" +
-                    title + "', '" +
-                    info + "', '" +
-                    start + "', '" +
-                    end + "', '" +
-                    recurringType + "', '" +
-                    recurringFrequency + "', '0', 'Null', '0')";
-            this.statement.execute(SQLStatement);
+            String sql;
+
+            if (id == null) {
+                sql = "INSERT INTO " + this.table + " (" +
+                        "title, info, start, end, recurringType, recurringFrequency" +
+                        ") VALUES ('" +
+                        title + "', '" +
+                        info + "', '" +
+                        start + "', '" +
+                        end + "', '" +
+                        recurringType + "', '" +
+                        recurringFrequency + "')";
+            } else {
+                sql = "INSERT INTO " + this.table + " (" +
+                        "id, title, info, start, end, recurringType, recurringFrequency" +
+                        ") VALUES ('" +
+                        id + "', '" +
+                        title + "', '" +
+                        info + "', '" +
+                        start + "', '" +
+                        end + "', '" +
+                        recurringType + "', '" +
+                        recurringFrequency + "')";
+            }
+            this.statement.execute(sql);
         } catch (SQLException e) {
             App.get().LOGGER.warning(e.getMessage());
         }
@@ -220,5 +240,4 @@ public final class Database {
     public void delete(@Nullable Entry entry) {
         // TODO: Delete entry
     }
-
 }
