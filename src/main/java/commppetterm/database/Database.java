@@ -3,10 +3,12 @@ package commppetterm.database;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.Connector;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.time.LocalDate;
+import commppetterm.database.Entry.Recurrence;
+
+//import java.sql.Connector;
+//import java.sql.Connection;
+//import java.sql.DriverManager;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,26 +24,25 @@ public final class Database {
 
     private Connector con;
 
+    private boolean isConnected = false;
+
     /**
-     * Sets the Connector 
-     * @param con Connector
-     * @return Succsess of the Conection
+     * Sets the Connector con and the isConnected
      */
-    public boolean getConnection(){
+    public void getConnection() {
         try {
             this.con = DriverManager.getConnection(link, user, password);
-            return true;
+            this.isConnected = true;
         } catch (Exception e) {
-            System.out.println("There is an error with the SQL database: " + e.getMessage());
-            return false;
+            this.isConnected = false;
         }
-
     }
 
     /**
      * Updates the database settings
-     * @param link The new database link
-     * @param user The new database user
+     * 
+     * @param link     The new database link
+     * @param user     The new database user
      * @param password The new database password
      */
     public void settings(@NotNull String link, @NotNull String user, @NotNull String password) {
@@ -52,6 +53,7 @@ public final class Database {
 
     /**
      * Fetches the entries of a day
+     * 
      * @param date The day to fetch the entries of
      * @return a list of entries
      */
@@ -62,6 +64,7 @@ public final class Database {
 
     /**
      * Fetches the entries of a week
+     * 
      * @param date The first day of the week to fetch the entries of
      * @return a list of entries
      */
@@ -76,10 +79,27 @@ public final class Database {
      */
     public void save(@Nullable Entry entry) {
         // TODO: Update or create entry if it doesn't yet exist
+        Integer Wiederholung;
+        if(entry.recurring().getType()==Recurrence.Type.DAY){
+            Wiederholung = (int) entry.recurring().getFrequency();
+        }else if (entry.recurring().getType()==Recurrence.Type.WEEK){
+            Wiederholung = (int) entry.recurring().getFrequency() * 7;
+        }else if (entry.recurring().getType()==Recurrence.Type.MONTH){
+            Wiederholung = (int) entry.recurring().getFrequency() * 31;
+        }else if (entry.recurring().getType()==Recurrence.Type.YEAR){
+            Wiederholung = (int) entry.recurring().getFrequency() * 365;
+        }
+         String Time_Start = entry.start();
+        if(this.isConnected==true){
+            String SQLStament = "INSERT INTO `Termine` VALUES ('"+ entry.id() +"', "+ entry.title()+"', '"+ Wiederholung +"', 1', " + 
+        }else{
+
+        }
     }
 
     /**
      * Deletes an entry
+     * 
      * @param entry The entry to delete
      */
     public void delete(@Nullable Entry entry) {
