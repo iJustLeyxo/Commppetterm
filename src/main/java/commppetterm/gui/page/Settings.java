@@ -14,7 +14,7 @@ import java.sql.SQLException;
  */
 public final class Settings extends Controller {
     @FXML
-    private TextField link, user;
+    private TextField link, user, database, table;
 
     @FXML
     private PasswordField password;
@@ -26,11 +26,13 @@ public final class Settings extends Controller {
         this.link.setText(App.get().database().link());
         this.user.setText(App.get().database().user());
         this.password.setText(App.get().database().password());
+        this.database.setText(App.get().database().database());
+        this.table.setText(App.get().database().table());
     }
 
     @FXML
     private void save() throws SQLException {
-        App.get().database().settings(this.link.getText(), this.user.getText(), this.password.getText());
+        App.get().database().settings(this.link.getText(), this.user.getText(), this.password.getText(), this.database.getText(), this.table.getText());
         App.get().database().connect();
 
         if (App.get().database().connected()) {

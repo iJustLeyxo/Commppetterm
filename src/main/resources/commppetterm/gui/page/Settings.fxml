@@ -34,14 +34,13 @@
       <FontIcon iconLiteral="mdral-link" />
       <FontIcon iconLiteral="mdsal-account_circle" GridPane.rowIndex="1" />
       <FontIcon iconLiteral="mdral-lock" GridPane.rowIndex="2" />
+      <TextField fx:id="database" promptText="Datenbank" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <TextField fx:id="table" promptText="Tabelle" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <FontIcon iconLiteral="mdrmz-storage" GridPane.rowIndex="3" />
+      <FontIcon iconLiteral="mdrmz-table_chart" GridPane.rowIndex="4" />
       <columnConstraints>
          <ColumnConstraints />
          <ColumnConstraints prefWidth="500.0" />
       </columnConstraints>
-      <rowConstraints>
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-      </rowConstraints>
    </GridPane>
 </VBox>
