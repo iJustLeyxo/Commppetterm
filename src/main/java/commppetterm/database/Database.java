@@ -112,7 +112,7 @@ public final class Database {
     /**
      * @return {@code true} if the database has been connected
      */
-    public boolean connected() { return this.connection != null && this.statement != null; }
+    public boolean connected() { return this.connection != null && this.statement != null && !this.database.isEmpty() && !this.table.isEmpty(); }
 
     /**
      * @return the database urö
