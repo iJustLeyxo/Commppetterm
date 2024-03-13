@@ -94,7 +94,7 @@ public final class MonthPage extends PageController {
                         App.get().date(date);
                         Calendar.get().swap(new DayPage());
                     } catch (Exception e) {
-                        App.get().logger.severe(e.toString());
+                        App.get().LOGGER.severe(e.toString());
                         e.printStackTrace(System.out);
                     }
                 }
@@ -119,7 +119,7 @@ public final class MonthPage extends PageController {
                     try {
                         Calendar.get().swap(page);
                     } catch (Exception e) {
-                        App.get().logger.severe(e.toString());
+                        App.get().LOGGER.severe(e.toString());
                         e.printStackTrace(System.out);
                     }
                 }

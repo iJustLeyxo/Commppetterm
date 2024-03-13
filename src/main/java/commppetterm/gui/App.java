@@ -45,22 +45,22 @@ public final class App extends Application {
     /**
      * App name
      */
-    public final String name = "Commppetterm";
+    public final String NAME = "Commppetterm";
 
     /**
      * Application version
      */
-    public final String ver = "0.0.2a";
+    public final String VERSION = "0.0.2a";
 
     /**
      * Application locale
      */
-    public final Locale locale = Locale.GERMANY;
+    public final Locale LOCALE = Locale.GERMANY;
 
     /**
      * Application logger
      */
-    public final Logger logger = Logger.getLogger(App.class.getName());
+    public final Logger LOGGER = Logger.getLogger(App.class.getName());
 
     /**
      * The application stage
@@ -99,12 +99,12 @@ public final class App extends Application {
 
         /* GUI setup */
         this.stage = stage;
-        this.stage.setTitle(this.name);
+        this.stage.setTitle(this.NAME);
         String iconFile = "icon.png";
         URL iconUrl = App.class.getResource(iconFile);
 
         if (iconUrl == null) {
-            this.logger.warning("Failed to load icon " + iconFile + " from " + App.class.getCanonicalName());
+            this.LOGGER.warning("Failed to load icon " + iconFile + " from " + App.class.getCanonicalName());
         } else {
             Image icon = new Image(iconUrl.toString());
             this.stage.getIcons().add(icon);

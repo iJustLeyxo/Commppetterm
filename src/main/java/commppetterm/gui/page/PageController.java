@@ -12,7 +12,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.ToggleButton;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -42,7 +41,7 @@ public abstract class PageController extends Controller {
             }
         }
 
-        this.formatter = dtfBuilder.toFormatter(App.get().locale);
+        this.formatter = dtfBuilder.toFormatter(App.get().LOCALE);
         this.contents = new LinkedList<>();
     }
 

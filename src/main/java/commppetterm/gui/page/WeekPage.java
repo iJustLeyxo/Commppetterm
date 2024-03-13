@@ -10,7 +10,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 
 import javafx.fxml.FXML;
@@ -117,7 +116,7 @@ public final class WeekPage extends PageController {
          * @param date The associated date
          */
         public DayCellController(@NotNull LocalDate date) {
-            super(new Button(date.getDayOfWeek().getDisplayName(TextStyle.SHORT, App.get().locale) + "\n" + date.getDayOfMonth()));
+            super(new Button(date.getDayOfWeek().getDisplayName(TextStyle.SHORT, App.get().LOCALE) + "\n" + date.getDayOfMonth()));
 
             this.element.setMaxSize(Double.MAX_VALUE, 50);
 
@@ -134,7 +133,7 @@ public final class WeekPage extends PageController {
                         App.get().date(date);
                         Calendar.get().swap(new DayPage());
                     } catch (Exception e) {
-                        App.get().logger.severe(e.toString());
+                        App.get().LOGGER.severe(e.toString());
                         e.printStackTrace(System.out);
                     }
                 }
