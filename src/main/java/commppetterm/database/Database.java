@@ -3,6 +3,8 @@ package commppetterm.database;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import commppetterm.database.Entry.Recurrence;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.time.LocalDate;
@@ -21,7 +23,9 @@ public final class Database {
 
     private @NotNull String password = "RhiGnaQxx1";
 
-    private Connector con;
+    private Connection connection;
+
+    private boolean isConnected;
 
     /**
      * Sets the Connector 
@@ -30,8 +34,8 @@ public final class Database {
      */
     public void getConnection() {
         try {
-            this.con = DriverManager.getConnection(link, user, password);
-            return true;
+            this.connection = DriverManager.getConnection(link, user, password);
+            this.isConnected = true;
         } catch (Exception e) {
             this.isConnected = false;
         }
