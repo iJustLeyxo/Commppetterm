@@ -245,11 +245,11 @@ public final class Database {
      * @param entry The entry to delete
      */
     public void delete(@Nullable Entry entry) {
-        String SQLStatement = "DELETE FROM '"+table+"' WHERE";
+        String SQLStatement = "DELETE FROM '" + table + "' WHERE id=" + entry.id + ";";
         try {
-            
+            this.statement.execute(SQLStatement);
         } catch (Exception e) {
-            // TODO: handle exception
+            App.get().LOGGER.warning(e.getMessage());
         }
     }
 }
