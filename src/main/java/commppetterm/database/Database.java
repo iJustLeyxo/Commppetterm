@@ -29,14 +29,14 @@ public final class Database {
     private @NotNull String link = "jdbc:mysql://sql11.freemysqlhosting.net/sql11688847";
 
     /**
-     * Database user
+     * Database user details
      */
-    private @NotNull String user = "sql11688847";
+    private @NotNull String user = "sql11688847", password = "RhiGnaQxx1";
 
     /**
-     * Database password
+     * Database and table names
      */
-    private @NotNull String password = "RhiGnaQxx1";
+    private @NotNull String database = "sql11688847", table = "calendar";
 
     /**
      * Database connection
@@ -110,15 +110,27 @@ public final class Database {
     public @NotNull String password() { return this.user; }
 
     /**
+     * @return the database name
+     */
+    public @NotNull String database() { return this.database; }
+
+    /**
+     * @return the table name
+     */
+    public @NotNull String table() { return this.table; }
+
+    /**
      * Updates the database settings
      * @param link The new database link
      * @param user The new database user
      * @param password The new database password
      */
-    public void settings(@NotNull String link, @NotNull String user, @NotNull String password) {
+    public void settings(@NotNull String link, @NotNull String user, @NotNull String password, @NotNull String database, @NotNull String table) {
         this.link = link;
         this.user = user;
         this.password = password;
+        this.database = database;
+        this.table = table;
     }
 
     /**
