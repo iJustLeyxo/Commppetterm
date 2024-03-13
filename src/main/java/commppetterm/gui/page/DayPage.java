@@ -50,29 +50,28 @@ public final class DayPage extends PageController {
 
         for (Entry entry : App.get().database().dayEntries(App.get().date())) {
             if (entry.on(App.get().date())) {
-                EntryController controller = new EntryController(entry);
-
                 if (entry.end() != null) {
                     if (entry.start().getDayOfYear() < App.get().date().getDayOfYear() || entry.start().getYear() < App.get().date().getYear()) {
                         rowStart = 0;
                     } else {
-                        rowStart = entry.start().getHour() * 60 + entry.start().getMinute();
+                        rowStart = entry.start().getHour() + entry.start().getMinute() % 30;
                     }
 
                     if (entry.start().getDayOfYear() > App.get().date().getDayOfYear() || entry.start().getYear() > App.get().date().getYear()) {
-                        rowSpan = (24 * 60) - rowStart;
+                        rowSpan = 24 - rowStart;
                     } else {
-                        rowSpan = (entry.end().getHour() * 60 + entry.end().getMinute()) - rowStart;
+                        rowSpan = entry.end().getHour() + entry.end().getMinute() % 30 - rowStart;
                     }
                 } else {
                     rowStart = 0;
-                    rowSpan = (24 * 60);
+                    rowSpan = 24;
                 }
 
                 rowStart += rowOffset;
 
                 // TODO: Detect full day entries
 
+                EntryController controller = new EntryController(entry);
                 this.grid.add(controller.load(), colStep, rowStart, 1, rowSpan);
                 this.contents.add(controller.parent());
                 colStep++;

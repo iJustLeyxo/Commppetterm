@@ -66,27 +66,26 @@ public final class WeekPage extends PageController {
             /* Generate entries */
             for (Entry entry : App.get().database().dayEntries(iter)) {
                 if (entry.on(iter)) {
-                    EntryController controller  = new EntryController(entry);
-
                     if (entry.end() != null) {
                         if (entry.start().toLocalDate().isBefore(iter)) {
                             rowStart = 0;
                         } else {
-                            rowStart = entry.start().getHour() * 60 + entry.start().getMinute();
+                            rowStart = entry.start().getHour() + entry.start().getMinute() % 30;
                         }
 
                         if (entry.end().toLocalDate().isAfter(iter)) {
-                            rowSpan = (24 * 60) - rowStart;
+                            rowSpan = 24 - rowStart;
                         } else {
-                            rowSpan = (entry.end().getHour() * 60 + entry.end().getMinute()) - rowStart;
+                            rowSpan = entry.end().getHour() + entry.end().getMinute() % 30 - rowStart;
                         }
                     } else {
                         rowStart = 31;
-                        rowSpan = (24 * 60);
+                        rowSpan = 24;
                     }
 
                     rowStart += rowOffset;
 
+                    EntryController controller  = new EntryController(entry);
                     this.entries.add(controller.load(), colStep + colSpan, rowStart, 1, rowSpan);
                     this.contents.add(controller.parent());
                     colSpan++;
