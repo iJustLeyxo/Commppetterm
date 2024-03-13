@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
+import java.sql.SQLException;
+
 /**
  * Settings controller
  */
@@ -27,9 +29,10 @@ public final class Settings extends Controller {
     }
 
     @FXML
-    private void save() {
+    private void save() throws SQLException {
         App.get().database().settings(this.link.getText(), this.user.getText(), this.password.getText());
-        App.get().database().generate();
+        App.get().database().connect();
+        if (App.get().database().)
         App.get().controller(new Calendar());
     }
 

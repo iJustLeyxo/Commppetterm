@@ -7,6 +7,7 @@ import commppetterm.database.Entry.Recurrence;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -53,31 +54,36 @@ public final class Database {
      * Initialize a new database
      */
     public Database() {
-        generate();
+        this.connection = null;
+        connect();
     }
 
     /**
-     * Generates the database and table
+     * Connects to the database
      */
-    public void generate() {
+    public void connect() {
+        try {
+            this.connection = DriverManager.getConnection(link, user, password);
+            this.statement = this.connection.createStatement();
+        } catch (SQLException ignored) {}
+
         // TODO: Generate database
     }
 
     /**
-     * Sets the Connector
-     * 
-     * @param con Connector
-     * @return Succsess of the Conection
+     * Disconnects from the database
+     *
      */
-    public void getConnection() {
-        try {
-            this.connection = DriverManager.getConnection(link, user, password);
-            this.statement = this.connection.createStatement();
-            this.isConnected = true;
-        } catch (Exception e) {
-            this.isConnected = false;
+    public void disconnect() throws SQLException {
+        if (this.connection != null) {
+            this.connection.close();
         }
     }
+
+    /**
+     * @return {@code true} if the database has been connected
+     */
+    public boolean connected() { return this.connection != null && this.statement != null; }
 
     /**
      * @return the database urö
@@ -158,7 +164,6 @@ public final class Database {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
         String Time_Start = dtf.format(entry.start());
         String Time_Ende = dtf.format(entry.end());
-        getConnection();
         if (this.isConnected == true) {
             String SQLStament = "INSERT INTO `Termine`(`Name`, `Wiederholung`, `Farbe`, `DatumStart`, `DatumEnde`, `Notiz`, `Ort`, `Benutzer`) VALUES ('" + entry.title() + "', '"
                     + Wiederholung + "', '0', '" + Time_Start + "', '" + Time_Ende + "', '" + entry.info()
