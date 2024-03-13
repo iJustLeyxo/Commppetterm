@@ -44,6 +44,7 @@ public final class DayPage extends PageController {
         this.contents.clear();
 
         /* Generate entries */
+        Parent parent;
         int colStep = 1;
         int rowOffset = 0;
         int rowStart, rowSpan;
@@ -71,9 +72,9 @@ public final class DayPage extends PageController {
 
                 // TODO: Detect full day entries
 
-                EntryController controller = new EntryController(entry);
-                this.grid.add(controller.load(), colStep, rowStart, 1, rowSpan);
-                this.contents.add(controller.parent());
+                parent = new EntryController(entry).load();
+                this.contents.add(parent);
+                this.grid.add(parent, colStep, rowStart, 1, rowSpan);
                 colStep++;
             }
         }

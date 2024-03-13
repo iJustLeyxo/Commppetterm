@@ -2,6 +2,7 @@ package commppetterm.gui.page;
 
 import java.time.LocalDate;
 import java.time.format.TextStyle;
+import java.util.LinkedList;
 import java.util.List;
 
 import commppetterm.database.Entry;
@@ -84,9 +85,9 @@ public final class WeekPage extends PageController {
 
                     rowStart += rowOffset;
 
-                    EntryController controller  = new EntryController(entry);
-                    this.entries.add(controller.load(), colStep + colSpan, rowStart, 1, rowSpan);
-                    this.contents.add(controller.parent());
+                    parent = new EntryController(entry).load();
+                    this.contents.add(parent);
+                    this.entries.add(parent, colStep + colSpan, rowStart, 1, rowSpan);
                     colSpan++;
                 }
             }
