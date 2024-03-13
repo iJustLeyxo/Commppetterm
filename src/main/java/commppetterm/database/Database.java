@@ -159,26 +159,43 @@ public final class Database {
      */
     public List<Entry> dayEntries(LocalDate date) {
         LinkedList<Entry> entries = new LinkedList<>();
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String Time = dtf.format(date); 
-        String Timenegativ = dtf.format(date.minusDays(1));
-        if(this.connected()){
-            String SQLStatement = "SELECT * FROM `Termine` WHERE DatumStart<='" + Time + "' AND DatumEnde>='" + Timenegativ + "'";
-            try {
-                ResultSet result = statement.executeQuery(SQLStatement);
-                DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
-                while (result.next()) {
-                    
-                    LocalDateTime Time_Start = LocalDateTime.parse(result.getString("DatumStart"), dtf2);
-                    LocalDateTime Time_Ende = LocalDateTime.parse(result.getString("DatumEnde"), dtf2);
-                    entries.add(new Entry(result.getString("Name"), result.getString("Notiz"), Time_Start, Time_Ende, null, result.getLong("TerimNr")));
-                }  
-            } catch (Exception e) {
-                System.out.println("Konnte keine ergebnisse laden:" + e);
-            }
-        }else{
+        DateTimeFormatter queryFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+        String endPoint = queryFormatter.format(date) + " 23:59:99";
+        String startTime = queryFormatter.format(date) + " 00:00:00";
+
+        if (this.connected()) {
+            try {
+                String sql = "SELECT * FROM " + this.table + " WHERE start <= '" + endPoint + "' AND end >= '" + startTime + "';";
+                ResultSet result = statement.executeQuery(sql);
+
+                DateTimeFormatter resultFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+                while (result.next()) {
+                    LocalDateTime start = LocalDateTime.parse(result.getString("start"), resultFormatter);
+                    LocalDateTime end = LocalDateTime.parse(result.getString("end"), resultFormatter);
+                    Entry.Recurring recurring = null;
+                    Entry.Recurring.Type recurringType = null;
+                    byte recurringFrequency = result.getByte("recurringFrequency");
+
+                    switch (result.getString("recurringType")) {
+                        case "YEAR" -> recurringType = Entry.Recurring.Type.YEAR;
+                        case "MONTH" -> recurringType = Entry.Recurring.Type.MONTH;
+                        case "WEEK" -> recurringType = Entry.Recurring.Type.WEEK;
+                        case "DAY" -> recurringType = Entry.Recurring.Type.DAY;
+                    }
+
+                    if (recurringType != null) {
+                        recurring = new Entry.Recurring(recurringType, recurringFrequency);
+                    }
+
+                    entries.add(new Entry(result.getLong("id"), result.getString("title"), result.getString("info"), start, end, null));
+                }  
+            } catch (SQLException e) {
+                App.get().LOGGER.warning(e.getMessage());
+            }
         }
+
         return entries;
     }
 

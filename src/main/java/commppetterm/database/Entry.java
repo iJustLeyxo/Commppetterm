@@ -16,29 +16,11 @@ import java.time.LocalDateTime;
  * @param recurring Entry recurring profile
  */
 public record Entry(
+        @Nullable Long id,
         @NotNull String title, @NotNull String info,
         @NotNull LocalDateTime start, @Nullable LocalDateTime end,
-        @Nullable Entry.Recurrence recurring, Long id
+        @Nullable Entry.Recurring recurring
 ) {
-    /**
-     * Creates a new entry
-     * @param title Title text
-     * @param info Info Text
-     * @param start Start time
-     * @param end End time
-     * @param recurring Recurrence profile
-     */
-    public Entry(@NotNull String title, @NotNull String info,
-                 @NotNull LocalDateTime start, @Nullable LocalDateTime end,
-                 @Nullable Entry.Recurrence recurring, @Nullable Long id) {
-        this.title = title;
-        this.info = info;
-        this.start = start;
-        this.end = end;
-        this.recurring = recurring;
-        this.id = id;
-    }
-
     /**
      * @return the entry title
      */
@@ -62,7 +44,7 @@ public record Entry(
     /**
      * @return the entry recurring profile
      */
-    public Recurrence recurring() { return this.recurring; }
+    public Recurring recurring() { return this.recurring; }
 
     /**
      * @return the entry id
@@ -74,17 +56,7 @@ public record Entry(
      * @param type Repeat timeframe
      * @param frequency Space between repetitions
      */
-    public record Recurrence(@NotNull Type type, byte frequency) {
-        /**
-         * Creates a new recurring profile
-         * @param type  Repeat timeframe
-         * @param frequency Repetition frequency
-         */
-        public Recurrence(@NotNull Type type, byte frequency) {
-            this.type = type;
-            this.frequency = frequency;
-        }
-
+    public record Recurring(@NotNull Type type, byte frequency) {
         /**
          * Repeat timeframe
          */

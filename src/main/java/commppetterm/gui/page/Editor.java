@@ -220,18 +220,18 @@ public final class Editor extends Controller {
      */
     private @NotNull Entry entry() throws URLNotFoundException, FxmlLoadException, DateTimeException {
         /* Recurring */
-        Entry.Recurrence recurrence = null;
+        Entry.Recurring recurring = null;
 
         if (this.recurring.isSelected()) {
-            Entry.Recurrence.Type type;
+            Entry.Recurring.Type type;
             if (this.yearly.isSelected()) {
-                type = Entry.Recurrence.Type.YEAR;
+                type = Entry.Recurring.Type.YEAR;
             } else if (this.monthly.isSelected()) {
-                type = Entry.Recurrence.Type.MONTH;
+                type = Entry.Recurring.Type.MONTH;
             } else if (this.weekly.isSelected()) {
-                type = Entry.Recurrence.Type.WEEK;
+                type = Entry.Recurring.Type.WEEK;
             } else {
-                type = Entry.Recurrence.Type.DAY;
+                type = Entry.Recurring.Type.DAY;
             }
             byte freq = Byte.parseByte(this.frequency.getText());
 
@@ -239,7 +239,7 @@ public final class Editor extends Controller {
                 throw new EditorException("Negative recurrence frequency is not allowed.");
             }
 
-            recurrence = new Entry.Recurrence(type, freq);
+            recurring = new Entry.Recurring(type, freq);
         }
 
         LocalDate startDate, endDate;
@@ -300,12 +300,12 @@ public final class Editor extends Controller {
 
         /* Generate entry */
         return new Entry(
+                id,
                 this.title.getText(),
                 this.info.getText(),
                 LocalDateTime.of(startDate, startTime),
                 LocalDateTime.of(endDate, endTime),
-                recurrence,
-                id
+                recurring
         );
     }
 
