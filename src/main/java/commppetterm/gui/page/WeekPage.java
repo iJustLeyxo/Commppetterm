@@ -95,13 +95,15 @@ public final class WeekPage extends PageController {
 
             // TODO: Detect full week events
 
+            if (colSpan == 0) { colSpan = 1; }
+
             /* Generate day cell */
             parent = new DayCellController(iter).load();
             this.contents.add(parent);
-            this.grid.add(parent, colStep, 0, colSpan + 1, 1);
+            this.grid.add(parent, colStep, 0, colSpan, 1);
 
             /* Increment iterators */
-            colStep = colStep + colSpan + 1;
+            colStep = colStep + colSpan;
             colSpan = 0;
             iter = iter.plusDays(1);
         } while (iter.getDayOfWeek().getValue() != 1);
@@ -117,6 +119,8 @@ public final class WeekPage extends PageController {
          */
         public DayCellController(@NotNull LocalDate date) {
             super(new Button(date.getDayOfWeek().getDisplayName(TextStyle.SHORT, App.get().locale) + "\n" + date.getDayOfMonth()));
+
+            this.element.setMaxSize(Double.MAX_VALUE, 50);
 
             if (date.equals(LocalDate.now())) {
                 this.element.getStyleClass().addAll("cell");

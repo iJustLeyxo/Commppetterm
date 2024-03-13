@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.GridPane?>
 
 <?import javafx.scene.layout.ColumnConstraints?>
-<GridPane fx:id="grid" hgap="5.0" alignment="CENTER_LEFT" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="grid" hgap="5.0" alignment="CENTER" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <Label text="01:00" GridPane.rowIndex="31" GridPane.rowSpan="60" />
     <Label text="02:00" GridPane.rowIndex="91" GridPane.rowSpan="60" />
     <Label text="03:00" GridPane.rowIndex="151" GridPane.rowSpan="60" />

@@ -29,6 +29,6 @@
     <Label text="22:00" GridPane.rowIndex="1291" GridPane.rowSpan="60" />
     <Label text="23:00" GridPane.rowIndex="1331" GridPane.rowSpan="60" />
     <columnConstraints>
-      <ColumnConstraints prefWidth="50.0" />
+        <ColumnConstraints prefWidth="50.0" />
     </columnConstraints>
 </GridPane>
