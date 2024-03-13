@@ -2,11 +2,12 @@ package commppetterm.gui.page;
 
 import java.time.LocalDate;
 import java.time.format.TextStyle;
-import java.util.LinkedList;
 import java.util.List;
 
 import commppetterm.database.Entry;
 import commppetterm.gui.App;
+import commppetterm.gui.exception.FxmlLoadException;
+import commppetterm.gui.exception.URLNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
@@ -24,10 +25,10 @@ public final class WeekPage extends PageController {
     @FXML
     private GridPane entries;
 
-    @Override
-    protected void init() {
-        this.reload();
-    }
+    /**
+     * Initializes a new week page
+     */
+    public WeekPage() throws URLNotFoundException, FxmlLoadException {}
 
     @Override
     @NotNull LocalDate prev(@NotNull LocalDate date) {
@@ -85,7 +86,7 @@ public final class WeekPage extends PageController {
 
                     rowStart += rowOffset;
 
-                    parent = new EntryController(entry).load();
+                    parent = new EntryController(entry).parent();
                     this.contents.add(parent);
                     this.entries.add(parent, colStep + colSpan, rowStart, 1, rowSpan);
                     colSpan++;
@@ -97,7 +98,7 @@ public final class WeekPage extends PageController {
             if (colSpan == 0) { colSpan = 1; }
 
             /* Generate day cell */
-            parent = new DayCellController(iter).load();
+            parent = new DayCellController(iter).parent();
             this.contents.add(parent);
             this.entries.add(parent, colStep, 0, colSpan, 1);
 

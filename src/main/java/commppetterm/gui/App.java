@@ -9,7 +9,6 @@ import commppetterm.database.Database;
 import commppetterm.database.Entry;
 import org.jetbrains.annotations.NotNull;
 
-import commppetterm.gui.exception.ControllerLoadedException;
 import commppetterm.gui.exception.FxmlLoadException;
 import commppetterm.gui.exception.URLNotFoundException;
 import commppetterm.gui.page.Calendar;
@@ -92,7 +91,7 @@ public final class App extends Application {
      * @param stage Application stage
      */
     @Override
-    public void start(@NotNull Stage stage) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+    public void start(@NotNull Stage stage) throws URLNotFoundException, FxmlLoadException {
         /* Configs */
         app = this;
         this.database = new Database();
@@ -153,8 +152,8 @@ public final class App extends Application {
      * Swaps to a controller
      * @param controller The controller to swap to
      */
-    public void controller(@NotNull Controller controller) throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        this.stage.setScene(new Scene(controller.load()));
+    public void controller(@NotNull Controller controller) throws URLNotFoundException, FxmlLoadException {
+        this.stage.setScene(new Scene(controller.parent()));
         this.controller = controller;
     }
 }

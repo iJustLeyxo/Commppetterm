@@ -22,8 +22,10 @@ public final class DayPage extends PageController {
     @FXML
     private GridPane grid;
 
-    @Override
-    protected void init() {
+    /**
+     * Initializes a new day page
+     */
+    public DayPage() {
         this.reload();
     }
 
@@ -72,7 +74,7 @@ public final class DayPage extends PageController {
 
                 // TODO: Detect full day entries
 
-                parent = new EntryController(entry).load();
+                parent = new EntryController(entry).parent();
                 this.contents.add(parent);
                 this.grid.add(parent, colStep, rowStart, 1, rowSpan);
                 colStep++;

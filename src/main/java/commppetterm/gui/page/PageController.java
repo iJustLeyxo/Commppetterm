@@ -8,6 +8,8 @@ import java.util.List;
 
 import commppetterm.database.Entry;
 import commppetterm.gui.App;
+import commppetterm.gui.exception.FxmlLoadException;
+import commppetterm.gui.exception.URLNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
@@ -31,7 +33,7 @@ public abstract class PageController extends Controller {
     /**
      * Creates a new page
      */
-    public PageController() {
+    public PageController() throws URLNotFoundException, FxmlLoadException {
         DateTimeFormatterBuilder dtfBuilder = new DateTimeFormatterBuilder();
 
         for (DtfElement e : this.formatting()) {
@@ -55,7 +57,7 @@ public abstract class PageController extends Controller {
     /**
      * Generates the contents of the page
      */
-    protected void reload() {};
+    protected void reload() {}
 
     /**
      * Jumps to the previous timeframe of the page
@@ -79,14 +81,14 @@ public abstract class PageController extends Controller {
      */
     public record DtfElement(@NotNull Type type, @NotNull String contents) {
         public enum Type {
-            LITERAL, PATTERN;
+            LITERAL, PATTERN
         }
     }
 
     /**
      * Controller for cells
      */
-    public abstract static class CellController extends Controller {
+    public abstract static class CellController implements Provider {
         /**
          * Cell button
          */
@@ -99,8 +101,7 @@ public abstract class PageController extends Controller {
             this.element = element;
         }
 
-        @Override
-        public @NotNull Parent load() {
+        public @NotNull Parent parent() {
             return this.element;
         }
     }
@@ -116,7 +117,7 @@ public abstract class PageController extends Controller {
         public EntryController(@NotNull Entry entry) {
             super(new Button(entry.title()));
 
-            ((Button) this.element).setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            this.element.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
             this.element.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
