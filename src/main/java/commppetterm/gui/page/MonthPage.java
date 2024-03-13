@@ -90,9 +90,9 @@ public final class MonthPage extends PageController {
             this.element.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    DayPage page = new DayPage();
                     try {
-                        Calendar.get().swap(page);
+                        App.get().date(date);
+                        Calendar.get().swap(new DayPage());
                     } catch (Exception e) {
                         App.get().logger.severe(e.toString());
                         e.printStackTrace(System.out);

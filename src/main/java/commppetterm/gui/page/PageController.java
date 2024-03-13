@@ -117,6 +117,8 @@ public abstract class PageController extends Controller {
         public EntryController(@NotNull Entry entry) {
             super(new Button(entry.title()));
 
+            ((Button) this.element).setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
             this.element.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {

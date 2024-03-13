@@ -1,6 +1,8 @@
 package commppetterm.gui.page;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.TextStyle;
 import java.util.List;
 
@@ -59,33 +61,36 @@ public final class WeekPage extends PageController {
         Parent parent;
         int colStep = 1;
         int colSpan = 0;
+        int rowStart;
+        int rowSpan;
 
         do {
             /* Generate entries */
             for (Entry entry : App.get().database().dayEntries(iter)) {
-                EntryController controller  = new EntryController(entry);
-                int rowStart, rowSpan;
+                if (entry.on(iter)) {
+                    EntryController controller  = new EntryController(entry);
 
-                if (entry.end() != null) {
-                    if (entry.start().toLocalDate().isBefore(App.get().date())) {
+                    if (entry.end() != null) {
+                        if (entry.start().toLocalDate().isBefore(iter)) {
+                            rowStart = 1;
+                        } else {
+                            rowStart = entry.start().getHour() * 60 + entry.start().getMinute() + 1;
+                        }
+
+                        if (entry.end().toLocalDate().isAfter(iter)) {
+                            rowSpan = (24 * 60 + 1) - rowStart;
+                        } else {
+                            rowSpan = (entry.end().getHour() * 60 + entry.end().getMinute() + 1) - rowStart;
+                        }
+                    } else {
                         rowStart = 1;
-                    } else {
-                        rowStart = entry.start().getHour() * 60 + entry.start().getMinute() + 1;
+                        rowSpan = (24 * 60);
                     }
 
-                    if (entry.end().toLocalDate().isAfter(App.get().date())) {
-                        rowSpan = (24 * 60 + 1) - rowStart;
-                    } else {
-                        rowSpan = (entry.end().getHour() * 60 + entry.end().getMinute() + 1) - rowStart;
-                    }
-                } else {
-                    rowStart = 1;
-                    rowSpan = (24 * 60);
+                    this.grid.add(controller.load(), colStep + colSpan, rowStart, 1, rowSpan);
+                    this.contents.add(controller.parent());
+                    colSpan++;
                 }
-
-                this.grid.add(controller.load(), colStep + rowSpan, rowStart, 1, rowSpan);
-                this.contents.add(controller.parent());
-                colSpan++;
             }
 
             // TODO: Detect full week events
@@ -122,9 +127,9 @@ public final class WeekPage extends PageController {
             this.element.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    DayPage page = new DayPage();
                     try {
-                        Calendar.get().swap(page);
+                        App.get().date(date);
+                        Calendar.get().swap(new DayPage());
                     } catch (Exception e) {
                         App.get().logger.severe(e.toString());
                         e.printStackTrace(System.out);

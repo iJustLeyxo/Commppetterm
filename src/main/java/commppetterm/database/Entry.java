@@ -98,22 +98,15 @@ public record Entry(
      */
     public boolean on(LocalDate date) {
         LocalDate startDate = start.toLocalDate();
-        LocalDate endDate = null;
 
         if (this.end != null) {
-            endDate = end.toLocalDate();
+            LocalDate endDate = this.end.toLocalDate();
+
+            return (!(startDate.isAfter(date) || endDate.isBefore(date)));
+        } else {
+            return this.start.toLocalDate().isEqual(date);
         }
 
-        if (this.recurring == null) {
-            if (endDate != null) {
-                return (startDate.isBefore(date) || startDate.isEqual(date)) &&
-                        (endDate.isAfter(date) || endDate.isEqual(date));
-            } else {
-                return this.start.toLocalDate().isEqual(date);
-            }
-        } else {
-            // TODO: Add detection for repeating events
-            return false;
-        }
+        // TODO: Add recurring logic
     }
 }

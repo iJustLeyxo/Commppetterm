@@ -4,7 +4,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -36,7 +38,10 @@ public final class Database {
      */
     public List<Entry> dayEntries(LocalDate date) {
         // TODO: Fetch relevant entries of date, also recurring ones
-        return new ArrayList<>();
+
+        LinkedList<Entry> entries = new LinkedList<>();
+        entries.add(new Entry("Test Title", "Test Info", LocalDateTime.of(2024, 3, 13, 0, 0), LocalDateTime.of(2024, 3, 13, 23, 59), null, 0L));
+        return entries;
     }
 
     /**
