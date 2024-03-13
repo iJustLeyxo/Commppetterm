@@ -89,6 +89,24 @@ public record Entry(
          * Repeat timeframe
          */
         public enum Type { YEAR, MONTH, WEEK, DAY; }
+
+        /**
+         * Methode zur Rückgabe des Typs der Wiederholung
+         *
+         * @return der Typ der Wiederholung
+         */
+        public Type getType() {
+            return type;
+        }
+
+        /**
+         * Methode zur Rückgabe der Frequenz
+         *
+         * @return die Frequenz
+         */
+        public byte getFrequency() {
+            return frequency;
+        }
     }
 
     /**
