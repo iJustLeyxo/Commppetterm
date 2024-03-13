@@ -68,7 +68,15 @@ public final class Database {
             this.statement = this.connection.createStatement();
         } catch (SQLException ignored) {}
 
-        // TODO: Generate database
+        String SQLStatement = "Create Database if not exists " + NameDatabase;
+        try {
+            this.statement.execute(SQLStatement);
+            SQLStatement = "Create table if not exists " + 
+            NameTable +
+            "(title TEXT NOT NULL, info TEXT NOT NULL, start DATETIME NOT NULL, end DATETIME, type TEXT CHECK(recurring IN (null, 'YEAR', 'MONTH', 'WEEK', 'DAY'), id INTEGER PRIMARY KEY);";
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
 
     /**
@@ -206,20 +214,4 @@ public final class Database {
         // TODO: Delete entry
     }
 
-    /**
-     * Creates a Database 
-     * @param NameDatabase Name of the Database
-     * @param NameTabelle  Name of the Table
-     */
-    public void CreateDatabase(String NameDatabase, String NameTable){
-        String SQLStatement = "Create Database if not exists " + NameDatabase;
-        try {
-            this.statement.execute(SQLStatement);
-            SQLStatement = "Create table if not exists " + 
-            NameTable +
-            "(title TEXT NOT NULL, info TEXT NOT NULL, start DATETIME NOT NULL, end DATETIME, type TEXT, id INTEGER PRIMARY KEY);";
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
-    }
 }
