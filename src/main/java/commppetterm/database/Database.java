@@ -68,11 +68,11 @@ public final class Database {
             this.statement = this.connection.createStatement();
         } catch (SQLException ignored) {}
 
-        String SQLStatement = "Create Database if not exists " + NameDatabase;
+        String SQLStatement = "Create Database if not exists " + this.database;
         try {
             this.statement.execute(SQLStatement);
             SQLStatement = "Create table if not exists " + 
-            NameTable +
+            this.table +
             "(title TEXT NOT NULL, info TEXT NOT NULL, start DATETIME NOT NULL, end DATETIME, type TEXT CHECK(recurring IN (null, 'YEAR', 'MONTH', 'WEEK', 'DAY'), id INTEGER PRIMARY KEY);";
         } catch (Exception e) {
             // TODO: handle exception
