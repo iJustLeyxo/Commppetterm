@@ -1,5 +1,7 @@
 package commppetterm.database;
 
+import commppetterm.gui.App;
+import commppetterm.gui.page.Settings;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -124,7 +126,7 @@ public final class Database {
      * @param date The day to fetch the entries of
      * @return a list of entries
      */
-    public List<Entry> dayEntries(LocalDate date) throws SQLException {
+    public List<Entry> dayEntries(LocalDate date) {
         LinkedList<Entry> entries = new LinkedList<>();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String Time = dtf.format(date); 
@@ -171,32 +173,36 @@ public final class Database {
      * @param entry The entry to create or edit
      */
     public void save(@Nullable Entry entry) {
-        int Wiederholung = 0;
-        if (entry.recurring()!=null){
-            if (entry.recurring().type() == Recurrence.Type.DAY) {
-                Wiederholung = (int) entry.recurring().frequency();
-            } else if (entry.recurring().type() == Recurrence.Type.WEEK) {
-                Wiederholung = (int) entry.recurring().frequency() * 7;
-            } else if (entry.recurring().type() == Recurrence.Type.MONTH) {
-                Wiederholung = (int) entry.recurring().frequency() * 31;
-            } else if (entry.recurring().type() == Recurrence.Type.YEAR) {
-                Wiederholung = (int) entry.recurring().frequency() * 365;
-            }
+        if (entry == null || !this.connected()) {
+            App.get().controller(new Settings());
+            return;
         }
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
-        String Time_Start = dtf.format(entry.start());
-        String Time_Ende = dtf.format(entry.end());
-        if (this.connected()) {
-            String SQLStatement = "INSERT INTO `Termine`(`Name`, `Wiederholung`, `Farbe`, `DatumStart`, `DatumEnde`, `Notiz`, `Ort`, `Benutzer`) VALUES ('" + entry.title() + "', '"
-                    + Wiederholung + "', '0', '" + Time_Start + "', '" + Time_Ende + "', '" + entry.info()
-                    + "', 'Null', '0')";
-            try {
-                this.statement.execute(SQLStatement);
-            } catch (Exception e) {
-                System.out.println("Konnte eintrag nicht Speichern: " + e);
-            }
-        } else {
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        String title = entry.title();
+        String info = entry.info();
+        String start = formatter.format(entry.start());
+        String end = formatter.format(entry.end());
+        String recurringType = "NULL";
+        String recurringFrequency = "1";
+
+        if (entry.recurring() != null) {
+            recurringType = entry.recurring().type().toString();
+            recurringFrequency = Integer.toString(entry.recurring().frequency());
+        }
+
+        try {
+            String SQLStatement = "INSERT INTO Termine (" +
+                    "Name, Notiz, DatumStart, DatumEnde, Wiederholung, Farbe, Ort, Benutzer" +
+                    ") VALUES ('" +
+                    title + "', '" +
+                    info + "', '" +
+                    start + "', '" +
+                    end + "', '" +
+                    recurringFrequency + "', '0', 'Null', '0')";
+            this.statement.execute(SQLStatement);
+        } catch (SQLException e) {
+            App.get().LOGGER.warning(e.getMessage());
         }
     }
 
