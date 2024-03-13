@@ -216,16 +216,15 @@ public final class Database {
                         recurringType + "', '" +
                         recurringFrequency + "')";
             } else {
-                sql = "INSERT INTO " + this.table + " (" +
-                        "id, title, info, start, end, recurringType, recurringFrequency" +
-                        ") VALUES ('" +
-                        id + "', '" +
-                        title + "', '" +
-                        info + "', '" +
-                        start + "', '" +
-                        end + "', '" +
-                        recurringType + "', '" +
-                        recurringFrequency + "')";
+                sql = "UPDATE " + this.table + " SET" +
+                        " title = " + title +
+                        " info = " + info +
+                        " start = " + start +
+                        " end = " + end +
+                        " recurringType = " + recurringType +
+                        " recurringFrequency = " + recurringFrequency +
+                        " WHERE" +
+                        " id = " + id + ";";
             }
             this.statement.execute(sql);
         } catch (SQLException e) {
