@@ -24,16 +24,16 @@ public class Connector {
 	 * @param userID
 	 */
 
-	Integer appointmentID;
-	String title;
-	Integer repetition;
-	Integer rgb;
-	LocalDate appointmentDate;
-	LocalTime appointmentStart;
-	LocalTime appointmentEnd;
-	String note;
-	String location;
-	Integer userID;
+	private Integer appointmentID;
+	private String title;
+	private Integer repetition;
+	private Integer rgb;
+	private LocalDate appointmentDate;
+	private LocalTime appointmentStart;
+	private LocalTime appointmentEnd;
+	private String note;
+	private String location;
+	private Integer userID;
 
 	public Connector(Integer id, String title, Integer repetition, int color, CharSequence appointmentDate,
 			CharSequence appointmentStart, CharSequence appointmentEnd, String note, String location, Integer user) {
