@@ -71,13 +71,13 @@ public final class WeekPage extends PageController {
                         if (entry.start().toLocalDate().isBefore(iter)) {
                             rowStart = 0;
                         } else {
-                            rowStart = entry.start().getHour() + entry.start().getMinute() % 30;
+                            rowStart = entry.start().getHour() + entry.start().getMinute() / 30;
                         }
 
                         if (entry.end().toLocalDate().isAfter(iter)) {
                             rowSpan = 24 - rowStart;
                         } else {
-                            rowSpan = entry.end().getHour() + entry.end().getMinute() % 30 - rowStart;
+                            rowSpan = entry.end().getHour() + entry.end().getMinute() / 30 - rowStart;
                         }
                     } else {
                         rowStart = 31;

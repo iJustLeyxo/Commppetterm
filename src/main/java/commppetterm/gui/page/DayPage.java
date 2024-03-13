@@ -2,6 +2,7 @@ package commppetterm.gui.page;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.logging.Logger;
 
 import commppetterm.database.Database;
 import commppetterm.database.Entry;
@@ -57,13 +58,13 @@ public final class DayPage extends PageController {
                     if (entry.start().getDayOfYear() < App.get().date().getDayOfYear() || entry.start().getYear() < App.get().date().getYear()) {
                         rowStart = 0;
                     } else {
-                        rowStart = entry.start().getHour() + entry.start().getMinute() % 30;
+                        rowStart = entry.start().getHour() + entry.start().getMinute() / 30;
                     }
 
-                    if (entry.start().getDayOfYear() > App.get().date().getDayOfYear() || entry.start().getYear() > App.get().date().getYear()) {
+                    if (entry.end().getDayOfYear() > App.get().date().getDayOfYear() || entry.end().getYear() > App.get().date().getYear()) {
                         rowSpan = 24 - rowStart;
                     } else {
-                        rowSpan = entry.end().getHour() + entry.end().getMinute() % 30 - rowStart;
+                        rowSpan = entry.end().getHour() + (entry.end().getMinute() / 30 - rowStart);
                     }
                 } else {
                     rowStart = 0;
