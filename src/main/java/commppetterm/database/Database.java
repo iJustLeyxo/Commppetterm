@@ -218,11 +218,11 @@ public final class Database {
             } else {
                 sql = "UPDATE " + this.table + " SET" +
                         " title = " + title +
-                        " info = " + info +
-                        " start = " + start +
-                        " end = " + end +
-                        " recurringType = " + recurringType +
-                        " recurringFrequency = " + recurringFrequency +
+                        ", info = " + info +
+                        ", start = " + start +
+                        ", end = " + end +
+                        ", recurringType = " + recurringType +
+                        ", recurringFrequency = " + recurringFrequency +
                         " WHERE" +
                         " id = " + id + ";";
             }
