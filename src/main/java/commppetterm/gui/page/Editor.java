@@ -60,12 +60,12 @@ public final class Editor extends Controller {
 
     @FXML
     private void save() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        App.get().database().save(this.generate());
+        App.get().database().save(this.entry());
     }
 
     @FXML
     private void delete() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        App.get().database().delete(this.generate());
+        App.get().database().delete(this.entry());
     }
 
     @FXML
@@ -167,8 +167,8 @@ public final class Editor extends Controller {
 
             boolean end = entry.end() != null;
             boolean recurring = entry.recurring() != null;
-            boolean time = (entry.start().getHour() == 0 && entry.start().getMinute() == 0) &&
-                    (entry.end() == null || (entry.end().getHour() == 23 && entry.end().getMinute() == 59));
+            boolean time = (!(entry.start().getHour() == 0 && entry.start().getMinute() == 0) &&
+                    (entry.end() == null || (entry.end().getHour() == 23 && entry.end().getMinute() == 59)));
 
             this.title.setText(entry.title());
             this.info.setText(entry.info());
@@ -208,8 +208,6 @@ public final class Editor extends Controller {
             this.end.setSelected(end);
             this.time.setSelected(time);
             this.recurring.setSelected(recurring);
-        } else {
-
         }
     }
 
@@ -217,90 +215,86 @@ public final class Editor extends Controller {
      * Generates an entry from the editor contents
      * @return an entry object
      */
-    private @Nullable Entry generate() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
-        try {
-            /* Recurring */
-            Entry.Recurrence recurrence = null;
+    private @NotNull Entry entry() throws ControllerLoadedException, URLNotFoundException, FxmlLoadException {
+        /* Recurring */
+        Entry.Recurrence recurrence = null;
 
-            if (this.recurring.isSelected()) {
-                Entry.Recurrence.Type type;
-                if (this.yearly.isSelected()) {
-                    type = Entry.Recurrence.Type.YEAR;
-                } else if (this.monthly.isSelected()) {
-                    type = Entry.Recurrence.Type.MONTH;
-                } else if (this.weekly.isSelected()) {
-                    type = Entry.Recurrence.Type.WEEK;
-                } else {
-                    type = Entry.Recurrence.Type.DAY;
-                }
-                byte freq = Byte.parseByte(this.frequency.getText());
-                recurrence = new Entry.Recurrence(type, freq);
-            }
-
-            /* Start Date */
-            LocalDate startDate = LocalDate.of(
-                    Integer.parseInt(this.startYear.getText()),
-                    Integer.parseInt(this.startMonth.getText()),
-                    Integer.parseInt(this.startDay.getText())
-            );
-
-            /* Start Time */
-            LocalTime startTime;
-            if (this.time.isSelected()) {
-                startTime = LocalTime.of(
-                        Integer.parseInt(this.startHour.getText()),
-                        Integer.parseInt(this.startMinute.getText())
-                );
+        if (this.recurring.isSelected()) {
+            Entry.Recurrence.Type type;
+            if (this.yearly.isSelected()) {
+                type = Entry.Recurrence.Type.YEAR;
+            } else if (this.monthly.isSelected()) {
+                type = Entry.Recurrence.Type.MONTH;
+            } else if (this.weekly.isSelected()) {
+                type = Entry.Recurrence.Type.WEEK;
             } else {
-                startTime = LocalTime.of(0, 0);
+                type = Entry.Recurrence.Type.DAY;
             }
-
-            /* End Date */
-            LocalDate endDate;
-            if (this.end.isSelected()) {
-                endDate = LocalDate.of(
-                        Integer.parseInt(this.endYear.getText()),
-                        Integer.parseInt(this.endMonth.getText()),
-                        Integer.parseInt(this.endDay.getText())
-                );
-            } else {
-                endDate = startDate;
-            }
-
-            /* End Time */
-            LocalTime endTime;
-            if (this.end.isSelected() && this.time.isSelected()) {
-                endTime = LocalTime.of(
-                        Integer.parseInt(this.endHour.getText()),
-                        Integer.parseInt(this.endMinute.getText())
-                );
-            } else {
-                endTime = LocalTime.of(23, 59);
-            }
-
-            /* ID */
-            Long id;
-            if (this.mode == Mode.EDIT) {
-                assert App.get().entry() != null;
-                id = App.get().entry().id();
-            } else {
-                id = null;
-            }
-
-            App.get().controller(new MonthPage());
-
-            /* Generate entry */
-            return new Entry(
-                    this.title.getText(),
-                    this.info.getText(),
-                    LocalDateTime.of(startDate, startTime),
-                    LocalDateTime.of(endDate, endTime),
-                    recurrence,
-                    id
-            );
-        } catch (NumberFormatException e) {
-            return null;
+            byte freq = Byte.parseByte(this.frequency.getText());
+            recurrence = new Entry.Recurrence(type, freq);
         }
+
+        /* Start Date */
+        LocalDate startDate = LocalDate.of(
+                Integer.parseInt(this.startYear.getText()),
+                Integer.parseInt(this.startMonth.getText()),
+                Integer.parseInt(this.startDay.getText())
+        );
+
+        /* Start Time */
+        LocalTime startTime;
+        if (this.time.isSelected()) {
+            startTime = LocalTime.of(
+                    Integer.parseInt(this.startHour.getText()),
+                    Integer.parseInt(this.startMinute.getText())
+            );
+        } else {
+            startTime = LocalTime.of(0, 0);
+        }
+
+        /* End Date */
+        LocalDate endDate;
+        if (this.end.isSelected()) {
+            endDate = LocalDate.of(
+                    Integer.parseInt(this.endYear.getText()),
+                    Integer.parseInt(this.endMonth.getText()),
+                    Integer.parseInt(this.endDay.getText())
+            );
+        } else {
+            endDate = startDate;
+        }
+
+        /* End Time */
+        LocalTime endTime;
+        if (this.end.isSelected() && this.time.isSelected()) {
+            endTime = LocalTime.of(
+                    Integer.parseInt(this.endHour.getText()),
+                    Integer.parseInt(this.endMinute.getText())
+            );
+        } else {
+            endTime = LocalTime.of(23, 59);
+        }
+
+        /* ID */
+        Long id;
+        if (this.mode == Mode.EDIT) {
+            assert App.get().entry() != null;
+            id = App.get().entry().id();
+        } else {
+            id = null;
+        }
+
+        App.get().controller(new Calendar());
+
+        /* Generate entry */
+        return new Entry(
+                this.title.getText(),
+                this.info.getText(),
+                LocalDateTime.of(startDate, startTime),
+                LocalDateTime.of(endDate, endTime),
+                recurrence,
+                id
+        );
     }
 
     /**
