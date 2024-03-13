@@ -20,11 +20,16 @@ public final class Settings extends Controller {
     /**
      * Creates a new settings controller
      */
-    public Settings() throws URLNotFoundException, FxmlLoadException {}
+    public Settings() throws URLNotFoundException, FxmlLoadException {
+        this.link.setText(App.get().database().link());
+        this.user.setText(App.get().database().user());
+        this.password.setText(App.get().database().password());
+    }
 
     @FXML
     private void save() {
         App.get().database().settings(this.link.getText(), this.user.getText(), this.password.getText());
+        App.get().controller(new Calendar());
     }
 
     @FXML

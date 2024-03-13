@@ -46,6 +46,21 @@ public final class Database {
     }
 
     /**
+     * @return the database urö
+     */
+    public @NotNull String link() { return this.link; }
+
+    /**
+     * @return the database login user
+     */
+    public @NotNull String user() { return this.user; }
+
+    /**
+     * @return the database login password
+     */
+    public @NotNull String password() { return this.user; }
+
+    /**
      * Updates the database settings
      * 
      * @param link     The new database link
@@ -123,6 +138,7 @@ public final class Database {
         } else {
 
         }
+        */
     }
 
     /**

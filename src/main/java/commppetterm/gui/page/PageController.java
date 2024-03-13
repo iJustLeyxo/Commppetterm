@@ -101,6 +101,7 @@ public abstract class PageController extends Controller {
             this.element = element;
         }
 
+        @Override
         public @NotNull Parent parent() {
             return this.element;
         }

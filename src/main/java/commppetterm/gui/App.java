@@ -26,7 +26,7 @@ public final class App extends Application {
     /**
      * The gui handler class
      */
-    private static App app;
+    private static @Nullable App app;
 
     /**
      * Returns the gui handler class
@@ -44,37 +44,37 @@ public final class App extends Application {
     /**
      * App name
      */
-    public final String NAME = "Commppetterm";
+    public final @NotNull String NAME = "Commppetterm";
 
     /**
      * Application version
      */
-    public final String VERSION = "0.0.2a";
+    public final @NotNull String VERSION = "0.0.2a";
 
     /**
      * Application locale
      */
-    public final Locale LOCALE = Locale.GERMANY;
+    public final @NotNull Locale LOCALE = Locale.GERMANY;
 
     /**
      * Application logger
      */
-    public final Logger LOGGER = Logger.getLogger(App.class.getName());
+    public final @NotNull Logger LOGGER = Logger.getLogger(App.class.getName());
 
     /**
      * The application stage
      */
-    private Stage stage;
+    private @Nullable Stage stage;
 
     /**
      * Database interface
      */
-    private Database database;
+    private final @Nullable Database database;
 
     /**
      * Current controller
      */
-    private Controller controller;
+    private @Nullable Controller controller;
 
     /**
      * Gui date
@@ -87,15 +87,19 @@ public final class App extends Application {
     private @Nullable Entry entry = null;
 
     /**
+     * Initializes a new app
+     */
+    public App() {
+        app = this;
+        this.database = new Database();
+    }
+
+    /**
      * Initialize the stage
      * @param stage Application stage
      */
     @Override
     public void start(@NotNull Stage stage) throws URLNotFoundException, FxmlLoadException {
-        /* Configs */
-        app = this;
-        this.database = new Database();
-
         /* GUI setup */
         this.stage = stage;
         this.stage.setTitle(this.NAME);
@@ -153,6 +157,7 @@ public final class App extends Application {
      * @param controller The controller to swap to
      */
     public void controller(@NotNull Controller controller) throws URLNotFoundException, FxmlLoadException {
+        assert this.stage != null;
         this.stage.setScene(new Scene(controller.parent()));
         this.controller = controller;
     }

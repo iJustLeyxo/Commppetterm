@@ -96,7 +96,8 @@ public final class MonthPage extends PageController {
                 public void handle(ActionEvent actionEvent) {
                     try {
                         App.get().date(date);
-                        Calendar.get().swap(new DayPage());
+                        assert App.get().controller() != null;
+                        ((Calendar) App.get().controller()).swap(new DayPage());
                     } catch (Exception e) {
                         App.get().LOGGER.severe(e.toString());
                         e.printStackTrace(System.out);
@@ -126,7 +127,8 @@ public final class MonthPage extends PageController {
                         throw new RuntimeException(e);
                     }
                     try {
-                        Calendar.get().swap(page);
+                        assert App.get().controller() != null;
+                        ((Calendar) App.get().controller()).swap(page);
                     } catch (Exception e) {
                         App.get().LOGGER.severe(e.toString());
                         e.printStackTrace(System.out);

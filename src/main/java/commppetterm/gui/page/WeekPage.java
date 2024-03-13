@@ -133,7 +133,8 @@ public final class WeekPage extends PageController {
                 public void handle(ActionEvent actionEvent) {
                     try {
                         App.get().date(date);
-                        Calendar.get().swap(new DayPage());
+                        assert App.get().controller() != null;
+                        ((Calendar) App.get().controller()).swap(new DayPage());
                     } catch (Exception e) {
                         App.get().LOGGER.severe(e.toString());
                         e.printStackTrace(System.out);

@@ -37,9 +37,7 @@ public abstract class Controller implements Provider {
         }
     }
 
-    /**
-     * Returns the parent of this controller if loaded
-     */
+    @Override
     public @NotNull Parent parent() { return this.parent; }
 
     /**
