@@ -34,7 +34,7 @@ public final class Database {
     /**
      * Generates the database and table
      */
-    public void create() {
+    public void generate() {
         // TODO: Generate database
     }
 
