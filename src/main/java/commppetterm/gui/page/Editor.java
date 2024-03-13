@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -210,7 +211,7 @@ public final class Editor extends Controller {
      * Generates an entry from the editor contents
      * @return an entry object
      */
-    private @NotNull Entry entry() throws URLNotFoundException, FxmlLoadException {
+    private @NotNull Entry entry() throws URLNotFoundException, FxmlLoadException, DateTimeException {
         /* Recurring */
         Entry.Recurrence recurrence = null;
 
