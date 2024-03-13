@@ -138,7 +138,6 @@ public final class Database {
             String SQLStament = "INSERT INTO `Termine`(`Name`, `Wiederholung`, `Farbe`, `DatumStart`, `DatumEnde`, `Notiz`, `Ort`, `Benutzer`) VALUES ('" + entry.title() + "', '"
                     + Wiederholung + "', '0', '" + Time_Start + "', '" + Time_Ende + "', '" + entry.info()
                     + "', 'Null', '0')";
-            System.out.println(SQLStament);
             try {
                 this.statement.execute(SQLStament);
             } catch (Exception e) {
