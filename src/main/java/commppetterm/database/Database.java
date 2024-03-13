@@ -73,7 +73,7 @@ public final class Database {
             this.statement.execute(SQLStatement);
             SQLStatement = "Create table if not exists " + 
             this.table +
-            "(title TEXT NOT NULL, info TEXT NOT NULL, start DATETIME NOT NULL, end DATETIME, type TEXT CHECK(recurring IN (null, 'YEAR', 'MONTH', 'WEEK', 'DAY'), id INTEGER PRIMARY KEY);";
+            "(title TEXT NOT NULL, info TEXT NOT NULL, start DATETIME NOT NULL, end DATETIME, type TEXT CHECK(recurring IN (null, 'YEAR', 'MONTH', 'WEEK', 'DAY'),frequency INTEGER, id INTEGER PRIMARY KEY);";
         } catch (Exception e) {
             // TODO: handle exception
         }
