@@ -3,6 +3,9 @@ package commppetterm.database;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.sql.Connector;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,11 +16,29 @@ import java.util.List;
  * Database handler
  */
 public final class Database {
-    private @NotNull String link = "defaultLink";
+    private @NotNull String link = "jdbc:mysql://sql11.freemysqlhosting.net/sql11688847";
 
-    private @NotNull String user = "defaultUser";
+    private @NotNull String user = "sql11688847";
 
-    private @NotNull String password = "defaultPassword";
+    private @NotNull String password = "RhiGnaQxx1";
+
+    private Connector con;
+
+    /**
+     * Sets the Connector 
+     * @param con Connector
+     * @return Succsess of the Conection
+     */
+    public boolean getConnection(){
+        try {
+            this.con = DriverManager.getConnection(link, user, password);
+            return true;
+        } catch (Exception e) {
+            System.out.println("There is an error with the SQL database: " + e.getMessage());
+            return false;
+        }
+
+    }
 
     /**
      * Updates the database settings
