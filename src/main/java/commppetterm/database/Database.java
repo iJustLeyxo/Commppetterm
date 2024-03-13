@@ -245,9 +245,13 @@ public final class Database {
      * @param entry The entry to delete
      */
     public void delete(@Nullable Entry entry) {
-        String SQLStatement = "DELETE FROM '" + table + "' WHERE id=" + entry.id + ";";
+        if (entry == null || entry.id() == null) { return; }
+
+        String sql = "DELETE FROM '" + this.table + "' WHERE id=" + entry.id() + ";";
+
         try {
-            this.statement.execute(SQLStatement);
+            assert this.statement != null;
+            this.statement.execute(sql);
         } catch (Exception e) {
             App.get().LOGGER.warning(e.getMessage());
         }
