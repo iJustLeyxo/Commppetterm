@@ -32,7 +32,7 @@ public final class Settings extends Controller {
     private void save() throws SQLException {
         App.get().database().settings(this.link.getText(), this.user.getText(), this.password.getText());
         App.get().database().connect();
-        
+
         if (App.get().database().connected()) {
             App.get().controller(new Calendar());
         }

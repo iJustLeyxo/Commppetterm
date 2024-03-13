@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import commppetterm.database.Database;
 import commppetterm.database.Entry;
+import commppetterm.gui.page.Settings;
 import org.jetbrains.annotations.NotNull;
 
 import commppetterm.gui.exception.FxmlLoadException;
@@ -114,7 +115,13 @@ public final class App extends Application {
             this.stage.getIcons().add(icon);
         }
 
-        this.controller(new Calendar());
+        assert this.database != null;
+        if (this.database.connected()) {
+            this.controller(new Calendar());
+        } else {
+            this.controller(new Settings());
+        }
+
         this.stage.show();
     }
 
