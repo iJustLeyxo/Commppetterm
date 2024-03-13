@@ -109,7 +109,6 @@ public final class Database {
      * @param entry The entry to create or edit
      */
     public void save(@Nullable Entry entry) {
-        // TODO: Update or create entry if it doesn't yet exist
         Integer Wiederholung = 0;
         if (entry.recurring().getType() == Recurrence.Type.DAY) {
             Wiederholung = (int) entry.recurring().getFrequency();
