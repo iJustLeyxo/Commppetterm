@@ -68,21 +68,29 @@ public final class Database {
             this.statement = this.connection.createStatement();
         } catch (SQLException ignored) {}
 
+        String sql;
+
         try {
             assert this.statement != null;
-            String sql;
-            sql = "CREATE DATABASE IF NOT EXISTS " + this.database;
+            sql = "CREATE DATABASE IF NOT EXISTS " + this.database + ";";
             this.statement.execute(sql);
+        } catch (SQLException e) {
+            App.get().LOGGER.warning(e.getMessage());
+        }
+
+        try{
             sql = "CREATE TABLE IF NOT EXISTS " + this.table + "(" +
                     "id INTEGER PRIMARY KEY," +
                     "title TEXT NOT NULL," +
                     "info TEXT NOT NULL," +
                     "start DATETIME NOT NULL," +
                     "end DATETIME," +
-                    "recurringType TEXT CHECK(recurringType IN (null, 'YEAR', 'MONTH', 'WEEK', 'DAY')," +
-                    "recurringFrequency INTEGER));";
+                    "recurringType TEXT CHECK(recurringType IN (null, 'YEAR', 'MONTH', 'WEEK', 'DAY'))," +
+                    "recurringFrequency INTEGER);";
             this.statement.execute(sql);
-        } catch (Exception ignored) {}
+        } catch (SQLException e) {
+            App.get().LOGGER.warning(e.getMessage());
+        }
     }
 
     /**
