@@ -212,7 +212,12 @@ public final class Database {
      * @param entry The entry to delete
      */
     public void delete(@Nullable Entry entry) {
-        // TODO: Delete entry
+        String SQLStatement "";
+        try {
+            
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
 
 }
