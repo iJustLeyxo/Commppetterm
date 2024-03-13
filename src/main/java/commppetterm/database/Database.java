@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -118,25 +119,26 @@ public final class Database {
      */
     public void save(@Nullable Entry entry) {
         Integer Wiederholung = 0;
-        if (entry.recurring().type() == Recurrence.Type.DAY) {
-            Wiederholung = (int) entry.recurring().frequency();
-        } else if (entry.recurring().type() == Recurrence.Type.WEEK) {
-            Wiederholung = (int) entry.recurring().frequency() * 7;
-        } else if (entry.recurring().type() == Recurrence.Type.MONTH) {
-            Wiederholung = (int) entry.recurring().frequency() * 31;
-        } else if (entry.recurring().type() == Recurrence.Type.YEAR) {
-            Wiederholung = (int) entry.recurring().frequency() * 365;
+        if (entry.recurring()!=null){
+            if (entry.recurring().type() == Recurrence.Type.DAY) {
+                Wiederholung = (int) entry.recurring().frequency();
+            } else if (entry.recurring().type() == Recurrence.Type.WEEK) {
+                Wiederholung = (int) entry.recurring().frequency() * 7;
+            } else if (entry.recurring().type() == Recurrence.Type.MONTH) {
+                Wiederholung = (int) entry.recurring().frequency() * 31;
+            } else if (entry.recurring().type() == Recurrence.Type.YEAR) {
+                Wiederholung = (int) entry.recurring().frequency() * 365;
+            }
         }
-        String Time_Start = entry.start().toString();
-        String Time_Ende = entry.end().toString();
-        Time_Start = Time_Start.replace('T', ' ');
-        int Time_StartInt = Time_Start.indexOf('.');
-        Time_Ende = Time_Ende.replace('T', ' ');
-        int Time_EndeInt = Time_Ende.indexOf('.');
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        String Time_Start = dtf.format(entry.start());
+        String Time_Ende = dtf.format(entry.end());
+        getConnection();
         if (this.isConnected == true) {
-            String SQLStament = "INSERT INTO `Termine` VALUES ('" + entry.id() + "', '" + entry.title() + "', '"
-                    + Wiederholung + "', '0', '" + Time_StartInt + "', '" + Time_EndeInt + "', '" + entry.info()
+            String SQLStament = "INSERT INTO `Termine`(`Name`, `Wiederholung`, `Farbe`, `DatumStart`, `DatumEnde`, `Notiz`, `Ort`, `Benutzer`) VALUES ('" + entry.title() + "', '"
+                    + Wiederholung + "', '0', '" + Time_Start + "', '" + Time_Ende + "', '" + entry.info()
                     + "', 'Null', '0')";
+            System.out.println(SQLStament);
             try {
                 this.statement.execute(SQLStament);
             } catch (Exception e) {
