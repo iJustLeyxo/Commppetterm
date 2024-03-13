@@ -152,16 +152,6 @@ public final class Database {
     }
 
     /**
-     * Fetches the entries of a week
-     * @param date The first day of the week to fetch the entries of
-     * @return a list of entries
-     */
-    public List<Entry> weekEntries(LocalDate date) {
-        // TODO: Fetch relevant entries of date, also recurring ones
-        return new ArrayList<>();
-    }
-
-    /**
      * Creates or edits and entry
      * @param entry The entry to create or edit
      */
