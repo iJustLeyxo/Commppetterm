@@ -130,12 +130,14 @@ public final class Database {
         LinkedList<Entry> entries = new LinkedList<>();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String Time = dtf.format(date); 
+        String Timenegativ = dtf.format(date.minusDays(1));
         if(this.connected()){
-            String SQLStatement = "SELECT * FROM `Termine` WHERE DatumStart<='" + Time + "' AND DatumEnde>='" + Time + "';";
+            String SQLStatement = "SELECT * FROM `Termine` WHERE DatumStart<='" + Time + "' AND DatumEnde>='" + Timenegativ + "'";
             try {
                 ResultSet result = statement.executeQuery(SQLStatement);
+                DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
                 while (result.next()) {
-                    DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+                    
                     LocalDateTime Time_Start = LocalDateTime.parse(result.getString("DatumStart"), dtf2);
                     LocalDateTime Time_Ende = LocalDateTime.parse(result.getString("DatumEnde"), dtf2);
                     entries.add(new Entry(result.getString("Name"), result.getString("Notiz"), Time_Start, Time_Ende, null, result.getLong("TerimNr")));
