@@ -7,6 +7,8 @@ import commppetterm.database.Entry.Recurrence;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,17 +26,19 @@ public final class Database {
     private @NotNull String password = "RhiGnaQxx1";
 
     private Connection connection;
-
+    private Statement statement;
     private boolean isConnected;
 
     /**
-     * Sets the Connector 
+     * Sets the Connector
+     * 
      * @param con Connector
      * @return Succsess of the Conection
      */
     public void getConnection() {
         try {
             this.connection = DriverManager.getConnection(link, user, password);
+            this.statement = this.connection.createStatement();
             this.isConnected = true;
         } catch (Exception e) {
             this.isConnected = false;
@@ -79,9 +83,12 @@ public final class Database {
         // TODO: Fetch relevant entries of date, also recurring ones
 
         LinkedList<Entry> entries = new LinkedList<>();
-        entries.add(new Entry("Test Title A", "Test Info A", LocalDateTime.of(2024, 3, 13, 0, 0), LocalDateTime.of(2024, 3, 13, 23, 59), null, 0L));
-        entries.add(new Entry("Test Title B", "Test Info B", LocalDateTime.of(2024, 3, 13, 5, 0), LocalDateTime.of(2024, 3, 13, 10, 0), null, 0L));
-        entries.add(new Entry("Test Title C", "Test Info C", LocalDateTime.of(2024, 3, 14, 7, 0), LocalDateTime.of(2024, 3, 14, 20, 0), null, 0L));
+        entries.add(new Entry("Test Title A", "Test Info A", LocalDateTime.of(2024, 3, 13, 0, 0),
+                LocalDateTime.of(2024, 3, 13, 23, 59), null, 0L));
+        entries.add(new Entry("Test Title B", "Test Info B", LocalDateTime.of(2024, 3, 13, 5, 0),
+                LocalDateTime.of(2024, 3, 13, 10, 0), null, 0L));
+        entries.add(new Entry("Test Title C", "Test Info C", LocalDateTime.of(2024, 3, 14, 7, 0),
+                LocalDateTime.of(2024, 3, 14, 20, 0), null, 0L));
         return entries;
     }
 
@@ -98,27 +105,38 @@ public final class Database {
 
     /**
      * Creates or edits and entry
+     * 
      * @param entry The entry to create or edit
      */
     public void save(@Nullable Entry entry) {
-        // TODO: Update or create entry if it doesn't yet exist
-        Integer Wiederholung;
-        if(entry.recurring().getType()==Recurrence.Type.DAY){
+        Integer Wiederholung = 0;
+        if (entry.recurring().getType() == Recurrence.Type.DAY) {
             Wiederholung = (int) entry.recurring().getFrequency();
-        }else if (entry.recurring().getType()==Recurrence.Type.WEEK){
+        } else if (entry.recurring().getType() == Recurrence.Type.WEEK) {
             Wiederholung = (int) entry.recurring().getFrequency() * 7;
-        }else if (entry.recurring().getType()==Recurrence.Type.MONTH){
+        } else if (entry.recurring().getType() == Recurrence.Type.MONTH) {
             Wiederholung = (int) entry.recurring().getFrequency() * 31;
-        }else if (entry.recurring().getType()==Recurrence.Type.YEAR){
+        } else if (entry.recurring().getType() == Recurrence.Type.YEAR) {
             Wiederholung = (int) entry.recurring().getFrequency() * 365;
         }
-         /*String Time_Start = entry.start();
-        if(this.isConnected==true){
-            String SQLStament = "INSERT INTO `Termine` VALUES ('"+ entry.id() +"', "+ entry.title()+"', '"+ Wiederholung +"', 1', " + 
-        }else{
+        String Time_Start = entry.start().toString();
+        String Time_Ende = entry.end().toString();
+        Time_Start = Time_Start.replace('T', ' ');
+        int Time_StartInt = Time_Start.indexOf('.');
+        Time_Ende = Time_Ende.replace('T', ' ');
+        int Time_EndeInt = Time_Ende.indexOf('.');
+        if (this.isConnected == true) {
+            String SQLStament = "INSERT INTO `Termine` VALUES ('" + entry.id() + "', '" + entry.title() + "', '"
+                    + Wiederholung + "', '0', '" + Time_StartInt + "', '" + Time_EndeInt + "', '" + entry.info()
+                    + "', 'Null', '0')";
+            try {
+                this.statement.execute(SQLStament);
+            } catch (Exception e) {
+                System.out.println("Konnte eintarg nicht Speichern: " + e);
+            }
+        } else {
 
         }
-        */
     }
 
     /**
