@@ -196,4 +196,18 @@ public final class Database {
     public void delete(@Nullable Entry entry) {
         // TODO: Delete entry
     }
+
+    /**
+     * Creates a Database 
+     * @param NameDatabase Name of the Database
+     * @param NameTabelle  Name of the Table
+     */
+    public void CreateDatabase(String NameDatabase, String NameTable){
+        String SQLStatement = "Create Database if not exists " + NameDatabase;
+        try {
+            
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
 }
