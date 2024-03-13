@@ -18,7 +18,7 @@ public final class Calendar extends Controller {
     /**
      * The contained page's controller
      */
-    private PageController pageController;
+    private @NotNull PageController pageController;
 
     @FXML
     private Button edit;
@@ -37,7 +37,15 @@ public final class Calendar extends Controller {
      */
     public Calendar() throws URLNotFoundException, FxmlLoadException {
         this.month.setSelected(true);
-        this.swap(new MonthPage());
+        this.pageController = new MonthPage();
+
+        this.day.setSelected(false);
+        this.week.setSelected(false);
+        this.month.setSelected(true);
+        this.edit.setDisable(true);
+
+        this.pane.getChildren().add(this.pageController.parent());
+        this.reload();
     }
 
     @FXML
@@ -89,10 +97,8 @@ public final class Calendar extends Controller {
      * @param pageController The page to swap to
      */
     public void swap(@NotNull PageController pageController) throws URLNotFoundException, FxmlLoadException {
-        if (this.pageController != null) {
-            this.pane.getChildren().remove(this.pageController.parent());
-        }
-        
+        this.pane.getChildren().remove(this.pageController.parent());
+
         this.day.setSelected(false);
         this.week.setSelected(false);
         this.month.setSelected(false);
