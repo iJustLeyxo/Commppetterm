@@ -111,53 +111,37 @@ public final class Database {
      * @return a list of entries
      */
     public List<Entry> entries(@NotNull LocalDate start, @NotNull LocalDate end) {
-        LinkedList<Entry> entries = new LinkedList<>();
+        List<Entry> singleEntries = new LinkedList<>(), recurringEntries = new LinkedList<>();
 
         try {
-            DateTimeFormatter queryFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            ResultSet set;
 
+            DateTimeFormatter queryFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             String endPoint = queryFormatter.format(end) + " 23:59:99";
             String startPoint = queryFormatter.format(start) + " 00:00:00";
 
-            String sql = "SELECT * FROM " + this.table + " WHERE start <= '" + endPoint + "' AND end >= '" + startPoint + "' AND recurringType IS NULL;";
-            ResultSet res = this.query(sql);
+            Statement statement = this.statement(this.connection());
+            set = statement.executeQuery("SELECT * FROM " + this.table + " WHERE start <= '" + endPoint + "' AND end >= '" + startPoint + "' AND recurringType IS NULL;");
 
-            if (res == null) {
+            if (set != null) {
+                singleEntries = this.parse(set);
+            } else {
                 App.get().LOGGER.warning("Reading entries from empty connection.");
-                return entries;
             }
 
-            DateTimeFormatter resultFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-            while (res.next()) {
-                LocalDateTime eStart = LocalDateTime.parse(res.getString("start"), resultFormatter);
-                LocalDateTime eEnd = LocalDateTime.parse(res.getString("end"), resultFormatter);
-                Entry.Recurring recurring = null;
-                Entry.Recurring.Type recurringType = null;
-                byte recurringFrequency = res.getByte("recurringFrequency");
-
-                if (res.getString("recurringType") != null) {
-                    switch (res.getString("recurringType")) {
-                        case "YEAR" -> recurringType = Entry.Recurring.Type.YEAR;
-                        case "MONTH" -> recurringType = Entry.Recurring.Type.MONTH;
-                        case "WEEK" -> recurringType = Entry.Recurring.Type.WEEK;
-                        case "DAY" -> recurringType = Entry.Recurring.Type.DAY;
-                    }
-                }
-
-                if (recurringType != null) {
-                    recurring = new Entry.Recurring(recurringType, recurringFrequency);
-                }
-
-                entries.add(new Entry(res.getLong("id"), res.getString("title"), res.getString("info"), eStart, eEnd, recurring));
+            set = statement.executeQuery("SELECT * FROM " + this.table + " WHERE recurringType = NULL;");
+            if (set != null) {
+                recurringEntries = this.parse(set);
+            } else {
+                App.get().LOGGER.warning("Reading entries from empty connection.");
             }
 
-            this.close(res);
+            this.close(statement);
         } catch (SQLException e) {
             App.get().LOGGER.warning(e.getMessage());
         }
 
-        return entries;
+        return singleEntries;
     }
 
     /**
@@ -210,6 +194,7 @@ public final class Database {
                     "' WHERE" +
                     " id = " + id + ";";
         }
+
         this.execute(sql);
     }
 
@@ -227,13 +212,62 @@ public final class Database {
         }
     }
 
+    private List<Entry> parse(ResultSet set) throws SQLException {
+        List<Entry> entries = new LinkedList<>();
+        DateTimeFormatter resultFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        while (set.next()) {
+            LocalDateTime eStart = LocalDateTime.parse(set.getString("start"), resultFormatter);
+            LocalDateTime eEnd = LocalDateTime.parse(set.getString("end"), resultFormatter);
+            Entry.Recurring recurring = null;
+            Entry.Recurring.Type recurringType = null;
+            byte recurringFrequency = set.getByte("recurringFrequency");
+
+            if (set.getString("recurringType") != null) {
+                switch (set.getString("recurringType")) {
+                    case "YEAR" -> recurringType = Entry.Recurring.Type.YEAR;
+                    case "MONTH" -> recurringType = Entry.Recurring.Type.MONTH;
+                    case "WEEK" -> recurringType = Entry.Recurring.Type.WEEK;
+                    case "DAY" -> recurringType = Entry.Recurring.Type.DAY;
+                }
+            }
+
+            if (recurringType != null) {
+                recurring = new Entry.Recurring(recurringType, recurringFrequency);
+            }
+
+            entries.add(new Entry(set.getLong("id"), set.getString("title"), set.getString("info"), eStart, eEnd, recurring));
+        }
+
+        return entries;
+    }
+
     /**
      * Connects to a database
      * @return a database connection
      * @throws SQLException if connecting fails
      */
-    public @NotNull Connection connect() throws SQLException {
+    public @NotNull Connection connection() throws SQLException {
         return DriverManager.getConnection(url + database, user, password);
+    }
+
+    /**
+     * Creates a statement from a connection
+     * @param connection The connection to create a statement from
+     * @return a sql statement
+     * @throws SQLException in case creating the statement fails
+     */
+    public @NotNull Statement statement(@NotNull Connection connection) throws SQLException {
+        return connection.createStatement();
+    }
+
+    /**
+     * Closes a sql statement's connection
+     * @param statement The statement to close
+     * @throws SQLException if closing the connection failed
+     */
+    public void close(@NotNull Statement statement) throws SQLException {
+        statement.getConnection().close();
     }
 
     /**
@@ -242,7 +276,7 @@ public final class Database {
      */
     public boolean valid() {
         try {
-            Connection conn = this.connect();
+            Connection conn = this.connection();
             conn.close();
             return true;
         } catch (SQLException e) {
@@ -257,48 +291,13 @@ public final class Database {
      */
     public boolean execute(@NotNull String sql) {
         try {
-            Connection conn = this.connect();
-            Statement stmt = conn.createStatement();
-            stmt.execute(sql);
-            stmt.close();
-            conn.close();
+            Statement stm = this.statement(this.connection());
+            stm.execute(sql);
+            this.close(stm);
             return true;
         } catch (SQLException e) {
             App.get().LOGGER.warning(e.getMessage());
             return false;
-        }
-    }
-
-    /**
-     * Executes a sql query
-     * @param sql The sql command
-     * @return the query results
-     */
-    public @Nullable ResultSet query(@NotNull String sql) {
-        try {
-            Connection conn = this.connect();
-            Statement stmt = conn.createStatement();
-            return stmt.executeQuery(sql);
-        } catch (SQLException e) {
-            App.get().LOGGER.warning(e.getMessage());
-        }
-
-        return null;
-    }
-
-    /**
-     * Closes a result set
-     * @param res Result set to close
-     */
-    public void close(@NotNull ResultSet res) {
-        try {
-            Statement stmt = res.getStatement();
-            Connection conn = stmt.getConnection();
-            res.close();
-            stmt.close();
-            conn.close();
-        } catch (SQLException e) {
-            App.get().LOGGER.warning(e.getMessage());
         }
     }
 }
