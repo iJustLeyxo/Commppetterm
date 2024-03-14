@@ -63,9 +63,10 @@ public final class WeekPage extends PageController {
         int rowOffset = 2;
         int rowStart, rowSpan;
 
+        /* Generate entries */
+        List<Entry> entries = App.get().database().entries(iter, iter.plusDays(6));
         do {
-            /* Generate entries */
-            for (Entry entry : App.get().database().entries(iter)) {
+            for (Entry entry : entries) {
                 if (entry.on(iter)) {
                     if (entry.end() != null) {
                         if (entry.start().toLocalDate().isBefore(iter)) {

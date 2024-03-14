@@ -100,16 +100,16 @@ public final class Database {
      * @param date The day to fetch the entries of
      * @return a list of entries
      */
-    public List<Entry> entries(LocalDate date) {
+    public List<Entry> entries(@NotNull LocalDate date) {
         LinkedList<Entry> entries = new LinkedList<>();
 
         try {
             DateTimeFormatter queryFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
             String endPoint = queryFormatter.format(date) + " 23:59:99";
-            String startTime = queryFormatter.format(date) + " 00:00:00";
+            String startPoint = queryFormatter.format(date) + " 00:00:00";
 
-            String sql = "SELECT * FROM " + this.table + " WHERE start <= '" + endPoint + "' AND end >= '" + startTime + "';";
+            String sql = "SELECT * FROM " + this.table + " WHERE start <= '" + endPoint + "' AND end >= '" + startPoint + "';";
             ResultSet res = this.query(sql);
 
             if (res == null) {
@@ -138,6 +138,60 @@ public final class Database {
                 }
 
                 entries.add(new Entry(res.getLong("id"), res.getString("title"), res.getString("info"), start, end, recurring));
+            }
+
+            this.close(res);
+        } catch (SQLException e) {
+            App.get().LOGGER.warning(e.getMessage());
+        }
+
+        return entries;
+    }
+
+    /**
+     * Fetches the entries of a day
+     * @param start The first day to fetch the entries of
+     * @param end The last day to fetch entries of
+     * @return a list of entries
+     */
+    public List<Entry> entries(@NotNull LocalDate start, @NotNull LocalDate end) {
+        LinkedList<Entry> entries = new LinkedList<>();
+
+        try {
+            DateTimeFormatter queryFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            String endPoint = queryFormatter.format(end) + " 23:59:99";
+            String startPoint = queryFormatter.format(start) + " 00:00:00";
+
+            String sql = "SELECT * FROM " + this.table + " WHERE start <= '" + endPoint + "' AND end >= '" + startPoint + "';";
+            ResultSet res = this.query(sql);
+
+            if (res == null) {
+                App.get().LOGGER.warning("Reading entries from empty connection.");
+                return entries;
+            }
+
+            DateTimeFormatter resultFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+            while (res.next()) {
+                LocalDateTime eStart = LocalDateTime.parse(res.getString("start"), resultFormatter);
+                LocalDateTime eEnd = LocalDateTime.parse(res.getString("end"), resultFormatter);
+                Entry.Recurring recurring = null;
+                Entry.Recurring.Type recurringType = null;
+                byte recurringFrequency = res.getByte("recurringFrequency");
+
+                switch (res.getString("recurringType")) {
+                    case "YEAR" -> recurringType = Entry.Recurring.Type.YEAR;
+                    case "MONTH" -> recurringType = Entry.Recurring.Type.MONTH;
+                    case "WEEK" -> recurringType = Entry.Recurring.Type.WEEK;
+                    case "DAY" -> recurringType = Entry.Recurring.Type.DAY;
+                }
+
+                if (recurringType != null) {
+                    recurring = new Entry.Recurring(recurringType, recurringFrequency);
+                }
+
+                entries.add(new Entry(res.getLong("id"), res.getString("title"), res.getString("info"), eStart, eEnd, recurring));
             }
 
             this.close(res);
