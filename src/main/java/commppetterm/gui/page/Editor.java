@@ -221,7 +221,7 @@ public final class Editor extends Controller {
      * Generates an entry from the editor contents
      * @return an entry object
      */
-    private @NotNull Entry entry() throws URLNotFoundException, FxmlLoadException, DateTimeException {
+    private @NotNull Entry entry() throws URLNotFoundException, FxmlLoadException, EditorException {
         /* Recurring */
         Entry.Recurring recurring = entryRecurrence();
 
@@ -270,6 +270,13 @@ public final class Editor extends Controller {
             throw new EditorException(e);
         }
 
+        LocalDateTime startPoint = LocalDateTime.of(startDate, startTime);
+        LocalDateTime endPoint = LocalDateTime.of(endDate, endTime);
+
+        if (endPoint.isBefore(startPoint)) {
+            throw new EditorException("End cannot be before start.");
+        }
+
         /* ID */
         Long id;
         if (this.mode == Mode.EDIT) {
@@ -286,8 +293,8 @@ public final class Editor extends Controller {
                 id,
                 this.title.getText(),
                 this.info.getText(),
-                LocalDateTime.of(startDate, startTime),
-                LocalDateTime.of(endDate, endTime),
+                startPoint,
+                endPoint,
                 recurring
         );
     }
