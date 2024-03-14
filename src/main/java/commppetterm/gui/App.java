@@ -1,7 +1,6 @@
 package commppetterm.gui;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Locale;
 import java.util.logging.Logger;

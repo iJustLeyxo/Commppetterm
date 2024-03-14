@@ -23,12 +23,12 @@ public abstract class PageController extends Controller {
     /**
      * Formatter for label texts
      */
-    protected DateTimeFormatter formatter;
+    protected final DateTimeFormatter formatter;
 
     /**
      * List of all contents
      */
-    protected LinkedList<Parent> contents;
+    protected final LinkedList<Parent> contents;
 
     /**
      * Creates a new page
@@ -53,11 +53,6 @@ public abstract class PageController extends Controller {
     public @NotNull String label() {
         return this.formatter.format(App.get().date());
     }
-
-    /**
-     * Generates the contents of the page
-     */
-    protected void reload() {}
 
     /**
      * Jumps to the previous timeframe of the page
@@ -120,13 +115,10 @@ public abstract class PageController extends Controller {
 
             this.element.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
-            this.element.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    App.get().entry(entry);
-                    assert App.get().controller() != null;
-                    ((Calendar) App.get().controller()).enableEdit();
-                }
+            this.element.setOnAction(actionEvent -> {
+                App.get().entry(entry);
+                assert App.get().controller() != null;
+                ((Calendar) App.get().controller()).enableEdit();
             });
         }
     }

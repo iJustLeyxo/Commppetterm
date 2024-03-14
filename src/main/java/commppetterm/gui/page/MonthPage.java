@@ -5,8 +5,6 @@ import java.time.temporal.WeekFields;
 import java.util.List;
 
 import commppetterm.gui.App;
-import commppetterm.gui.exception.FxmlLoadException;
-import commppetterm.gui.exception.URLNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -91,17 +89,14 @@ public final class MonthPage extends PageController {
                 this.element.getStyleClass().addAll("cell", "alt-color");
             }
 
-            this.element.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    try {
-                        App.get().date(date);
-                        assert App.get().controller() != null;
-                        ((Calendar) App.get().controller()).swap(new DayPage());
-                    } catch (Exception e) {
-                        App.get().LOGGER.severe(e.toString());
-                        e.printStackTrace(System.out);
-                    }
+            this.element.setOnAction(actionEvent -> {
+                try {
+                    App.get().date(date);
+                    assert App.get().controller() != null;
+                    ((Calendar) App.get().controller()).swap(new DayPage());
+                } catch (Exception e) {
+                    App.get().LOGGER.severe(e.toString());
+                    e.printStackTrace(System.out);
                 }
             });
         }
@@ -116,23 +111,24 @@ public final class MonthPage extends PageController {
          */
         public WeekCellController(@NotNull LocalDate date) {
             super(new Button(Integer.toString(date.get(WeekFields.ISO.weekOfYear()))));
+
             this.element.getStyleClass().addAll("cell");
-            this.element.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    WeekPage page = null;
-                    try {
-                        page = new WeekPage();
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                    try {
-                        assert App.get().controller() != null;
-                        ((Calendar) App.get().controller()).swap(page);
-                    } catch (Exception e) {
-                        App.get().LOGGER.severe(e.toString());
-                        e.printStackTrace(System.out);
-                    }
+
+            this.element.setOnAction(actionEvent -> {
+                WeekPage page;
+
+                try {
+                    page = new WeekPage();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
+                try {
+                    assert App.get().controller() != null;
+                    ((Calendar) App.get().controller()).swap(page);
+                } catch (Exception e) {
+                    App.get().LOGGER.severe(e.toString());
+                    e.printStackTrace(System.out);
                 }
             });
         }

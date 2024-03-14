@@ -30,15 +30,13 @@ public final class Settings extends Controller {
 
     @FXML
     private void save() {
-        App.get().database().update(
+        if (App.get().database().update(
                 this.url.getText(),
                 this.database.getText(),
                 this.table.getText(),
                 this.user.getText(),
                 this.password.getText()
-        );
-
-        if (App.get().database().init()) {
+        )) {
             App.get().controller(new Calendar());
         }
     }

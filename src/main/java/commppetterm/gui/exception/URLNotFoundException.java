@@ -8,10 +8,10 @@ import org.jetbrains.annotations.NotNull;
 public class URLNotFoundException extends RuntimeException {
     /**
      * Creates a new url not found exception
-     * @param clazz The class from which the url was generated
+     * @param object The object from which the url was generated
      * @param resource The name of the resource
      */
-    public URLNotFoundException(@NotNull Class clazz, @NotNull String resource) {
-        super("Failed to load resource " + resource + " from " + clazz.getCanonicalName());
+    public URLNotFoundException(@NotNull Object object, @NotNull String resource) {
+        super("Failed to load resource " + resource + " from " + object.getClass().getCanonicalName());
     }
 }

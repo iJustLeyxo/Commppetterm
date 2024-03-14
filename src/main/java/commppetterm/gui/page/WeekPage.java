@@ -128,17 +128,14 @@ public final class WeekPage extends PageController {
                 this.element.getStyleClass().addAll("cell", "alt-color");
             }
 
-            this.element.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    try {
-                        App.get().date(date);
-                        assert App.get().controller() != null;
-                        ((Calendar) App.get().controller()).swap(new DayPage());
-                    } catch (Exception e) {
-                        App.get().LOGGER.severe(e.toString());
-                        e.printStackTrace(System.out);
-                    }
+            this.element.setOnAction(actionEvent -> {
+                try {
+                    App.get().date(date);
+                    assert App.get().controller() != null;
+                    ((Calendar) App.get().controller()).swap(new DayPage());
+                } catch (Exception e) {
+                    App.get().LOGGER.severe(e.toString());
+                    e.printStackTrace(System.out);
                 }
             });
         }

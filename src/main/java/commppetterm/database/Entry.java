@@ -60,7 +60,7 @@ public record Entry(
         /**
          * Repeat timeframe
          */
-        public enum Type { YEAR, MONTH, WEEK, DAY; }
+        public enum Type { YEAR, MONTH, WEEK, DAY}
 
         /**
          * @return type of recurrence

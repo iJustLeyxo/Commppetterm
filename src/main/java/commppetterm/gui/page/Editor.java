@@ -3,6 +3,7 @@ package commppetterm.gui.page;
 import commppetterm.database.Entry;
 import commppetterm.gui.exception.EditorException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2AL;
 import org.kordamp.ikonli.material2.Material2MZ;
@@ -222,27 +223,7 @@ public final class Editor extends Controller {
      */
     private @NotNull Entry entry() throws URLNotFoundException, FxmlLoadException, DateTimeException {
         /* Recurring */
-        Entry.Recurring recurring = null;
-
-        if (this.recurring.isSelected()) {
-            Entry.Recurring.Type type;
-            if (this.yearly.isSelected()) {
-                type = Entry.Recurring.Type.YEAR;
-            } else if (this.monthly.isSelected()) {
-                type = Entry.Recurring.Type.MONTH;
-            } else if (this.weekly.isSelected()) {
-                type = Entry.Recurring.Type.WEEK;
-            } else {
-                type = Entry.Recurring.Type.DAY;
-            }
-            byte freq = Byte.parseByte(this.frequency.getText());
-
-            if (freq < 1) {
-                throw new EditorException("Negative recurrence frequency is not allowed.");
-            }
-
-            recurring = new Entry.Recurring(type, freq);
-        }
+        Entry.Recurring recurring = entryRecurrence();
 
         LocalDate startDate, endDate;
         LocalTime startTime, endTime;
@@ -309,6 +290,35 @@ public final class Editor extends Controller {
                 LocalDateTime.of(endDate, endTime),
                 recurring
         );
+    }
+
+    /**
+     * Generates the recurring object of an entry
+     * @return the recurring object
+     */
+    private @Nullable Entry.Recurring entryRecurrence() {
+        Entry.Recurring recurring = null;
+
+        if (this.recurring.isSelected()) {
+            Entry.Recurring.Type type;
+            if (this.yearly.isSelected()) {
+                type = Entry.Recurring.Type.YEAR;
+            } else if (this.monthly.isSelected()) {
+                type = Entry.Recurring.Type.MONTH;
+            } else if (this.weekly.isSelected()) {
+                type = Entry.Recurring.Type.WEEK;
+            } else {
+                type = Entry.Recurring.Type.DAY;
+            }
+            byte freq = Byte.parseByte(this.frequency.getText());
+
+            if (freq < 1) {
+                throw new EditorException("Negative recurrence frequency is not allowed.");
+            }
+
+            recurring = new Entry.Recurring(type, freq);
+        }
+        return recurring;
     }
 
     /**

@@ -69,19 +69,20 @@ public final class Database {
      * @param user Login user
      * @param password Login password
      */
-    public void update(@NotNull String url, @NotNull String database, @NotNull String table, @NotNull String user, @NotNull String password) {
+    public boolean update(@NotNull String url, @NotNull String database, @NotNull String table, @NotNull String user, @NotNull String password) {
         this.url = url;
         this.database = database;
         this.table = table;
         this.user = user;
         this.password = password;
+        return this.init();
     }
 
     /**
      * Initializes the required tables
      * @return {@code true} if the initialization succeeded
      */
-    public boolean init() {
+    private boolean init() {
         String sql = "CREATE TABLE IF NOT EXISTS " + this.table + "(" +
                 "id INTEGER AUTO_INCREMENT PRIMARY KEY," +
                 "title TEXT NOT NULL," +
@@ -208,7 +209,7 @@ public final class Database {
         if (entry == null || entry.id() == null) { return; }
 
         try {
-            this.execute("DELETE FROM '" + this.table + "' WHERE id=" + entry.id() + ";");
+            this.execute("DELETE FROM " + this.table + " WHERE id = '" + entry.id() + "';");
         } catch (Exception e) {
             App.get().LOGGER.warning(e.getMessage());
         }
@@ -264,8 +265,7 @@ public final class Database {
         try {
             Connection conn = this.connect();
             Statement stmt = conn.createStatement();
-            ResultSet res = stmt.executeQuery(sql);
-            return res;
+            return stmt.executeQuery(sql);
         } catch (SQLException e) {
             App.get().LOGGER.warning(e.getMessage());
         }

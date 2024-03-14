@@ -2,7 +2,7 @@ module commppetterm {
     requires javafx.controls;
     requires javafx.fxml;
     requires transitive javafx.graphics;
-    requires com.gluonhq.charm.glisten;
+    requires java.logging;
     requires org.jetbrains.annotations;
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.ikonli.material2;
