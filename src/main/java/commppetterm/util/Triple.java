@@ -10,7 +10,7 @@ import java.util.List;
  * @param <B> Type of the second part of the triple
  * @param <C> Type of the third part of the triple
  */
-public class Triple<A, B, C> {
+public final class Triple<A, B, C> {
     /**
      * First part of the triple
      */

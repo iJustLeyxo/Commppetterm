@@ -71,15 +71,18 @@ public final class WeekPage extends PageController {
         List<Triple<Entry, Integer, Integer>> wholeEntries = new LinkedList<>();
 
         for (Entry entry : entries) {
-            if (entry.start().toLocalDate().isBefore(start) && entry.end().toLocalDate().isAfter(end) || !entry.timed()) {
-                entries.remove(entry);
+            if (entry.start().toLocalDate().isBefore(start) && entry.end().toLocalDate().isAfter(end)) {
                 wholeEntries.add(new Triple<>(entry, -1, 0));
             }
         }
 
+        for (Triple<Entry, Integer, Integer> entry : wholeEntries) {
+            entries.remove(entry.a());
+        }
+
         do {
             for (Triple<Entry, Integer, Integer> entry : wholeEntries) {
-                if (entry.a().on(iter)) {
+                if (entry.a().fullOn(iter)) {
                     if (entry.b() < 0) {
                         entry.b(colStep);
                         entry.c(1);
@@ -108,24 +111,16 @@ public final class WeekPage extends PageController {
                         rowSpan = 24;
                     }
 
-                    if (rowStart == 0 && rowSpan == 24) {
-                        Triple<Entry, Integer, Integer> temp = new Triple<>(entry, colStep, colSpan);
+                    rowStart += rowOffset;
 
-                        if (!temp.hasA(wholeEntries)) {
-                            wholeEntries.add(temp);
-                        }
-                    } else {
-                        rowStart += rowOffset;
-
-                        if (rowSpan == 0) {
-                            rowSpan = 1;
-                        }
-
-                        parent = new EntryController(entry).parent();
-                        this.contents.add(parent);
-                        this.entries.add(parent, colStep + colSpan, rowStart, 1, rowSpan);
-                        colSpan++;
+                    if (rowSpan == 0) {
+                        rowSpan = 1;
                     }
+
+                    parent = new EntryController(entry).parent();
+                    this.contents.add(parent);
+                    this.entries.add(parent, colStep + colSpan, rowStart, 1, rowSpan);
+                    colSpan++;
                 }
             }
 

@@ -49,7 +49,7 @@ public record Entry(
     /**
      * @return {@code true} if the entry is timed
      */
-    public boolean timed() {
+    public boolean untimed() {
         return this.end == null || (this.start.getHour() == 0 && this.start.getMinute() == 0 && this.end.getHour() == 0 && this.end.getMinute() == 59);
     }
 
@@ -101,5 +101,16 @@ public record Entry(
         }
 
         // TODO: Add recurring logic
+    }
+
+    /**
+     * Returns true if an entry is fully on a date
+     * @param date The date to check
+     * @return {@code true} if the entry is fully on the date
+     */
+    public boolean fullOn(@NotNull LocalDate date) {
+        return (this.start.toLocalDate().isBefore(date) || (this.start.toLocalDate().isEqual(date) && this.untimed())) &&
+                (this.end == null || this.end.toLocalDate().isAfter(date) || (this.end.toLocalDate().isEqual(date) && this.untimed()));
+
     }
 }
