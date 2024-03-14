@@ -21,7 +21,7 @@ public final class Settings extends Controller {
      * Creates a new settings controller
      */
     public Settings() throws URLNotFoundException, FxmlLoadException {
-        this.url.setText(App.get().database().link());
+        this.url.setText(App.get().database().url());
         this.user.setText(App.get().database().user());
         this.password.setText(App.get().database().password());
         this.database.setText(App.get().database().database());

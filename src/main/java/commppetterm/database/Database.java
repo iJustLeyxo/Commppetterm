@@ -37,19 +37,9 @@ public final class Database {
     }
 
     /**
-     * @return the database urö
+     * @return the database url
      */
-    public @NotNull String link() { return this.url; }
-
-    /**
-     * @return the database login user
-     */
-    public @NotNull String user() { return this.user; }
-
-    /**
-     * @return the database login password
-     */
-    public @NotNull String password() { return this.user; }
+    public @NotNull String url() { return this.url; }
 
     /**
      * @return the database name
@@ -60,6 +50,16 @@ public final class Database {
      * @return the table name
      */
     public @NotNull String table() { return this.table; }
+
+    /**
+     * @return the database login user
+     */
+    public @NotNull String user() { return this.user; }
+
+    /**
+     * @return the database login password
+     */
+    public @NotNull String password() { return this.password; }
 
     /**
      * Updates the database settings
@@ -83,7 +83,7 @@ public final class Database {
      * @return {@code true} if the initialization succeeded
      */
     private boolean init() {
-        String sql = "CREATE TABLE IF NOT EXISTS " + this.table + "(" +
+        String sql = "CREATE TABLE IF NOT EXISTS " + this.table + " (" +
                 "id INTEGER AUTO_INCREMENT PRIMARY KEY," +
                 "title TEXT NOT NULL," +
                 "info TEXT NOT NULL," +
@@ -234,6 +234,7 @@ public final class Database {
             conn.close();
             return true;
         } catch (SQLException e) {
+            App.get().LOGGER.warning(e.getMessage());
             return false;
         }
     }
