@@ -22,11 +22,6 @@ import java.util.logging.Logger;
  */
 public final class Database {
     /**
-     * Database link
-     */
-    private @NotNull String link = "jdbc:mysql://sql11.freemysqlhosting.net/sql11688847";
-
-    /**
      * Database user details
      */
     private @NotNull String user = "sql11688847", password = "RhiGnaQxx1";
@@ -35,6 +30,11 @@ public final class Database {
      * Database and table names
      */
     private @NotNull String database = "sql11688847", table = "calendar";
+
+    /**
+     * Database link
+     */
+    private @NotNull String link = "jdbc:mysql://sql11.freemysqlhosting.net/";
 
     /**
      * Database connection
@@ -58,14 +58,10 @@ public final class Database {
      * Connects to the database
      */
     public void connect() {
-        if (this.connected()) {
-            try {
-                this.disconnect();
-            } catch (SQLException ignored) {}
-        }
+        this.disconnect();
 
         try {
-            this.connection = DriverManager.getConnection(link, user, password);
+            this.connection = DriverManager.getConnection(link + database, user, password);
             this.statement = this.connection.createStatement();
         } catch (SQLException ignored) {}
 
@@ -97,15 +93,19 @@ public final class Database {
     /**
      * Disconnects from the database
      */
-    public void disconnect() throws SQLException {
-        if (this.statement != null) {
-            this.statement.close();
-            this.statement = null;
-        }
-        
-        if (this.connection != null) {
-            this.connection.close();
-            this.connection = null;
+    public void disconnect() {
+        try {
+            if (this.statement != null) {
+                this.statement.close();
+                this.statement = null;
+            }
+
+            if (this.connection != null) {
+                this.connection.close();
+                this.connection = null;
+            }
+        } catch (SQLException e) {
+            App.get().LOGGER.warning(e.getMessage());
         }
     }
 
