@@ -47,6 +47,13 @@ public record Entry(
     public Recurring recurring() { return this.recurring; }
 
     /**
+     * @return {@code true} if the entry is timed
+     */
+    public boolean timed() {
+        return this.end == null || (this.start.getHour() == 0 && this.start.getMinute() == 0 && this.end.getHour() == 0 && this.end.getMinute() == 59);
+    }
+
+    /**
      * @return the entry id
      */
     public Long id() { return this.id; }

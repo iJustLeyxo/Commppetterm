@@ -9,8 +9,7 @@ import commppetterm.database.Entry;
 import commppetterm.gui.App;
 import commppetterm.gui.exception.FxmlLoadException;
 import commppetterm.gui.exception.URLNotFoundException;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import commppetterm.util.Triple;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import org.jetbrains.annotations.NotNull;
@@ -57,7 +56,9 @@ public final class WeekPage extends PageController {
         this.contents.clear();
 
         /* Generate */
-        LocalDate iter = App.get().date().minusDays(App.get().date().getDayOfWeek().getValue() - 1);
+        LocalDate start = App.get().date().minusDays(App.get().date().getDayOfWeek().getValue() - 1);
+        LocalDate end = start.plusDays(6);
+        LocalDate iter = start;
         Parent parent;
         int colStep = 1;
         int colSpan = 0;
@@ -66,10 +67,28 @@ public final class WeekPage extends PageController {
         int rowStep = 24 + rowOffset;
 
         /* Generate entries */
-        List<Entry> entries = App.get().database().entries(iter, iter.plusDays(6));
-        List<Entry> wholeDayEntries = new LinkedList<>();
+        List<Entry> entries = App.get().database().entries(start, end);
+        List<Triple<Entry, Integer, Integer>> wholeEntries = new LinkedList<>();
+
+        for (Entry entry : entries) {
+            if (entry.start().toLocalDate().isBefore(start) && entry.end().toLocalDate().isAfter(end) || !entry.timed()) {
+                entries.remove(entry);
+                wholeEntries.add(new Triple<>(entry, -1, 0));
+            }
+        }
 
         do {
+            for (Triple<Entry, Integer, Integer> entry : wholeEntries) {
+                if (entry.a().on(iter)) {
+                    if (entry.b() < 0) {
+                        entry.b(colStep);
+                        entry.c(1);
+                    } else {
+                        entry.c(entry.c() + 1);
+                    }
+                }
+            }
+
             for (Entry entry : entries) {
                 if (entry.on(iter)) {
                     if (entry.end() != null) {
@@ -90,11 +109,17 @@ public final class WeekPage extends PageController {
                     }
 
                     if (rowStart == 0 && rowSpan == 24) {
-                        wholeDayEntries.add(entry);
+                        Triple<Entry, Integer, Integer> temp = new Triple<>(entry, colStep, colSpan);
+
+                        if (!temp.hasA(wholeEntries)) {
+                            wholeEntries.add(temp);
+                        }
                     } else {
                         rowStart += rowOffset;
 
-                        if (rowSpan == 0) { rowSpan = 1; }
+                        if (rowSpan == 0) {
+                            rowSpan = 1;
+                        }
 
                         parent = new EntryController(entry).parent();
                         this.contents.add(parent);
@@ -106,16 +131,7 @@ public final class WeekPage extends PageController {
 
             if (colSpan == 0) { colSpan = 1; }
 
-            /* Generate whole day entries */
-            for (Entry entry : wholeDayEntries) {
-                parent = new EntryController(entry).parent();
-                this.contents.add(parent);
-                this.entries.add(parent, colStep, rowStep, colSpan, 1);
-                rowStep++;
-            }
-
             rowStep = 24 + rowOffset;
-            wholeDayEntries.clear();
 
             /* Generate day cell */
             parent = new DayCellController(iter).parent();
@@ -127,6 +143,14 @@ public final class WeekPage extends PageController {
             colSpan = 0;
             iter = iter.plusDays(1);
         } while (iter.getDayOfWeek().getValue() != 1);
+
+        /* Generate whole day entries */
+        for (Triple<Entry, Integer, Integer> entry : wholeEntries) {
+            parent = new EntryController(entry.a()).parent();
+            this.contents.add(parent);
+            this.entries.add(parent, entry.b(), rowStep, entry.c(), 1);
+            rowStep++;
+        }
     }
 
     /**
