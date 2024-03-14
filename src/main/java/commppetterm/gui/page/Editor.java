@@ -57,18 +57,16 @@ public final class Editor extends Controller {
     public Editor(@NotNull Mode mode) throws URLNotFoundException, FxmlLoadException {
         this.mode = mode;
 
-        this.end();
-        this.time();
-        this.recurring();
         this.yearly.setSelected(true);
         this.frequency.setText("1");
+        this.delete.setDisable(true);
 
         if (this.mode == Mode.EDIT && App.get().entry() != null) {
             Entry entry = App.get().entry();
 
             boolean end = entry.end() != null;
             boolean recurring = entry.recurring() != null;
-            boolean time = (!(entry.start().getHour() == 0 && entry.start().getMinute() == 0) &&
+            boolean time = !((entry.start().getHour() == 0 && entry.start().getMinute() == 0) &&
                     (entry.end() == null || (entry.end().getHour() == 23 && entry.end().getMinute() == 59)));
 
             this.title.setText(entry.title());
@@ -104,12 +102,16 @@ public final class Editor extends Controller {
             this.enabled(this.endBox, end);
             this.enabled(this.recurringBox, recurring);
 
-            this.delete.setDisable(true);
+            this.delete.setDisable(false);
 
             this.end.setSelected(end);
             this.time.setSelected(time);
             this.recurring.setSelected(recurring);
         }
+
+        this.end();
+        this.time();
+        this.recurring();
     }
 
     @FXML
