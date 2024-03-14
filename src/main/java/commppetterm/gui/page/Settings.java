@@ -7,14 +7,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-import java.sql.SQLException;
-
 /**
  * Settings controller
  */
 public final class Settings extends Controller {
     @FXML
-    private TextField link, user, database, table;
+    private TextField url, user, database, table;
 
     @FXML
     private PasswordField password;
@@ -23,7 +21,7 @@ public final class Settings extends Controller {
      * Creates a new settings controller
      */
     public Settings() throws URLNotFoundException, FxmlLoadException {
-        this.link.setText(App.get().database().link());
+        this.url.setText(App.get().database().link());
         this.user.setText(App.get().database().user());
         this.password.setText(App.get().database().password());
         this.database.setText(App.get().database().database());
@@ -31,17 +29,24 @@ public final class Settings extends Controller {
     }
 
     @FXML
-    private void save() throws SQLException {
-        App.get().database().settings(this.link.getText(), this.user.getText(), this.password.getText(), this.database.getText(), this.table.getText());
-        App.get().database().connect();
+    private void save() {
+        App.get().database().update(
+                this.url.getText(),
+                this.database.getText(),
+                this.table.getText(),
+                this.user.getText(),
+                this.password.getText()
+        );
 
-        if (App.get().database().connected()) {
+        if (App.get().database().init()) {
             App.get().controller(new Calendar());
         }
     }
 
     @FXML
     private void cancel() throws URLNotFoundException, FxmlLoadException {
-        App.get().controller(new Calendar());
+        if (App.get().database().valid()) {
+            App.get().controller(new Calendar());
+        }
     }
 }

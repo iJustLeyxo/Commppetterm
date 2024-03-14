@@ -65,7 +65,7 @@ public final class WeekPage extends PageController {
 
         do {
             /* Generate entries */
-            for (Entry entry : App.get().database().dayEntries(iter)) {
+            for (Entry entry : App.get().database().entries(iter)) {
                 if (entry.on(iter)) {
                     if (entry.end() != null) {
                         if (entry.start().toLocalDate().isBefore(iter)) {

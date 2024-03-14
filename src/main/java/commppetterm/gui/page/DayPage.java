@@ -2,15 +2,10 @@ package commppetterm.gui.page;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.logging.Logger;
 
-import commppetterm.database.Database;
 import commppetterm.database.Entry;
 import commppetterm.gui.App;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import org.jetbrains.annotations.NotNull;
 
 import javafx.fxml.FXML;
@@ -52,7 +47,7 @@ public final class DayPage extends PageController {
         int rowOffset = 0;
         int rowStart, rowSpan;
 
-        for (Entry entry : App.get().database().dayEntries(App.get().date())) {
+        for (Entry entry : App.get().database().entries(App.get().date())) {
             if (entry.on(App.get().date())) {
                 if (entry.end() != null) {
                     if (entry.start().getDayOfYear() < App.get().date().getDayOfYear() || entry.start().getYear() < App.get().date().getYear()) {

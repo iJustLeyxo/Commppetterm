@@ -28,7 +28,7 @@
       </Button>
    </HBox>
    <GridPane alignment="CENTER" hgap="5.0" vgap="5.0">
-      <TextField fx:id="link" promptText="Link" GridPane.columnIndex="1" />
+      <TextField fx:id="url" promptText="URL" GridPane.columnIndex="1" />
       <TextField fx:id="user" promptText="Nutzer" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <PasswordField fx:id="password" promptText="Passwort" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <FontIcon iconLiteral="mdral-link" />

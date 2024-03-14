@@ -93,7 +93,7 @@ public final class App extends Application {
      */
     public App() {
         app = this;
-        this.database = new Database();
+        this.database = new Database("jdbc:mysql://sql11.freemysqlhosting.net/", "sql11688847", "calendar", "sql11688847", "RhiGnaQxx1");
     }
 
     /**
@@ -115,23 +115,13 @@ public final class App extends Application {
             this.stage.getIcons().add(icon);
         }
 
-        assert this.database != null;
-        if (this.database.connected()) {
+        if (App.get().database().valid()) {
             this.controller(new Calendar());
         } else {
             this.controller(new Settings());
         }
 
         this.stage.show();
-    }
-
-    /**
-     * Shutdown application logic
-     */
-    @Override
-    public void stop() throws SQLException {
-        assert this.database != null;
-        this.database.disconnect();
     }
 
     /**
