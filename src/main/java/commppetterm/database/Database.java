@@ -101,51 +101,7 @@ public final class Database {
      * @return a list of entries
      */
     public List<Entry> entries(@NotNull LocalDate date) {
-        LinkedList<Entry> entries = new LinkedList<>();
-
-        try {
-            DateTimeFormatter queryFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-            String endPoint = queryFormatter.format(date) + " 23:59:99";
-            String startPoint = queryFormatter.format(date) + " 00:00:00";
-
-            String sql = "SELECT * FROM " + this.table + " WHERE start <= '" + endPoint + "' AND end >= '" + startPoint + "';";
-            ResultSet res = this.query(sql);
-
-            if (res == null) {
-                App.get().LOGGER.warning("Reading entries from empty connection.");
-                return entries;
-            }
-
-            DateTimeFormatter resultFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-            while (res.next()) {
-                LocalDateTime start = LocalDateTime.parse(res.getString("start"), resultFormatter);
-                LocalDateTime end = LocalDateTime.parse(res.getString("end"), resultFormatter);
-                Entry.Recurring recurring = null;
-                Entry.Recurring.Type recurringType = null;
-                byte recurringFrequency = res.getByte("recurringFrequency");
-
-                switch (res.getString("recurringType")) {
-                    case "YEAR" -> recurringType = Entry.Recurring.Type.YEAR;
-                    case "MONTH" -> recurringType = Entry.Recurring.Type.MONTH;
-                    case "WEEK" -> recurringType = Entry.Recurring.Type.WEEK;
-                    case "DAY" -> recurringType = Entry.Recurring.Type.DAY;
-                }
-
-                if (recurringType != null) {
-                    recurring = new Entry.Recurring(recurringType, recurringFrequency);
-                }
-
-                entries.add(new Entry(res.getLong("id"), res.getString("title"), res.getString("info"), start, end, recurring));
-            }
-
-            this.close(res);
-        } catch (SQLException e) {
-            App.get().LOGGER.warning(e.getMessage());
-        }
-
-        return entries;
+        return this.entries(date, date);
     }
 
     /**
@@ -163,7 +119,7 @@ public final class Database {
             String endPoint = queryFormatter.format(end) + " 23:59:99";
             String startPoint = queryFormatter.format(start) + " 00:00:00";
 
-            String sql = "SELECT * FROM " + this.table + " WHERE start <= '" + endPoint + "' AND end >= '" + startPoint + "';";
+            String sql = "SELECT * FROM " + this.table + " WHERE start <= '" + endPoint + "' AND end >= '" + startPoint + "' AND recurringType IS NULL;";
             ResultSet res = this.query(sql);
 
             if (res == null) {
@@ -180,11 +136,13 @@ public final class Database {
                 Entry.Recurring.Type recurringType = null;
                 byte recurringFrequency = res.getByte("recurringFrequency");
 
-                switch (res.getString("recurringType")) {
-                    case "YEAR" -> recurringType = Entry.Recurring.Type.YEAR;
-                    case "MONTH" -> recurringType = Entry.Recurring.Type.MONTH;
-                    case "WEEK" -> recurringType = Entry.Recurring.Type.WEEK;
-                    case "DAY" -> recurringType = Entry.Recurring.Type.DAY;
+                if (res.getString("recurringType") != null) {
+                    switch (res.getString("recurringType")) {
+                        case "YEAR" -> recurringType = Entry.Recurring.Type.YEAR;
+                        case "MONTH" -> recurringType = Entry.Recurring.Type.MONTH;
+                        case "WEEK" -> recurringType = Entry.Recurring.Type.WEEK;
+                        case "DAY" -> recurringType = Entry.Recurring.Type.DAY;
+                    }
                 }
 
                 if (recurringType != null) {
@@ -225,7 +183,7 @@ public final class Database {
         }
 
         if (entry.recurring() != null) {
-            recurringType = entry.recurring().type().toString();
+            recurringType = "'" + entry.recurring().type().toString() + "'";
             recurringFrequency = Integer.toString(entry.recurring().frequency());
         }
 
@@ -238,8 +196,8 @@ public final class Database {
                     title + "', '" +
                     info + "', '" +
                     start + "', '" +
-                    end + "', '" +
-                    recurringType + "', '" +
+                    end + "', " +
+                    recurringType + ", '" +
                     recurringFrequency + "')";
         } else {
             sql = "UPDATE " + this.table + " SET" +
@@ -247,8 +205,8 @@ public final class Database {
                     "', info = '" + info +
                     "', start = '" + start +
                     "', end = '" + end +
-                    "', recurringType = '" + recurringType +
-                    "', recurringFrequency = '" + recurringFrequency +
+                    "', recurringType = " + recurringType +
+                    ", recurringFrequency = '" + recurringFrequency +
                     "' WHERE" +
                     " id = " + id + ";";
         }
