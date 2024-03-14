@@ -2,6 +2,7 @@ package commppetterm.gui.page;
 
 import java.time.LocalDate;
 import java.time.format.TextStyle;
+import java.util.LinkedList;
 import java.util.List;
 
 import commppetterm.database.Entry;
@@ -60,11 +61,14 @@ public final class WeekPage extends PageController {
         Parent parent;
         int colStep = 1;
         int colSpan = 0;
-        int rowOffset = 2;
+        int rowOffset = 1;
         int rowStart, rowSpan;
+        int rowStep = 24 + rowOffset;
 
         /* Generate entries */
         List<Entry> entries = App.get().database().entries(iter, iter.plusDays(6));
+        List<Entry> wholeDayEntries = new LinkedList<>();
+
         do {
             for (Entry entry : entries) {
                 if (entry.on(iter)) {
@@ -81,22 +85,35 @@ public final class WeekPage extends PageController {
                             rowSpan = entry.end().getHour() + entry.end().getMinute() / 30 - rowStart;
                         }
                     } else {
-                        rowStart = 31;
+                        rowStart = 0;
                         rowSpan = 24;
                     }
 
-                    rowStart += rowOffset;
+                    if (rowStart == 0 && rowSpan == 24) {
+                        wholeDayEntries.add(entry);
+                    } else {
+                        rowStart += rowOffset;
 
-                    parent = new EntryController(entry).parent();
-                    this.contents.add(parent);
-                    this.entries.add(parent, colStep + colSpan, rowStart, 1, rowSpan);
-                    colSpan++;
+                        parent = new EntryController(entry).parent();
+                        this.contents.add(parent);
+                        this.entries.add(parent, colStep + colSpan, rowStart, 1, rowSpan);
+                        colSpan++;
+                    }
                 }
             }
 
-            // TODO: Detect full week events
-
             if (colSpan == 0) { colSpan = 1; }
+
+            /* Generate whole day entries */
+            for (Entry entry : wholeDayEntries) {
+                parent = new EntryController(entry).parent();
+                this.contents.add(parent);
+                this.entries.add(parent, colStep, rowStep, colSpan, 1);
+                rowStep++;
+            }
+
+            rowStep = 24 + rowOffset;
+            wholeDayEntries.clear();
 
             /* Generate day cell */
             parent = new DayCellController(iter).parent();

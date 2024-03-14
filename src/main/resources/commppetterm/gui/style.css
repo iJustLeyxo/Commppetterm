@@ -58,6 +58,10 @@
     -fx-pref-height: 33px;
 }
 
+.small-cell-height{
+    -fx-pref-height: 33px;
+}
+
 .large-cell-width{
     -fx-pref-width: 55px;
 }

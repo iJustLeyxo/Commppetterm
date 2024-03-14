@@ -1,6 +1,7 @@
 package commppetterm.gui.page;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 
 import commppetterm.database.Entry;
@@ -16,14 +17,7 @@ import javafx.scene.layout.GridPane;
  */
 public final class DayPage extends PageController {
     @FXML
-    private GridPane grid;
-
-    /**
-     * Initializes a new day page
-     */
-    public DayPage() {
-        this.reload();
-    }
+    private GridPane entries;
 
     @Override
     @NotNull LocalDate prev(@NotNull LocalDate date) {
@@ -38,25 +32,30 @@ public final class DayPage extends PageController {
     @Override
     protected void reload() {
         /* Clear grid */
-        this.grid.getChildren().removeAll(contents);
+        this.entries.getChildren().removeAll(contents);
         this.contents.clear();
 
-        /* Generate entries */
+        /* Generate */
         Parent parent;
-        int colStep = 1;
+        int colSpan = 1;
         int rowOffset = 0;
         int rowStart, rowSpan;
+        int rowStep = 24 + rowOffset;
 
-        for (Entry entry : App.get().database().entries(App.get().date())) {
+        /* Generate entries */
+        List<Entry> entries = App.get().database().entries(App.get().date());
+        List<Entry> wholeDayEntries = new LinkedList<>();
+
+        for (Entry entry : entries) {
             if (entry.on(App.get().date())) {
                 if (entry.end() != null) {
-                    if (entry.start().getDayOfYear() < App.get().date().getDayOfYear() || entry.start().getYear() < App.get().date().getYear()) {
+                    if (entry.start().toLocalDate().isBefore(App.get().date())) {
                         rowStart = 0;
                     } else {
                         rowStart = entry.start().getHour() + entry.start().getMinute() / 30;
                     }
 
-                    if (entry.end().getDayOfYear() > App.get().date().getDayOfYear() || entry.end().getYear() > App.get().date().getYear()) {
+                    if (entry.end().toLocalDate().isAfter(App.get().date())) {
                         rowSpan = 24 - rowStart;
                     } else {
                         rowSpan = entry.end().getHour() + (entry.end().getMinute() / 30 - rowStart);
@@ -66,15 +65,25 @@ public final class DayPage extends PageController {
                     rowSpan = 24;
                 }
 
-                rowStart += rowOffset;
+                if (rowStart == 0 && rowSpan == 24) {
+                    wholeDayEntries.add(entry);
+                } else {
+                    rowStart += rowOffset;
 
-                // TODO: Detect full day entries
-
-                parent = new EntryController(entry).parent();
-                this.contents.add(parent);
-                this.grid.add(parent, colStep, rowStart, 1, rowSpan);
-                colStep++;
+                    parent = new EntryController(entry).parent();
+                    this.contents.add(parent);
+                    this.entries.add(parent, colSpan, rowStart, 1, rowSpan);
+                    colSpan++;
+                }
             }
+        }
+
+        /* Generate whole day entries */
+        for (Entry entry : wholeDayEntries) {
+            parent = new EntryController(entry).parent();
+            this.contents.add(parent);
+            this.entries.add(parent, 1, rowStep, colSpan, 1);
+            rowStep++;
         }
     }
 

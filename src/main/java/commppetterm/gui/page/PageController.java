@@ -114,6 +114,7 @@ public abstract class PageController extends Controller {
             super(new Button(entry.title()));
 
             this.element.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            this.element.getStyleClass().add(".small-cell-height");
 
             this.element.setOnAction(actionEvent -> {
                 App.get().entry(entry);

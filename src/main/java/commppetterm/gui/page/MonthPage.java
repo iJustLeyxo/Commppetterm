@@ -20,13 +20,6 @@ public final class MonthPage extends PageController {
     @FXML
     private GridPane grid;
 
-    /**
-     * Initializes a new month page
-     */
-    public MonthPage() {
-        this.reload();
-    }
-
     @Override
     @NotNull LocalDate prev(@NotNull LocalDate date) {
         return date.minusMonths(1);
