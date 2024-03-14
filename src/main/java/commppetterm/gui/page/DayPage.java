@@ -70,6 +70,8 @@ public final class DayPage extends PageController {
                 } else {
                     rowStart += rowOffset;
 
+                    if (rowSpan == 0) { rowSpan = 1; }
+
                     parent = new EntryController(entry).parent();
                     this.contents.add(parent);
                     this.entries.add(parent, colSpan, rowStart, 1, rowSpan);

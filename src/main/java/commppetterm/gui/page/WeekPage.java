@@ -94,6 +94,8 @@ public final class WeekPage extends PageController {
                     } else {
                         rowStart += rowOffset;
 
+                        if (rowSpan == 0) { rowSpan = 1; }
+
                         parent = new EntryController(entry).parent();
                         this.contents.add(parent);
                         this.entries.add(parent, colStep + colSpan, rowStart, 1, rowSpan);
