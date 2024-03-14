@@ -50,7 +50,7 @@ public final class App extends Application {
     /**
      * Application version
      */
-    public final @NotNull String VERSION = "0.0.2a";
+    public final @NotNull String VERSION = "v0.1.0b";
 
     /**
      * Application locale
