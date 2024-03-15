@@ -1,11 +1,13 @@
 package commppetterm.gui.page;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
 
 import commppetterm.database.Entry;
 import commppetterm.gui.App;
+import commppetterm.util.Triple;
 import javafx.scene.Parent;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,50 +40,38 @@ public final class DayPage extends PageController {
         /* Generate */
         Parent parent;
         int colSpan = 1;
-        int rowOffset = 0;
         int rowStart, rowSpan;
-        int rowStep = 24 + rowOffset;
+        int rowStep = 24;
 
         /* Generate entries */
-        List<Entry> entries = App.get().database().entries(App.get().date());
-        List<Entry> wholeDayEntries = new LinkedList<>();
+        LocalDate date = App.get().date();
+        List<Entry> singleEntries = new LinkedList<>();
+        List<Entry> wholeEntries = new LinkedList<>();
 
-        for (Entry entry : entries) {
-            if (entry.on(App.get().date())) {
-                if (entry.end() != null) {
-                    if (entry.start().toLocalDate().isBefore(App.get().date())) {
-                        rowStart = 0;
-                    } else {
-                        rowStart = entry.start().getHour() + entry.start().getMinute() / 30;
-                    }
-
-                    if (entry.end().toLocalDate().isAfter(App.get().date())) {
-                        rowSpan = 24 - rowStart;
-                    } else {
-                        rowSpan = entry.end().getHour() + (entry.end().getMinute() / 30 - rowStart);
-                    }
-                } else {
-                    rowStart = 0;
-                    rowSpan = 24;
-                }
-
-                if (rowStart == 0 && rowSpan == 24) {
-                    wholeDayEntries.add(entry);
-                } else {
-                    rowStart += rowOffset;
-
-                    if (rowSpan == 0) { rowSpan = 1; }
-
-                    parent = new EntryController(entry).parent();
-                    this.contents.add(parent);
-                    this.entries.add(parent, colSpan, rowStart, 1, rowSpan);
-                    colSpan++;
-                }
+        for (Entry entry : App.get().database().entries(date)) {
+            if (entry.whole(date)) {
+                wholeEntries.add(entry);
+            } else {
+                singleEntries.add(entry);
             }
         }
 
-        /* Generate whole day entries */
-        for (Entry entry : wholeDayEntries) {
+        for (Entry entry : singleEntries) {
+            LocalTime startTime = entry.start(date);
+            LocalTime endTime = entry.end(date);
+
+            if (startTime != null && endTime != null) {
+                rowStart = startTime.getHour() + startTime.getMinute() / 30;
+                rowSpan = Math.max(endTime.getHour() + endTime.getMinute() / 30 - rowStart, 1);
+
+                parent = new EntryController(entry).parent();
+                this.contents.add(parent);
+                this.entries.add(parent, colSpan, rowStart, 1, rowSpan);
+                colSpan++;
+            }
+        }
+
+        for (Entry entry : wholeEntries) {
             parent = new EntryController(entry).parent();
             this.contents.add(parent);
             this.entries.add(parent, 1, rowStep, colSpan, 1);

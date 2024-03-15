@@ -79,13 +79,11 @@ public final class Editor extends Controller {
             this.startHour.setText(Integer.toString(entry.start().getHour()));
             this.startMinute.setText(Integer.toString(entry.start().getMinute()));
 
-            if (end) {
-                this.endDay.setText(Integer.toString(entry.start().getDayOfMonth()));
-                this.endMonth.setText(Integer.toString(entry.start().getMonthValue()));
-                this.endYear.setText(Integer.toString(entry.start().getYear()));
-                this.endHour.setText(Integer.toString(entry.end().getHour()));
-                this.endMinute.setText(Integer.toString(entry.end().getMinute()));
-            }
+            this.endDay.setText(Integer.toString(entry.end().getDayOfMonth()));
+            this.endMonth.setText(Integer.toString(entry.end().getMonthValue()));
+            this.endYear.setText(Integer.toString(entry.start().getYear()));
+            this.endHour.setText(Integer.toString(entry.end().getHour()));
+            this.endMinute.setText(Integer.toString(entry.end().getMinute()));
 
             if (recurring) {
                 switch (entry.recurring().type()) {

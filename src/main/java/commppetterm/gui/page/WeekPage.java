@@ -1,6 +1,7 @@
 package commppetterm.gui.page;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.TextStyle;
 import java.util.LinkedList;
 import java.util.List;
@@ -67,22 +68,20 @@ public final class WeekPage extends PageController {
         int rowStep = 24 + rowOffset;
 
         /* Generate entries */
-        List<Entry> entries = App.get().database().entries(start, end);
+        List<Entry> singleEntries = new LinkedList<>();
         List<Triple<Entry, Integer, Integer>> wholeEntries = new LinkedList<>();
 
-        for (Entry entry : entries) {
-            if (entry.start().toLocalDate().isBefore(start) && entry.end().toLocalDate().isAfter(end)) {
+        for (Entry entry : App.get().database().entries(start, end)) {
+            if (entry.whole(start, end) || entry.untimed()) {
                 wholeEntries.add(new Triple<>(entry, -1, 0));
+            } else {
+                singleEntries.add(entry);
             }
-        }
-
-        for (Triple<Entry, Integer, Integer> entry : wholeEntries) {
-            entries.remove(entry.a());
         }
 
         do {
             for (Triple<Entry, Integer, Integer> entry : wholeEntries) {
-                if (entry.a().fullOn(iter)) {
+                if (entry.a().on(iter)) {
                     if (entry.b() < 0) {
                         entry.b(colStep);
                         entry.c(1);
@@ -92,30 +91,14 @@ public final class WeekPage extends PageController {
                 }
             }
 
-            for (Entry entry : entries) {
-                if (entry.on(iter)) {
-                    if (entry.end() != null) {
-                        if (entry.start().toLocalDate().isBefore(iter)) {
-                            rowStart = 0;
-                        } else {
-                            rowStart = entry.start().getHour() + entry.start().getMinute() / 30;
-                        }
+            for (Entry entry : singleEntries) {
+                LocalTime startTime = entry.start(iter);
+                LocalTime endTime = entry.end(iter);
 
-                        if (entry.end().toLocalDate().isAfter(iter)) {
-                            rowSpan = 24 - rowStart;
-                        } else {
-                            rowSpan = entry.end().getHour() + entry.end().getMinute() / 30 - rowStart;
-                        }
-                    } else {
-                        rowStart = 0;
-                        rowSpan = 24;
-                    }
-
+                if (startTime != null && endTime != null) {
+                    rowStart = startTime.getHour() + startTime.getMinute() / 30;
+                    rowSpan = Math.max(endTime.getHour() + endTime.getMinute() / 30 - rowStart, 1);
                     rowStart += rowOffset;
-
-                    if (rowSpan == 0) {
-                        rowSpan = 1;
-                    }
 
                     parent = new EntryController(entry).parent();
                     this.contents.add(parent);
@@ -124,9 +107,7 @@ public final class WeekPage extends PageController {
                 }
             }
 
-            if (colSpan == 0) { colSpan = 1; }
-
-            rowStep = 24 + rowOffset;
+            colSpan = Math.max(colSpan, 1);
 
             /* Generate day cell */
             parent = new DayCellController(iter).parent();

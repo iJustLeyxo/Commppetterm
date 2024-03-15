@@ -111,7 +111,7 @@ public final class Database {
      * @return a list of entries
      */
     public List<Entry> entries(@NotNull LocalDate start, @NotNull LocalDate end) {
-        List<Entry> singleEntries = new LinkedList<>(), recurringEntries = new LinkedList<>();
+        List<Entry> entries = new LinkedList<>();
 
         try {
             ResultSet set;
@@ -121,27 +121,19 @@ public final class Database {
             String startPoint = queryFormatter.format(start) + " 00:00:00";
 
             Statement statement = this.statement(this.connection());
-            set = statement.executeQuery("SELECT * FROM " + this.table + " WHERE start <= '" + endPoint + "' AND end >= '" + startPoint + "' AND recurringType IS NULL;");
+            set = statement.executeQuery("SELECT * FROM " + this.table + " WHERE (start <= '" + endPoint + "' AND end >= '" + startPoint + "') OR recurringType = NULL;");
 
             if (set != null) {
-                singleEntries = this.parse(set);
+                entries = this.parse(set);
+                this.close(set);
             } else {
                 App.get().LOGGER.warning("Reading entries from empty connection.");
             }
-
-            set = statement.executeQuery("SELECT * FROM " + this.table + " WHERE recurringType = NULL;");
-            if (set != null) {
-                recurringEntries = this.parse(set);
-            } else {
-                App.get().LOGGER.warning("Reading entries from empty connection.");
-            }
-
-            this.close(statement);
         } catch (SQLException e) {
             App.get().LOGGER.warning(e.getMessage());
         }
 
-        return singleEntries;
+        return entries;
     }
 
     /**
@@ -268,6 +260,15 @@ public final class Database {
      */
     public void close(@NotNull Statement statement) throws SQLException {
         statement.getConnection().close();
+    }
+
+    /**
+     * Closes a sql result set's connection
+     * @param set The result set to close
+     * @throws SQLException if closing the result set failed
+     */
+    public void close(@NotNull ResultSet set) throws SQLException {
+        set.getStatement().getConnection().close();
     }
 
     /**
