@@ -69,20 +69,19 @@ public final class Database {
      * @param user Login user
      * @param password Login password
      */
-    public boolean update(@NotNull String url, @NotNull String database, @NotNull String table, @NotNull String user, @NotNull String password) {
+    public void update(@NotNull String url, @NotNull String database, @NotNull String table, @NotNull String user, @NotNull String password) {
         this.url = url;
         this.database = database;
         this.table = table;
         this.user = user;
         this.password = password;
-        return this.init();
+        this.init();
     }
 
     /**
      * Initializes the required tables
-     * @return {@code true} if the initialization succeeded
      */
-    private boolean init() {
+    private void init() {
         String sql = "CREATE TABLE IF NOT EXISTS " + this.table + " (" +
                 "id INTEGER AUTO_INCREMENT PRIMARY KEY," +
                 "title TEXT NOT NULL," +
@@ -92,7 +91,7 @@ public final class Database {
                 "recurringType TEXT CHECK(recurringType IN (null, 'YEAR', 'MONTH', 'WEEK', 'DAY'))," +
                 "recurringFrequency INTEGER);";
 
-        return this.execute(sql);
+        this.execute(sql);
     }
 
     /**
@@ -114,14 +113,11 @@ public final class Database {
         List<Entry> entries = new LinkedList<>();
 
         try {
-            ResultSet set;
-
             DateTimeFormatter queryFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             String endPoint = queryFormatter.format(end) + " 23:59:99";
             String startPoint = queryFormatter.format(start) + " 00:00:00";
 
-            Statement statement = this.statement(this.connection());
-            set = statement.executeQuery("SELECT * FROM " + this.table + " WHERE (start <= '" + endPoint + "' AND end >= '" + startPoint + "') OR recurringType = NULL;");
+            ResultSet set = this.query("SELECT * FROM " + this.table + " WHERE (start <= '" + endPoint + "' AND end >= '" + startPoint + "') OR recurringType = NULL;");
 
             if (set != null) {
                 entries = this.parse(set);
@@ -290,15 +286,23 @@ public final class Database {
      * Executes a sql command
      * @param sql The command to execute
      */
-    public boolean execute(@NotNull String sql) {
+    public void execute(@NotNull String sql) {
         try {
             Statement stm = this.statement(this.connection());
             stm.execute(sql);
             this.close(stm);
-            return true;
         } catch (SQLException e) {
             App.get().LOGGER.warning(e.getMessage());
-            return false;
         }
+    }
+
+    /**
+     * Queries a sql command
+     * @param sql The command to query
+     * @return the result set of the query
+     */
+    public ResultSet query(@NotNull String sql) throws SQLException {
+        Statement stm = this.statement(this.connection());
+        return stm.executeQuery(sql);
     }
 }
