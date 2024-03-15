@@ -158,7 +158,7 @@ public final class Database {
             id = Long.toString(entry.id());
         }
 
-        if (entry.recurring() != null) {
+        if (!entry.once()) {
             recurringType = "'" + entry.recurring().type().toString() + "'";
             recurringFrequency = Integer.toString(entry.recurring().frequency());
         }

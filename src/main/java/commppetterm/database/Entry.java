@@ -48,6 +48,11 @@ public record Entry(
     public Recurring recurring() { return this.recurring; }
 
     /**
+     * @return {@code true} if the entry occurs only once
+     */
+    public boolean once() { return this.recurring == null; }
+
+    /**
      * @return {@code true} if the entry is timed
      */
     public boolean untimed() {
@@ -65,6 +70,8 @@ public record Entry(
      * @return {@code true} if the entry is on the date, otherwise {@code false}
      */
     public boolean on(LocalDate date) {
+        date = this.diff(date);
+
         return !(this.start.toLocalDate().isAfter(date) || this.end.toLocalDate().isBefore(date));
     }
 
@@ -74,7 +81,7 @@ public record Entry(
      * @return {@code true} if the entry is fully on the date
      */
     public boolean whole(@NotNull LocalDate date) {
-        return whole(date, date);
+        return whole(date, date); /* Logic is managed by whole(start, end) method */
     }
 
     /**
@@ -84,6 +91,9 @@ public record Entry(
      * @return {@code true} if the entry is fully on the date
      */
     public boolean whole(@NotNull LocalDate start, @NotNull LocalDate end) {
+        start = this.diff(start);
+        end = this.diff(end);
+
         return !this.start.toLocalDate().isAfter(start) && this.start.toLocalTime().equals(LocalTime.of(0, 0)) &&
                 !this.end.toLocalDate().isBefore(end) && this.end.toLocalTime().equals(LocalTime.of(23, 59));
 
@@ -95,6 +105,8 @@ public record Entry(
      * @return the time on the date where the event starts
      */
     public @Nullable LocalTime start(@NotNull LocalDate date) {
+        date = this.diff(date);
+
         if (this.start.toLocalDate().isBefore(date)) {
             return LocalTime.of(0, 0);
         } else if (this.start.toLocalDate().isEqual(date)) {
@@ -110,6 +122,8 @@ public record Entry(
      * @return the time on the date where the event ends
      */
     public @Nullable LocalTime end(@NotNull LocalDate date) {
+        date = this.diff(date);
+
         if (this.end.toLocalDate().isAfter(date)) {
             return LocalTime.of(23, 59);
         } else if (this.end.toLocalDate().isEqual(date)) {
@@ -117,6 +131,57 @@ public record Entry(
         } else {
             return null;
         }
+    }
+
+    /**
+     * Calculates the relative difference between a date and this entry
+     * @param date The reference date
+     * @return the relative date
+     */
+    private @NotNull LocalDate diff(@NotNull LocalDate date) {
+        if (!this.once()) {
+            long diff;
+
+            switch (this.recurring.type) {
+                case WEEK -> {
+                    diff = date.getDayOfWeek().getValue() - this.start.getDayOfWeek().getValue();
+
+                    if (diff < 0) {
+                        diff += 7;
+                    } else if (diff > 6) {
+                        diff -= 7;
+                    }
+
+                    return this.start.toLocalDate().plusDays(diff);
+                }
+
+                case MONTH -> {
+                    diff = date.getDayOfMonth() - this.start.getDayOfMonth();
+
+                    if (diff < 0) {
+                        diff += date.lengthOfMonth();
+                    } else if (diff > this.start.toLocalDate().lengthOfMonth() - this.start.getDayOfMonth()) {
+                        diff -=this.start.toLocalDate().lengthOfMonth();
+                    }
+
+                    return this.start.toLocalDate().plusDays(diff);
+                }
+
+                case YEAR -> {
+                    diff = date.getDayOfYear() - this.start.getDayOfYear();
+
+                    if (diff < 0) {
+                        diff += date.lengthOfYear();
+                    } else if (diff > this.start.toLocalDate().lengthOfYear() - this.start.getDayOfYear()) {
+                        diff -= this.start.toLocalDate().lengthOfYear();
+                    }
+
+                    return this.start.toLocalDate().plusDays(diff);
+                }
+            }
+        }
+
+        return date;
     }
 
     /**
