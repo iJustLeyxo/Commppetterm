@@ -69,3 +69,11 @@
 .medium-cell-width{
     -fx-pref-width: 42px;
 }
+
+.dialog-pane {
+    -fx-pref-width: 500px;
+}
+
+.dialog-pane > .header-panel > .label {
+    -fx-font-size: 17px;
+}

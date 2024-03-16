@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Database handler
@@ -89,7 +90,6 @@ public final class Database {
                 "end DATETIME," +
                 "recurringType TEXT CHECK(recurringType IN (null, 'YEAR', 'MONTH', 'WEEK', 'DAY'))," +
                 "recurringFrequency INTEGER);";
-
         this.execute(sql);
     }
 
@@ -139,7 +139,7 @@ public final class Database {
             id = Long.toString(entry.id());
         }
 
-        if (!entry.once()) {
+        if (entry.recurs()) {
             recurringType = "'" + entry.recurring().type().toString() + "'";
             recurringFrequency = Integer.toString(entry.recurring().frequency());
         }
@@ -175,14 +175,10 @@ public final class Database {
      * Deletes an entry
      * @param entry The entry to delete
      */
-    public void delete(@Nullable Entry entry) {
+    public void delete(@Nullable Entry entry) throws SQLException {
         if (entry == null || entry.id() == null) { return; }
 
-        try {
-            this.execute("DELETE FROM " + this.table + " WHERE id = '" + entry.id() + "';");
-        } catch (Exception e) {
-            App.get().LOGGER.warning(e.getMessage());
-        }
+        this.execute("DELETE FROM " + this.table + " WHERE id = '" + entry.id() + "';");
     }
 
     private List<Entry> parse(ResultSet set) throws SQLException {

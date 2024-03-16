@@ -2,6 +2,7 @@ package commppetterm.gui.page;
 
 import commppetterm.database.Entry;
 import commppetterm.gui.exception.EditorException;
+import javafx.scene.control.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -9,17 +10,13 @@ import org.kordamp.ikonli.material2.Material2AL;
 import org.kordamp.ikonli.material2.Material2MZ;
 
 import commppetterm.gui.App;
-import commppetterm.gui.exception.FxmlLoadException;
-import commppetterm.gui.exception.URLNotFoundException;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 
 import java.sql.SQLException;
 import java.time.*;
+import java.util.Optional;
 
 
 /**
@@ -47,7 +44,7 @@ public final class Editor extends Controller {
     /**
      * Creates a new editor
      */
-    public Editor() throws URLNotFoundException, FxmlLoadException {
+    public Editor() {
         this.delete.setDisable(true);
 
         if (App.get().entry() != null && App.get().entry().id() != null) {
@@ -110,26 +107,48 @@ public final class Editor extends Controller {
     }
 
     @FXML
-    private void save() throws URLNotFoundException, FxmlLoadException {
+    private void save() {
         try {
             App.get().database().save(this.entry());
-            App.get().controller(new Calendar());
+            App.get().provider(new Calendar());
         } catch (SQLException e) {
-            App.get().LOGGER.warning(e.getMessage());
+            Optional<ButtonType> res = App.get().alert(e, Alert.AlertType.ERROR, "Go to settings?", ButtonType.YES, ButtonType.NO);
+
+            if (res.isPresent() && res.get().equals(ButtonType.YES)) {
+                App.get().provider(new Settings());
+            }
+        } catch (EditorException e) {
+            Optional<ButtonType> res = App.get().alert(e, Alert.AlertType.ERROR, "Close without saving?", ButtonType.YES, ButtonType.NO);
+
+            if (res.isPresent() && res.get().equals(ButtonType.YES)) {
+                App.get().provider(new Calendar());
+            }
         }
     }
 
     @FXML
-    private void delete() throws URLNotFoundException, FxmlLoadException {
+    private void delete() {
         try {
             App.get().database().delete(this.entry());
-            App.get().controller(new Calendar());
-        } catch (EditorException ignored) {}
+            App.get().provider(new Calendar());
+        } catch (SQLException e) {
+            Optional<ButtonType> res = App.get().alert(e, Alert.AlertType.ERROR, "Go to settings?", ButtonType.YES, ButtonType.NO);
+
+            if (res.isPresent() && res.get().equals(ButtonType.YES)) {
+                App.get().provider(new Settings());
+            }
+        } catch (EditorException e) {
+            Optional<ButtonType> res = App.get().alert(e, Alert.AlertType.ERROR, "Close without saving?", ButtonType.YES, ButtonType.NO);
+
+            if (res.isPresent() && res.get().equals(ButtonType.YES)) {
+                App.get().provider(new Calendar());
+            }
+        }
     }
 
     @FXML
-    private void cancel() throws URLNotFoundException, FxmlLoadException {
-        App.get().controller(new Calendar());
+    private void cancel() {
+        App.get().provider(new Calendar());
     }
 
     @FXML
@@ -217,7 +236,7 @@ public final class Editor extends Controller {
      * Generates an entry from the editor contents
      * @return an entry object
      */
-    private @NotNull Entry entry() {
+    private @NotNull Entry entry() throws EditorException {
         /* Recurring */
         Entry.Recurring recurring = entryRecurrence();
 
@@ -290,7 +309,7 @@ public final class Editor extends Controller {
             id = App.get().entry().id();
         }
 
-        App.get().controller(new Calendar());
+        App.get().provider(new Calendar());
 
         /* Generate entry */
         return new Entry(
@@ -307,7 +326,7 @@ public final class Editor extends Controller {
      * Generates the recurring object of an entry
      * @return the recurring object
      */
-    private @Nullable Entry.Recurring entryRecurrence() {
+    private @Nullable Entry.Recurring entryRecurrence() throws EditorException {
         Entry.Recurring recurring = null;
 
         if (this.recurring.isSelected()) {

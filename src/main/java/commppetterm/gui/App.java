@@ -4,15 +4,18 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import commppetterm.database.Database;
 import commppetterm.database.Entry;
+import commppetterm.gui.exception.URLNotFoundException;
+import commppetterm.gui.page.Provider;
 import commppetterm.gui.page.Settings;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import org.jetbrains.annotations.NotNull;
 
-import commppetterm.gui.exception.FxmlLoadException;
-import commppetterm.gui.exception.URLNotFoundException;
 import commppetterm.gui.page.Calendar;
 import commppetterm.gui.page.Controller;
 import javafx.application.Application;
@@ -20,6 +23,8 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.jetbrains.annotations.Nullable;
+import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.material2.Material2AL;
 
 /**
  * Main class
@@ -76,7 +81,7 @@ public final class App extends Application {
     /**
      * Current controller
      */
-    private @Nullable Controller controller;
+    private @Nullable Provider provider;
 
     /**
      * Gui date
@@ -102,10 +107,10 @@ public final class App extends Application {
      * @param stage Application stage
      */
     @Override
-    public void start(@NotNull Stage stage) throws URLNotFoundException, FxmlLoadException {
+    public void start(@NotNull Stage stage) {
         /* GUI setup */
         this.stage = stage;
-        this.stage.setTitle(this.NAME);
+        this.stage.setTitle(this.NAME + " " + this.VERSION);
         String iconFile = "icon.png";
         URL iconUrl = App.class.getResource(iconFile);
 
@@ -118,9 +123,13 @@ public final class App extends Application {
 
         try {
             App.get().database().init();
-            this.controller(new Calendar());
+            this.provider(new Calendar());
         } catch (SQLException e) {
-            this.controller(new Settings(e));
+            Optional<ButtonType> res = App.get().alert(e, Alert.AlertType.ERROR, "Go to settings?", ButtonType.YES, ButtonType.NO);
+
+            if (res.isPresent() && res.get().equals(ButtonType.YES)) {
+                App.get().provider(new Settings());
+            }
         }
 
         this.stage.show();
@@ -159,15 +168,45 @@ public final class App extends Application {
     /**
      * @return the current controller
      */
-    public @Nullable Controller controller() { return this.controller; }
+    public @Nullable Provider provider() { return this.provider; }
 
     /**
      * Swaps to a controller
-     * @param controller The controller to swap to
+     * @param provider The provider to swap to
      */
-    public void controller(@NotNull Controller controller) throws URLNotFoundException, FxmlLoadException {
+    public void provider(@NotNull Provider provider) {
         assert this.stage != null;
-        this.stage.setScene(new Scene(controller.parent()));
-        this.controller = controller;
+        this.stage.setScene(new Scene(provider.parent()));
+        this.provider = provider;
     }
-}
+
+    /**
+     * Creates an alert
+     * @param type The alert type
+     */
+    public Optional<ButtonType> alert(@NotNull Exception e, @NotNull Alert.AlertType type, @Nullable String action, @NotNull ButtonType... buttons) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        URL url = App.get().getClass().getResource("style.css");
+
+        FontIcon icon = new FontIcon(Material2AL.ERROR);
+        icon.setIconSize(17);
+
+        alert.setTitle(type.toString());
+        alert.setHeaderText(e.getClass().getCanonicalName() + ":");
+        alert.getButtonTypes().setAll(buttons);
+        alert.getDialogPane().setGraphic(icon);
+
+        if (url == null) {
+            throw new URLNotFoundException(App.get().getClass(), "style.css");
+        } else {
+            alert.getDialogPane().getScene().getStylesheets().add(url.toExternalForm());
+        }
+
+        if (action != null) {
+            alert.setContentText(e.getMessage() + "\n\n" + action);
+        } else {
+            alert.setContentText(e.getMessage());
+        }
+
+        return alert.showAndWait();
+    }}

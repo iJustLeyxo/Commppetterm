@@ -1,19 +1,12 @@
 package commppetterm.gui.page;
 
 import commppetterm.gui.App;
-import commppetterm.gui.exception.FxmlLoadException;
-import commppetterm.gui.exception.URLNotFoundException;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
-import org.jetbrains.annotations.NotNull;
+import javafx.scene.control.*;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.sql.SQLException;
+import java.util.Optional;
 
 /**
  * Settings controller
@@ -34,24 +27,12 @@ public final class Settings extends Controller {
     /**
      * Creates a new settings controller
      */
-    public Settings() throws URLNotFoundException, FxmlLoadException {
+    public Settings() {
         this.url.setText(App.get().database().url());
         this.user.setText(App.get().database().user());
         this.password.setText(App.get().database().password());
         this.database.setText(App.get().database().database());
         this.table.setText(App.get().database().table());
-    }
-
-    /**
-     * Creates a new settings controller
-     */
-    public Settings(@NotNull Throwable error) throws URLNotFoundException, FxmlLoadException {
-        this.url.setText(App.get().database().url());
-        this.user.setText(App.get().database().user());
-        this.password.setText(App.get().database().password());
-        this.database.setText(App.get().database().database());
-        this.table.setText(App.get().database().table());
-        this.error(error);
     }
 
     @FXML
@@ -64,32 +45,27 @@ public final class Settings extends Controller {
                     this.user.getText(),
                     this.password.getText());
 
-            App.get().controller(new Calendar());
+            App.get().provider(new Calendar());
         } catch (SQLException e) {
-            this.error(e);
+            Optional<ButtonType> res = App.get().alert(e, Alert.AlertType.ERROR, "Leave settings?", ButtonType.YES, ButtonType.NO);
+
+            if (res.isPresent() && res.get().equals(ButtonType.YES)) {
+                App.get().provider(new Calendar());
+            }
         }
     }
 
     @FXML
-    private void cancel() throws URLNotFoundException, FxmlLoadException {
+    private void cancel() {
         try {
             App.get().database().test();
-            App.get().controller(new Calendar());
+            App.get().provider(new Calendar());
         } catch (SQLException e) {
-            this.error(e);
-        }
-    }
+            Optional<ButtonType> res = App.get().alert(e, Alert.AlertType.ERROR, "Leave settings?", ButtonType.YES, ButtonType.NO);
 
-    /**
-     * Enables or disables a node, can make the node invisible and exclude the node from rendering
-     * @param error The error to show
-     */
-    private void error(@NotNull Throwable error) {
-        this.error.setText(error.getMessage());
-        this.error.setVisible(true);
-        this.error.setManaged(true);
-        this.errorIcon.setVisible(true);
-        this.errorIcon.setManaged(true);
-        App.get().stage().sizeToScene();
+            if (res.isPresent() && res.get().equals(ButtonType.YES)) {
+                App.get().provider(new Calendar());
+            }
+        }
     }
 }

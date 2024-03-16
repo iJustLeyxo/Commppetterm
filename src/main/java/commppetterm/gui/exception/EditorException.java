@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Exception while editing an entry
  */
-public class EditorException extends RuntimeException {
+public class EditorException extends Exception {
     /**
      * Creates a new editor exception
      * @param message The exception message

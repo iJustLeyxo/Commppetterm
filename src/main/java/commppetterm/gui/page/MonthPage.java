@@ -5,8 +5,6 @@ import java.time.temporal.WeekFields;
 import java.util.List;
 
 import commppetterm.gui.App;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -42,27 +40,27 @@ public final class MonthPage extends PageController {
         this.contents.clear();
 
         /* Generate */
-        LocalDate iter = LocalDate.of(App.get().date().getYear(), App.get().date().getMonth(), 1);
+        LocalDate iterator = LocalDate.of(App.get().date().getYear(), App.get().date().getMonth(), 1);
         Parent parent;
         int offset = 0;
 
-        if (iter.get(WeekFields.ISO.weekOfMonth()) == 0) { offset = 1; }
+        if (iterator.get(WeekFields.ISO.weekOfMonth()) == 0) { offset = 1; }
 
         do {
             /* Generate days */
-            parent = new DayCellController(iter).parent();
+            parent = new DayCellController(iterator).parent();
             this.contents.add(parent);
-            this.grid.add(parent, iter.getDayOfWeek().getValue(), iter.get(WeekFields.ISO.weekOfMonth()) + offset);
+            this.grid.add(parent, iterator.getDayOfWeek().getValue(), iterator.get(WeekFields.ISO.weekOfMonth()) + offset);
 
             /* Generate weeks */
-            if (iter.getDayOfWeek().getValue() == 1 || iter.getDayOfMonth() == 1) {
-                parent = new WeekCellController(iter).parent();
+            if (iterator.getDayOfWeek().getValue() == 1 || iterator.getDayOfMonth() == 1) {
+                parent = new WeekCellController(iterator).parent();
                 this.contents.add(parent);
-                this.grid.add(parent, 0, iter.get(WeekFields.ISO.weekOfMonth()) + offset);
+                this.grid.add(parent, 0, iterator.get(WeekFields.ISO.weekOfMonth()) + offset);
             }
 
-            iter = iter.plusDays(1);
-        } while (iter.getDayOfMonth() != 1);
+            iterator = iterator.plusDays(1);
+        } while (iterator.getDayOfMonth() != 1);
     }
 
     /**
@@ -84,8 +82,8 @@ public final class MonthPage extends PageController {
 
             this.element.setOnAction(actionEvent -> {
                 App.get().date(date);
-                assert App.get().controller() != null;
-                ((Calendar) App.get().controller()).swap(new DayPage());
+                assert App.get().provider() != null;
+                ((Calendar) App.get().provider()).swap(new DayPage());
             });
         }
     }
@@ -104,8 +102,8 @@ public final class MonthPage extends PageController {
 
             this.element.setOnAction(actionEvent -> {
                 App.get().date(date);
-                assert App.get().controller() != null;
-                ((Calendar) App.get().controller()).swap(new WeekPage());
+                assert App.get().provider() != null;
+                ((Calendar) App.get().provider()).swap(new WeekPage());
             });
         }
     }

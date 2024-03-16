@@ -51,7 +51,7 @@ public record Entry(
     /**
      * @return {@code true} if the entry occurs only once
      */
-    public boolean once() { return this.recurring == null; }
+    public boolean recurs() { return this.recurring != null; }
 
     /**
      * @return {@code true} if the entry is timed
@@ -140,7 +140,7 @@ public record Entry(
      * @return the relative date
      */
     private @NotNull LocalDate diff(@NotNull LocalDate date) {
-        if (!this.once()) {
+        if (this.recurs()) {
             long diff = 0;
             LocalDate rel;
 

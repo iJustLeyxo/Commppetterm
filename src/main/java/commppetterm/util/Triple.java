@@ -60,13 +60,6 @@ public final class Triple<A, B, C> {
     }
 
     /**
-     * @param a the value to set for the first part of the triple
-     */
-    public void a(@NotNull A a) {
-        this.a = a;
-    }
-
-    /**
      * @param b the value to set for the second part of the triple
      */
     public void b(@NotNull B b) {
@@ -80,19 +73,4 @@ public final class Triple<A, B, C> {
         this.c = c;
     }
 
-    /**
-     * Tests if a list contains a triple
-     * @param list The list
-     * @param s The triple to search for
-     * @return {@code true} if the triple was found
-     */
-    public boolean hasA(@NotNull List<Triple<A, B, C>> list) {
-        for (Triple<A, B, C> triple : list) {
-            if (triple.a().equals(this.a)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 }

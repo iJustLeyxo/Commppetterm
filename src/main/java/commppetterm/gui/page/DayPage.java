@@ -5,11 +5,13 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import commppetterm.database.Entry;
 import commppetterm.gui.App;
-import commppetterm.util.Triple;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import org.jetbrains.annotations.NotNull;
 
 import javafx.fxml.FXML;
@@ -58,7 +60,13 @@ public final class DayPage extends PageController {
                 }
             }
         } catch (SQLException e) {
-            App.get().controller(new Settings(e));
+            Optional<ButtonType> res = App.get().alert(e, Alert.AlertType.ERROR, "Go to settings?", ButtonType.YES, ButtonType.NO);
+
+            if (res.isPresent() && res.get().equals(ButtonType.YES)) {
+                App.get().provider(new Settings());
+            } else {
+                return;
+            }
         }
 
         for (Entry entry : singleEntries) {
