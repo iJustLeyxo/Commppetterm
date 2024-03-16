@@ -11,6 +11,8 @@
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.TextArea?>
 <VBox alignment="CENTER" spacing="10.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -28,17 +30,22 @@
       </Button>
    </HBox>
    <GridPane alignment="CENTER" hgap="5.0" vgap="5.0">
-      <TextField fx:id="url" promptText="URL" GridPane.columnIndex="1" />
-      <TextField fx:id="user" promptText="Nutzer" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <PasswordField fx:id="password" promptText="Passwort" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <FontIcon iconLiteral="mdral-link" />
       <FontIcon iconLiteral="mdsal-account_circle" GridPane.rowIndex="1" />
       <FontIcon iconLiteral="mdral-lock" GridPane.rowIndex="2" />
-      <TextField fx:id="database" promptText="Datenbank" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <TextField fx:id="table" promptText="Tabelle" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <FontIcon iconLiteral="mdrmz-storage" GridPane.rowIndex="3" />
       <FontIcon iconLiteral="mdrmz-table_chart" GridPane.rowIndex="4" />
-      <Label fx:id="error" GridPane.columnSpan="2" GridPane.rowIndex="5" visible="false" managed="false" textOverrun="WORD_ELLIPSIS" />
+      <FontIcon fx:id="errorIcon" iconLiteral="mdral-error" GridPane.rowIndex="5" visible="false" managed="false" />
+      <TextField fx:id="url" promptText="URL" GridPane.columnIndex="1" />
+      <TextField fx:id="user" promptText="Nutzer" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <PasswordField fx:id="password" promptText="Passwort" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <TextField fx:id="database" promptText="Datenbank" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <TextField fx:id="table" promptText="Tabelle" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <Label fx:id="error" text="Error" GridPane.columnIndex="1" GridPane.rowIndex="5" visible="false" managed="false" wrapText="true">
+         <padding>
+            <Insets left="7.5" right="7.5" />
+         </padding>
+      </Label>
       <columnConstraints>
          <ColumnConstraints />
          <ColumnConstraints prefWidth="500.0" />

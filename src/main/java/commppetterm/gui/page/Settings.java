@@ -7,8 +7,11 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import org.jetbrains.annotations.NotNull;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.sql.SQLException;
 
@@ -18,6 +21,9 @@ import java.sql.SQLException;
 public final class Settings extends Controller {
     @FXML
     private Label error;
+
+    @FXML
+    private FontIcon errorIcon;
 
     @FXML
     private TextField url, user, database, table;
@@ -82,5 +88,8 @@ public final class Settings extends Controller {
         this.error.setText(error.getMessage());
         this.error.setVisible(true);
         this.error.setManaged(true);
+        this.errorIcon.setVisible(true);
+        this.errorIcon.setManaged(true);
+        App.get().stage().sizeToScene();
     }
 }
