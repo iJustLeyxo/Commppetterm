@@ -13,12 +13,4 @@ public class EditorException extends RuntimeException {
     public EditorException(@NotNull String message) {
         super(message);
     }
-
-    /**
-     * Creates a new editor exception
-     * @param cause The exception cause
-     */
-    public EditorException(@NotNull Throwable cause) {
-        super(cause.getMessage(), cause);
-    }
 }
