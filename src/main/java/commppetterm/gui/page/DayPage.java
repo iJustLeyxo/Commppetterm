@@ -88,6 +88,6 @@ public final class DayPage extends PageController {
 
     @Override
     @NotNull List<DtfElement> formatting() {
-        return List.of(new DtfElement(DtfElement.Type.PATTERN, "dd.MM.yyyy"));
+        return List.of(new DtfElement(DtfElement.Type.PATTERN, "E dd.MM.yyyy"));
     }
 }
