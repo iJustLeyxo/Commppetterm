@@ -45,8 +45,6 @@ public final class Editor extends Controller {
      * Creates a new editor
      */
     public Editor() {
-        this.delete.setDisable(true);
-
         if (App.get().entry() != null && App.get().entry().id() != null) {
             Entry entry = App.get().entry();
 
@@ -99,6 +97,10 @@ public final class Editor extends Controller {
             this.end.setSelected(end);
             this.time.setSelected(time);
             this.recurring.setSelected(recurring);
+        } else {
+            this.delete.setDisable(true);
+            this.yearly.setSelected(true);
+            this.frequency.setText("1");
         }
 
         this.end();
