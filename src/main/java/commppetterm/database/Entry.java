@@ -143,7 +143,6 @@ public record Entry(
         if (!this.once()) {
             long diff = 0;
             LocalDate rel;
-            Period dist;
 
             switch (this.recurring.type) {
                 case DAY -> {
@@ -162,24 +161,16 @@ public record Entry(
                     diff = date.getDayOfMonth() - this.start.getDayOfMonth();
                     if (diff < 0) { diff += date.lengthOfMonth(); }
                     diff %= this.start.toLocalDate().lengthOfMonth();
-                    return this.start.toLocalDate()
-                            .plusDays(diff)
-                            .plusMonths(Period.between(
-                                    this.start.toLocalDate().plusDays(diff),
-                                    date
-                            ).getMonths() % recurring.frequency);
+                    rel = this.start.toLocalDate().plusDays(diff);
+                    return rel.plusMonths(Period.between(rel, date).getMonths() % recurring.frequency);
                 }
 
                 case YEAR -> {
                     diff = date.getDayOfYear() - this.start.getDayOfYear();
                     if (diff < 0) { diff += date.lengthOfYear(); }
                     diff %= this.start.toLocalDate().lengthOfYear();
-                    return this.start.toLocalDate()
-                            .plusDays(diff)
-                            .plusYears(Period.between(
-                                    this.start.toLocalDate().plusDays(diff),
-                                    date
-                            ).getYears() % recurring.frequency);
+                    rel = this.start.toLocalDate().plusDays(diff);
+                    return rel.plusYears(Period.between(rel, date).getYears() % recurring.frequency);
                 }
             }
         }
