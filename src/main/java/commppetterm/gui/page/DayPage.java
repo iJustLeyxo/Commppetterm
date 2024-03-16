@@ -1,11 +1,17 @@
 package commppetterm.gui.page;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import commppetterm.database.Entry;
 import commppetterm.gui.App;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import org.jetbrains.annotations.NotNull;
 
 import javafx.fxml.FXML;
@@ -16,14 +22,7 @@ import javafx.scene.layout.GridPane;
  */
 public final class DayPage extends PageController {
     @FXML
-    private GridPane grid;
-
-    /**
-     * Initializes a new day page
-     */
-    public DayPage() {
-        this.reload();
-    }
+    private GridPane entries;
 
     @Override
     @NotNull LocalDate prev(@NotNull LocalDate date) {
@@ -38,48 +37,65 @@ public final class DayPage extends PageController {
     @Override
     protected void reload() {
         /* Clear grid */
-        this.grid.getChildren().removeAll(contents);
+        this.entries.getChildren().removeAll(contents);
         this.contents.clear();
 
-        /* Generate entries */
+        /* Generate */
         Parent parent;
-        int colStep = 1;
-        int rowOffset = 0;
+        int colSpan = 1;
         int rowStart, rowSpan;
+        int rowStep = 24;
 
-        for (Entry entry : App.get().database().entries(App.get().date())) {
-            if (entry.on(App.get().date())) {
-                if (entry.end() != null) {
-                    if (entry.start().getDayOfYear() < App.get().date().getDayOfYear() || entry.start().getYear() < App.get().date().getYear()) {
-                        rowStart = 0;
-                    } else {
-                        rowStart = entry.start().getHour() + entry.start().getMinute() / 30;
-                    }
+        /* Generate entries */
+        LocalDate date = App.get().date();
+        List<Entry> singleEntries = new LinkedList<>();
+        List<Entry> wholeEntries = new LinkedList<>();
 
-                    if (entry.end().getDayOfYear() > App.get().date().getDayOfYear() || entry.end().getYear() > App.get().date().getYear()) {
-                        rowSpan = 24 - rowStart;
-                    } else {
-                        rowSpan = entry.end().getHour() + (entry.end().getMinute() / 30 - rowStart);
-                    }
+        try {
+            for (Entry entry : App.get().database().entries(date)) {
+                if (entry.whole(date)) {
+                    wholeEntries.add(entry);
                 } else {
-                    rowStart = 0;
-                    rowSpan = 24;
+                    singleEntries.add(entry);
                 }
+            }
+        } catch (SQLException e) {
+            Optional<ButtonType> res = App.get().alert(e, Alert.AlertType.ERROR, "Go to settings?", ButtonType.YES, ButtonType.NO);
 
-                rowStart += rowOffset;
+            if (res.isPresent() && res.get().equals(ButtonType.YES)) {
+                App.get().provider(new Settings());
+            } else {
+                return;
+            }
+        }
 
-                // TODO: Detect full day entries
+        for (Entry entry : singleEntries) {
+            LocalTime startTime = entry.start(date);
+            LocalTime endTime = entry.end(date);
+
+            if (startTime != null && endTime != null) {
+                rowStart = startTime.getHour() + startTime.getMinute() / 30;
+                rowSpan = Math.max(endTime.getHour() + endTime.getMinute() / 30 - rowStart, 1);
 
                 parent = new EntryController(entry).parent();
                 this.contents.add(parent);
-                this.grid.add(parent, colStep, rowStart, 1, rowSpan);
-                colStep++;
+                this.entries.add(parent, colSpan, rowStart, 1, rowSpan);
+                colSpan++;
             }
+        }
+
+        colSpan = Math.max(colSpan - 1, 1);
+
+        for (Entry entry : wholeEntries) {
+            parent = new EntryController(entry).parent();
+            this.contents.add(parent);
+            this.entries.add(parent, 1, rowStep, colSpan, 1);
+            rowStep++;
         }
     }
 
     @Override
     @NotNull List<DtfElement> formatting() {
-        return List.of(new DtfElement(DtfElement.Type.PATTERN, "dd.MM.yyyy"));
+        return List.of(new DtfElement(DtfElement.Type.PATTERN, "E dd.MM.yyyy"));
     }
 }

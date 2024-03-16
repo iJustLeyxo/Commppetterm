@@ -22,17 +22,18 @@ public abstract class Controller implements Provider {
     /**
      * Creates a new controller
      */
-    public Controller() throws URLNotFoundException, FxmlLoadException {
+    public Controller() {
         URL url = this.getClass().getResource(this.getClass().getSimpleName() + ".fxml");
         FXMLLoader loader = new FXMLLoader(url);
         loader.setController(this);
 
+        if (url == null) {
+            throw new URLNotFoundException(this.getClass(), this.getClass().getSimpleName());
+        }
+
         try {
             this.parent = loader.load();
         } catch (IOException e) {
-            if (url == null) {
-                throw new URLNotFoundException(this.getClass(), this.getClass().getSimpleName());
-            }
             throw new FxmlLoadException(url, e);
         }
     }

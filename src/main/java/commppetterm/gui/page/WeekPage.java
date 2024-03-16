@@ -1,17 +1,20 @@
 package commppetterm.gui.page;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.TextStyle;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import commppetterm.database.Entry;
 import commppetterm.gui.App;
-import commppetterm.gui.exception.FxmlLoadException;
-import commppetterm.gui.exception.URLNotFoundException;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import commppetterm.util.Triple;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import org.jetbrains.annotations.NotNull;
 
 import javafx.fxml.FXML;
@@ -28,7 +31,7 @@ public final class WeekPage extends PageController {
     /**
      * Initializes a new week page
      */
-    public WeekPage() throws URLNotFoundException, FxmlLoadException {}
+    public WeekPage() {}
 
     @Override
     @NotNull LocalDate prev(@NotNull LocalDate date) {
@@ -56,34 +59,57 @@ public final class WeekPage extends PageController {
         this.contents.clear();
 
         /* Generate */
-        LocalDate iter = App.get().date().minusDays(App.get().date().getDayOfWeek().getValue() - 1);
+        LocalDate start = App.get().date().minusDays(App.get().date().getDayOfWeek().getValue() - 1);
+        LocalDate end = start.plusDays(6);
+        LocalDate iterator = start;
         Parent parent;
         int colStep = 1;
         int colSpan = 0;
-        int rowOffset = 2;
+        int rowOffset = 1;
         int rowStart, rowSpan;
+        int rowStep = 24 + rowOffset;
+
+        /* Generate entries */
+        List<Entry> singleEntries = new LinkedList<>();
+        List<Triple<Entry, Integer, Integer>> wholeEntries = new LinkedList<>();
+
+        try {
+            for (Entry entry : App.get().database().entries(start, end)) {
+                if (entry.whole(start, end) || entry.untimed()) {
+                    wholeEntries.add(new Triple<>(entry, 0, 0));
+                } else {
+                    singleEntries.add(entry);
+                }
+            }
+        } catch (SQLException e) {
+            Optional<ButtonType> res = App.get().alert(e, Alert.AlertType.ERROR, "Go to settings?", ButtonType.YES, ButtonType.NO);
+
+            if (res.isPresent() && res.get().equals(ButtonType.YES)) {
+                App.get().provider(new Settings());
+            } else {
+                return;
+            }
+        }
 
         do {
-            /* Generate entries */
-            for (Entry entry : App.get().database().entries(iter)) {
-                if (entry.on(iter)) {
-                    if (entry.end() != null) {
-                        if (entry.start().toLocalDate().isBefore(iter)) {
-                            rowStart = 0;
-                        } else {
-                            rowStart = entry.start().getHour() + entry.start().getMinute() / 30;
-                        }
-
-                        if (entry.end().toLocalDate().isAfter(iter)) {
-                            rowSpan = 24 - rowStart;
-                        } else {
-                            rowSpan = entry.end().getHour() + entry.end().getMinute() / 30 - rowStart;
-                        }
+            for (Triple<Entry, Integer, Integer> entry : wholeEntries) {
+                if (entry.a().on(iterator)) {
+                    if (entry.b() < 1) {
+                        entry.b(colStep);
+                        entry.c(1);
                     } else {
-                        rowStart = 31;
-                        rowSpan = 24;
+                        entry.c(entry.c() + 1);
                     }
+                }
+            }
 
+            for (Entry entry : singleEntries) {
+                LocalTime startTime = entry.start(iterator);
+                LocalTime endTime = entry.end(iterator);
+
+                if (startTime != null && endTime != null) {
+                    rowStart = startTime.getHour() + startTime.getMinute() / 30;
+                    rowSpan = Math.max(endTime.getHour() + endTime.getMinute() / 30 - rowStart, 1);
                     rowStart += rowOffset;
 
                     parent = new EntryController(entry).parent();
@@ -93,20 +119,26 @@ public final class WeekPage extends PageController {
                 }
             }
 
-            // TODO: Detect full week events
-
-            if (colSpan == 0) { colSpan = 1; }
+            colSpan = Math.max(colSpan, 1);
 
             /* Generate day cell */
-            parent = new DayCellController(iter).parent();
+            parent = new DayCellController(iterator).parent();
             this.contents.add(parent);
             this.entries.add(parent, colStep, 0, colSpan, 1);
 
             /* Increment iterators */
             colStep = colStep + colSpan;
             colSpan = 0;
-            iter = iter.plusDays(1);
-        } while (iter.getDayOfWeek().getValue() != 1);
+            iterator = iterator.plusDays(1);
+        } while (iterator.getDayOfWeek().getValue() != 1);
+
+        /* Generate whole day entries */
+        for (Triple<Entry, Integer, Integer> entry : wholeEntries) {
+            parent = new EntryController(entry.a()).parent();
+            this.contents.add(parent);
+            this.entries.add(parent, entry.b(), rowStep, Math.max(entry.c(), 1), 1);
+            rowStep++;
+        }
     }
 
     /**
@@ -129,14 +161,9 @@ public final class WeekPage extends PageController {
             }
 
             this.element.setOnAction(actionEvent -> {
-                try {
-                    App.get().date(date);
-                    assert App.get().controller() != null;
-                    ((Calendar) App.get().controller()).swap(new DayPage());
-                } catch (Exception e) {
-                    App.get().LOGGER.severe(e.toString());
-                    e.printStackTrace(System.out);
-                }
+                App.get().date(date);
+                assert App.get().provider() != null;
+                ((Calendar) App.get().provider()).swap(new DayPage());
             });
         }
     }

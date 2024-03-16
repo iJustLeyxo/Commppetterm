@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Database handler
@@ -33,7 +34,6 @@ public final class Database {
         this.table = table;
         this.user = user;
         this.password = password;
-        this.init();
     }
 
     /**
@@ -69,20 +69,19 @@ public final class Database {
      * @param user Login user
      * @param password Login password
      */
-    public boolean update(@NotNull String url, @NotNull String database, @NotNull String table, @NotNull String user, @NotNull String password) {
+    public void update(@NotNull String url, @NotNull String database, @NotNull String table, @NotNull String user, @NotNull String password) throws SQLException {
         this.url = url;
         this.database = database;
         this.table = table;
         this.user = user;
         this.password = password;
-        return this.init();
+        this.init();
     }
 
     /**
      * Initializes the required tables
-     * @return {@code true} if the initialization succeeded
      */
-    private boolean init() {
+    public void init() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS " + this.table + " (" +
                 "id INTEGER AUTO_INCREMENT PRIMARY KEY," +
                 "title TEXT NOT NULL," +
@@ -91,8 +90,7 @@ public final class Database {
                 "end DATETIME," +
                 "recurringType TEXT CHECK(recurringType IN (null, 'YEAR', 'MONTH', 'WEEK', 'DAY'))," +
                 "recurringFrequency INTEGER);";
-
-        return this.execute(sql);
+        this.execute(sql);
     }
 
     /**
@@ -100,51 +98,22 @@ public final class Database {
      * @param date The day to fetch the entries of
      * @return a list of entries
      */
-    public List<Entry> entries(LocalDate date) {
-        LinkedList<Entry> entries = new LinkedList<>();
+    public List<Entry> entries(@NotNull LocalDate date) throws SQLException { return this.entries(date, date); }
 
-        try {
-            DateTimeFormatter queryFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    /**
+     * Fetches the entries of a day
+     * @param start The first day to fetch the entries of
+     * @param end The last day to fetch entries of
+     * @return a list of entries
+     */
+    public List<Entry> entries(@NotNull LocalDate start, @NotNull LocalDate end) throws SQLException {
+        DateTimeFormatter queryFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String endPoint = queryFormatter.format(end) + " 23:59:99";
+        String startPoint = queryFormatter.format(start) + " 00:00:00";
 
-            String endPoint = queryFormatter.format(date) + " 23:59:99";
-            String startTime = queryFormatter.format(date) + " 00:00:00";
-
-            String sql = "SELECT * FROM " + this.table + " WHERE start <= '" + endPoint + "' AND end >= '" + startTime + "';";
-            ResultSet res = this.query(sql);
-
-            if (res == null) {
-                App.get().LOGGER.warning("Reading entries from empty connection.");
-                return entries;
-            }
-
-            DateTimeFormatter resultFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-            while (res.next()) {
-                LocalDateTime start = LocalDateTime.parse(res.getString("start"), resultFormatter);
-                LocalDateTime end = LocalDateTime.parse(res.getString("end"), resultFormatter);
-                Entry.Recurring recurring = null;
-                Entry.Recurring.Type recurringType = null;
-                byte recurringFrequency = res.getByte("recurringFrequency");
-
-                switch (res.getString("recurringType")) {
-                    case "YEAR" -> recurringType = Entry.Recurring.Type.YEAR;
-                    case "MONTH" -> recurringType = Entry.Recurring.Type.MONTH;
-                    case "WEEK" -> recurringType = Entry.Recurring.Type.WEEK;
-                    case "DAY" -> recurringType = Entry.Recurring.Type.DAY;
-                }
-
-                if (recurringType != null) {
-                    recurring = new Entry.Recurring(recurringType, recurringFrequency);
-                }
-
-                entries.add(new Entry(res.getLong("id"), res.getString("title"), res.getString("info"), start, end, recurring));
-            }
-
-            this.close(res);
-        } catch (SQLException e) {
-            App.get().LOGGER.warning(e.getMessage());
-        }
-
+        ResultSet set = this.query("SELECT * FROM " + this.table + " WHERE (start <= '" + endPoint + "' AND end >= '" + startPoint + "') OR recurringType IS NOT NULL;");
+        List<Entry> entries = this.parse(set);
+        this.close(set);
         return entries;
     }
 
@@ -152,7 +121,7 @@ public final class Database {
      * Creates or edits and entry
      * @param entry The entry to create or edit
      */
-    public void save(@Nullable Entry entry) {
+    public void save(@Nullable Entry entry) throws SQLException {
         if (entry == null) {
             return;
         }
@@ -170,8 +139,8 @@ public final class Database {
             id = Long.toString(entry.id());
         }
 
-        if (entry.recurring() != null) {
-            recurringType = entry.recurring().type().toString();
+        if (entry.recurs()) {
+            recurringType = "'" + entry.recurring().type().toString() + "'";
             recurringFrequency = Integer.toString(entry.recurring().frequency());
         }
 
@@ -184,8 +153,8 @@ public final class Database {
                     title + "', '" +
                     info + "', '" +
                     start + "', '" +
-                    end + "', '" +
-                    recurringType + "', '" +
+                    end + "', " +
+                    recurringType + ", '" +
                     recurringFrequency + "')";
         } else {
             sql = "UPDATE " + this.table + " SET" +
@@ -193,11 +162,12 @@ public final class Database {
                     "', info = '" + info +
                     "', start = '" + start +
                     "', end = '" + end +
-                    "', recurringType = '" + recurringType +
-                    "', recurringFrequency = '" + recurringFrequency +
+                    "', recurringType = " + recurringType +
+                    ", recurringFrequency = '" + recurringFrequency +
                     "' WHERE" +
                     " id = " + id + ";";
         }
+
         this.execute(sql);
     }
 
@@ -205,14 +175,40 @@ public final class Database {
      * Deletes an entry
      * @param entry The entry to delete
      */
-    public void delete(@Nullable Entry entry) {
+    public void delete(@Nullable Entry entry) throws SQLException {
         if (entry == null || entry.id() == null) { return; }
 
-        try {
-            this.execute("DELETE FROM " + this.table + " WHERE id = '" + entry.id() + "';");
-        } catch (Exception e) {
-            App.get().LOGGER.warning(e.getMessage());
+        this.execute("DELETE FROM " + this.table + " WHERE id = '" + entry.id() + "';");
+    }
+
+    private List<Entry> parse(ResultSet set) throws SQLException {
+        List<Entry> entries = new LinkedList<>();
+        DateTimeFormatter resultFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        while (set.next()) {
+            LocalDateTime eStart = LocalDateTime.parse(set.getString("start"), resultFormatter);
+            LocalDateTime eEnd = LocalDateTime.parse(set.getString("end"), resultFormatter);
+            Entry.Recurring recurring = null;
+            Entry.Recurring.Type recurringType = null;
+            byte recurringFrequency = set.getByte("recurringFrequency");
+
+            if (set.getString("recurringType") != null) {
+                switch (set.getString("recurringType")) {
+                    case "YEAR" -> recurringType = Entry.Recurring.Type.YEAR;
+                    case "MONTH" -> recurringType = Entry.Recurring.Type.MONTH;
+                    case "WEEK" -> recurringType = Entry.Recurring.Type.WEEK;
+                    case "DAY" -> recurringType = Entry.Recurring.Type.DAY;
+                }
+            }
+
+            if (recurringType != null) {
+                recurring = new Entry.Recurring(recurringType, recurringFrequency);
+            }
+
+            entries.add(new Entry(set.getLong("id"), set.getString("title"), set.getString("info"), eStart, eEnd, recurring));
         }
+
+        return entries;
     }
 
     /**
@@ -220,73 +216,63 @@ public final class Database {
      * @return a database connection
      * @throws SQLException if connecting fails
      */
-    public @NotNull Connection connect() throws SQLException {
+    public @NotNull Connection connection() throws SQLException {
         return DriverManager.getConnection(url + database, user, password);
     }
 
     /**
-     * Checks whether connecting to a database is possible
-     * @return {@code true} if a connection could be established
+     * Creates a statement from a connection
+     * @param connection The connection to create a statement from
+     * @return a sql statement
+     * @throws SQLException in case creating the statement fails
      */
-    public boolean valid() {
-        try {
-            Connection conn = this.connect();
-            conn.close();
-            return true;
-        } catch (SQLException e) {
-            App.get().LOGGER.warning(e.getMessage());
-            return false;
-        }
+    public @NotNull Statement statement(@NotNull Connection connection) throws SQLException {
+        return connection.createStatement();
+    }
+
+    /**
+     * Closes a sql statement's connection
+     * @param statement The statement to close
+     * @throws SQLException if closing the connection failed
+     */
+    public void close(@NotNull Statement statement) throws SQLException {
+        statement.getConnection().close();
+    }
+
+    /**
+     * Closes a sql result set's connection
+     * @param set The result set to close
+     * @throws SQLException if closing the result set failed
+     */
+    public void close(@NotNull ResultSet set) throws SQLException {
+        set.getStatement().getConnection().close();
+    }
+
+    /**
+     * Checks whether connecting to a database is possible
+     */
+    public void test() throws SQLException {
+        Connection conn = this.connection();
+        conn.close();
     }
 
     /**
      * Executes a sql command
      * @param sql The command to execute
      */
-    public boolean execute(@NotNull String sql) {
-        try {
-            Connection conn = this.connect();
-            Statement stmt = conn.createStatement();
-            stmt.execute(sql);
-            stmt.close();
-            conn.close();
-            return true;
-        } catch (SQLException e) {
-            App.get().LOGGER.warning(e.getMessage());
-            return false;
-        }
+    public void execute(@NotNull String sql) throws SQLException {
+        Statement stm = this.statement(this.connection());
+        stm.execute(sql);
+        this.close(stm);
     }
 
     /**
-     * Executes a sql query
-     * @param sql The sql command
-     * @return the query results
+     * Queries a sql command
+     * @param sql The command to query
+     * @return the result set of the query
      */
-    public @Nullable ResultSet query(@NotNull String sql) {
-        try {
-            Connection conn = this.connect();
-            Statement stmt = conn.createStatement();
-            return stmt.executeQuery(sql);
-        } catch (SQLException e) {
-            App.get().LOGGER.warning(e.getMessage());
-        }
-
-        return null;
-    }
-
-    /**
-     * Closes a result set
-     * @param res Result set to close
-     */
-    public void close(@NotNull ResultSet res) {
-        try {
-            Statement stmt = res.getStatement();
-            Connection conn = stmt.getConnection();
-            res.close();
-            stmt.close();
-            conn.close();
-        } catch (SQLException e) {
-            App.get().LOGGER.warning(e.getMessage());
-        }
+    public ResultSet query(@NotNull String sql) throws SQLException {
+        Statement stm = this.statement(this.connection());
+        return stm.executeQuery(sql);
     }
 }

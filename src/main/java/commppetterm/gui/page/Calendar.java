@@ -3,8 +3,6 @@ package commppetterm.gui.page;
 import org.jetbrains.annotations.NotNull;
 
 import commppetterm.gui.App;
-import commppetterm.gui.exception.FxmlLoadException;
-import commppetterm.gui.exception.URLNotFoundException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -35,7 +33,7 @@ public final class Calendar extends Controller {
     /**
      * Creates a new calendar
      */
-    public Calendar() throws URLNotFoundException, FxmlLoadException {
+    public Calendar() {
         this.month.setSelected(true);
         this.pageController = new MonthPage();
 
@@ -49,46 +47,49 @@ public final class Calendar extends Controller {
     }
 
     @FXML
-    private void create() throws URLNotFoundException, FxmlLoadException {
-        App.get().controller(new Editor(Editor.Mode.CREATE));
+    private void create() {
+        App.get().entry(null);
+        App.get().provider(new Editor());
     }
 
     @FXML
-    private void edit() throws URLNotFoundException, FxmlLoadException {
-        App.get().controller(new Editor(Editor.Mode.EDIT));
+    private void edit() {
+        if (App.get().entry() != null) {
+            App.get().provider(new Editor());
+        } else {
+            this.edit.setDisable(true);
+        }
     }
 
     @FXML
-    private void settings() throws URLNotFoundException, FxmlLoadException {
-        App.get().controller(new Settings());
+    private void settings() {
+        App.get().provider(new Settings());
     }
 
     @FXML
     private void previous() {
         App.get().date(this.pageController.prev(App.get().date()));
-        this.pageController.reload();
         this.reload();
     }
 
     @FXML
     private void next() {
         App.get().date(this.pageController.next(App.get().date()));
-        this.pageController.reload();
         this.reload();
     }
 
     @FXML
-    private void day() throws URLNotFoundException, FxmlLoadException {
+    private void day() {
         this.swap(new DayPage());
     }
 
     @FXML
-    private void week() throws URLNotFoundException, FxmlLoadException {
+    private void week() {
         this.swap(new WeekPage());
     }
 
     @FXML
-    private void month() throws URLNotFoundException, FxmlLoadException {
+    private void month() {
         this.swap(new MonthPage());
     }
 
@@ -96,7 +97,7 @@ public final class Calendar extends Controller {
      * Swaps to a different page
      * @param pageController The page to swap to
      */
-    public void swap(@NotNull PageController pageController) throws URLNotFoundException, FxmlLoadException {
+    public void swap(@NotNull PageController pageController) {
         this.pane.getChildren().remove(this.pageController.parent());
 
         this.day.setSelected(false);

@@ -8,10 +8,6 @@ import java.util.List;
 
 import commppetterm.database.Entry;
 import commppetterm.gui.App;
-import commppetterm.gui.exception.FxmlLoadException;
-import commppetterm.gui.exception.URLNotFoundException;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import org.jetbrains.annotations.NotNull;
@@ -33,7 +29,7 @@ public abstract class PageController extends Controller {
     /**
      * Creates a new page
      */
-    public PageController() throws URLNotFoundException, FxmlLoadException {
+    public PageController() {
         DateTimeFormatterBuilder dtfBuilder = new DateTimeFormatterBuilder();
 
         for (DtfElement e : this.formatting()) {
@@ -114,11 +110,12 @@ public abstract class PageController extends Controller {
             super(new Button(entry.title()));
 
             this.element.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            this.element.getStyleClass().add(".small-cell-height");
 
             this.element.setOnAction(actionEvent -> {
                 App.get().entry(entry);
-                assert App.get().controller() != null;
-                ((Calendar) App.get().controller()).enableEdit();
+                assert App.get().provider() != null;
+                ((Calendar) App.get().provider()).enableEdit();
             });
         }
     }

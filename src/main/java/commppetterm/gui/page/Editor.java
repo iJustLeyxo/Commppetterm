@@ -2,6 +2,7 @@ package commppetterm.gui.page;
 
 import commppetterm.database.Entry;
 import commppetterm.gui.exception.EditorException;
+import javafx.scene.control.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -9,30 +10,19 @@ import org.kordamp.ikonli.material2.Material2AL;
 import org.kordamp.ikonli.material2.Material2MZ;
 
 import commppetterm.gui.App;
-import commppetterm.gui.exception.FxmlLoadException;
-import commppetterm.gui.exception.URLNotFoundException;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 
-import java.time.DateTimeException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.sql.SQLException;
+import java.time.*;
+import java.util.Optional;
 
 
 /**
  * Controller for entry editor
  */
 public final class Editor extends Controller {
-    /**
-     * Edit mode or create mode
-     */
-    private final @NotNull Mode mode;
-
     @FXML
     private HBox startTime, endBox, endTime, recurringBox;
 
@@ -53,16 +43,9 @@ public final class Editor extends Controller {
 
     /**
      * Creates a new editor
-     * @param mode Edit or create mode?
      */
-    public Editor(@NotNull Mode mode) throws URLNotFoundException, FxmlLoadException {
-        this.mode = mode;
-
-        this.yearly.setSelected(true);
-        this.frequency.setText("1");
-        this.delete.setDisable(true);
-
-        if (this.mode == Mode.EDIT && App.get().entry() != null) {
+    public Editor() {
+        if (App.get().entry() != null && App.get().entry().id() != null) {
             Entry entry = App.get().entry();
 
             boolean end = entry.end() != null;
@@ -79,13 +62,16 @@ public final class Editor extends Controller {
             this.startHour.setText(Integer.toString(entry.start().getHour()));
             this.startMinute.setText(Integer.toString(entry.start().getMinute()));
 
-            if (end) {
-                this.endDay.setText(Integer.toString(entry.start().getDayOfMonth()));
-                this.endMonth.setText(Integer.toString(entry.start().getMonthValue()));
-                this.endYear.setText(Integer.toString(entry.start().getYear()));
-                this.endHour.setText(Integer.toString(entry.end().getHour()));
-                this.endMinute.setText(Integer.toString(entry.end().getMinute()));
-            }
+            this.endDay.setText(Integer.toString(entry.end().getDayOfMonth()));
+            this.endMonth.setText(Integer.toString(entry.end().getMonthValue()));
+            this.endYear.setText(Integer.toString(entry.start().getYear()));
+            this.endHour.setText(Integer.toString(entry.end().getHour()));
+            this.endMinute.setText(Integer.toString(entry.end().getMinute()));
+
+            this.yearly.setSelected(false);
+            this.monthly.setSelected(false);
+            this.weekly.setSelected(false);
+            this.daily.setSelected(false);
 
             if (recurring) {
                 switch (entry.recurring().type()) {
@@ -96,6 +82,9 @@ public final class Editor extends Controller {
                 }
 
                 this.frequency.setText(Byte.toString(entry.recurring().frequency()));
+            } else {
+                this.yearly.setSelected(true);
+                this.frequency.setText("1");
             }
 
             this.enabled(this.startTime, time);
@@ -108,6 +97,10 @@ public final class Editor extends Controller {
             this.end.setSelected(end);
             this.time.setSelected(time);
             this.recurring.setSelected(recurring);
+        } else {
+            this.delete.setDisable(true);
+            this.yearly.setSelected(true);
+            this.frequency.setText("1");
         }
 
         this.end();
@@ -116,24 +109,48 @@ public final class Editor extends Controller {
     }
 
     @FXML
-    private void save() throws URLNotFoundException, FxmlLoadException {
+    private void save() {
         try {
             App.get().database().save(this.entry());
-            App.get().controller(new Calendar());
-        } catch (EditorException ignored) {}
+            App.get().provider(new Calendar());
+        } catch (SQLException e) {
+            Optional<ButtonType> res = App.get().alert(e, Alert.AlertType.ERROR, "Go to settings?", ButtonType.YES, ButtonType.NO);
+
+            if (res.isPresent() && res.get().equals(ButtonType.YES)) {
+                App.get().provider(new Settings());
+            }
+        } catch (EditorException e) {
+            Optional<ButtonType> res = App.get().alert(e, Alert.AlertType.ERROR, "Close without saving?", ButtonType.YES, ButtonType.NO);
+
+            if (res.isPresent() && res.get().equals(ButtonType.YES)) {
+                App.get().provider(new Calendar());
+            }
+        }
     }
 
     @FXML
-    private void delete() throws URLNotFoundException, FxmlLoadException {
+    private void delete() {
         try {
             App.get().database().delete(this.entry());
-            App.get().controller(new Calendar());
-        } catch (EditorException ignored) {}
+            App.get().provider(new Calendar());
+        } catch (SQLException e) {
+            Optional<ButtonType> res = App.get().alert(e, Alert.AlertType.ERROR, "Go to settings?", ButtonType.YES, ButtonType.NO);
+
+            if (res.isPresent() && res.get().equals(ButtonType.YES)) {
+                App.get().provider(new Settings());
+            }
+        } catch (EditorException e) {
+            Optional<ButtonType> res = App.get().alert(e, Alert.AlertType.ERROR, "Close without saving?", ButtonType.YES, ButtonType.NO);
+
+            if (res.isPresent() && res.get().equals(ButtonType.YES)) {
+                App.get().provider(new Calendar());
+            }
+        }
     }
 
     @FXML
-    private void cancel() throws URLNotFoundException, FxmlLoadException {
-        App.get().controller(new Calendar());
+    private void cancel() {
+        App.get().provider(new Calendar());
     }
 
     @FXML
@@ -221,73 +238,88 @@ public final class Editor extends Controller {
      * Generates an entry from the editor contents
      * @return an entry object
      */
-    private @NotNull Entry entry() throws URLNotFoundException, FxmlLoadException, DateTimeException {
+    private @NotNull Entry entry() throws EditorException {
         /* Recurring */
         Entry.Recurring recurring = entryRecurrence();
 
+        /* Date */
         LocalDate startDate, endDate;
+
+        /* Start Date */
+        startDate = LocalDate.of(
+                Integer.parseInt(this.startYear.getText()),
+                Integer.parseInt(this.startMonth.getText()),
+                Integer.parseInt(this.startDay.getText())
+        );
+
+        /* End Date */
+        if (this.end.isSelected()) {
+            endDate = LocalDate.of(
+                    Integer.parseInt(this.endYear.getText()),
+                    Integer.parseInt(this.endMonth.getText()),
+                    Integer.parseInt(this.endDay.getText())
+            );
+        } else {
+            endDate = startDate;
+        }
+
+        if (recurring != null) {
+            if (
+                    recurring.type() == Entry.Recurring.Type.DAY && Period.between(startDate, endDate).getDays() >= recurring.frequency() ||
+                            recurring.type() == Entry.Recurring.Type.WEEK && Period.between(startDate, endDate).getDays() / 7 >= recurring.frequency() ||
+                            recurring.type() == Entry.Recurring.Type.MONTH && Period.between(startDate, endDate).getMonths() >= recurring.frequency() ||
+                            recurring.type() == Entry.Recurring.Type.YEAR && Period.between(startDate, endDate).getYears() >= recurring.frequency()
+            ) {
+                throw new EditorException("Entry cannot be longer than recurrence frequency.");
+            }
+        }
+
+        /* Time */
         LocalTime startTime, endTime;
 
-        try {
-            /* Start Date */
-            startDate = LocalDate.of(
-                    Integer.parseInt(this.startYear.getText()),
-                    Integer.parseInt(this.startMonth.getText()),
-                    Integer.parseInt(this.startDay.getText())
+        /* Start Time */
+        if (this.time.isSelected()) {
+            startTime = LocalTime.of(
+                    Integer.parseInt(this.startHour.getText()),
+                    Integer.parseInt(this.startMinute.getText())
             );
+        } else {
+            startTime = LocalTime.of(0, 0);
+        }
 
-            /* Start Time */
-            if (this.time.isSelected()) {
-                startTime = LocalTime.of(
-                        Integer.parseInt(this.startHour.getText()),
-                        Integer.parseInt(this.startMinute.getText())
-                );
-            } else {
-                startTime = LocalTime.of(0, 0);
-            }
+        /* End Time */
+        if (this.end.isSelected() && this.time.isSelected()) {
+            endTime = LocalTime.of(
+                    Integer.parseInt(this.endHour.getText()),
+                    Integer.parseInt(this.endMinute.getText())
+            );
+        } else {
+            endTime = LocalTime.of(23, 59);
+        }
 
-            /* End Date */
-            if (this.end.isSelected()) {
-                endDate = LocalDate.of(
-                        Integer.parseInt(this.endYear.getText()),
-                        Integer.parseInt(this.endMonth.getText()),
-                        Integer.parseInt(this.endDay.getText())
-                );
-            } else {
-                endDate = startDate;
-            }
+        LocalDateTime startPoint = LocalDateTime.of(startDate, startTime);
+        LocalDateTime endPoint = LocalDateTime.of(endDate, endTime);
 
-            /* End Time */
-            if (this.end.isSelected() && this.time.isSelected()) {
-                endTime = LocalTime.of(
-                        Integer.parseInt(this.endHour.getText()),
-                        Integer.parseInt(this.endMinute.getText())
-                );
-            } else {
-                endTime = LocalTime.of(23, 59);
-            }
-        } catch (DateTimeException | NumberFormatException e) {
-            throw new EditorException(e);
+        if (endPoint.isBefore(startPoint)) {
+            throw new EditorException("End cannot be before start.");
         }
 
         /* ID */
-        Long id;
-        if (this.mode == Mode.EDIT) {
-            assert App.get().entry() != null;
+        Long id = null;
+
+        if (App.get().entry() != null) {
             id = App.get().entry().id();
-        } else {
-            id = null;
         }
 
-        App.get().controller(new Calendar());
+        App.get().provider(new Calendar());
 
         /* Generate entry */
         return new Entry(
                 id,
                 this.title.getText(),
                 this.info.getText(),
-                LocalDateTime.of(startDate, startTime),
-                LocalDateTime.of(endDate, endTime),
+                startPoint,
+                endPoint,
                 recurring
         );
     }
@@ -296,7 +328,7 @@ public final class Editor extends Controller {
      * Generates the recurring object of an entry
      * @return the recurring object
      */
-    private @Nullable Entry.Recurring entryRecurrence() {
+    private @Nullable Entry.Recurring entryRecurrence() throws EditorException {
         Entry.Recurring recurring = null;
 
         if (this.recurring.isSelected()) {
@@ -330,9 +362,4 @@ public final class Editor extends Controller {
         node.setVisible(value);
         node.setManaged(value);
     }
-
-    /**
-     * Editor mode
-     */
-    public enum Mode {CREATE, EDIT}
 }

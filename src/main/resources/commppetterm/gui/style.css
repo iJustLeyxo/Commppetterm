@@ -58,10 +58,22 @@
     -fx-pref-height: 33px;
 }
 
+.small-cell-height{
+    -fx-pref-height: 33px;
+}
+
 .large-cell-width{
     -fx-pref-width: 55px;
 }
 
 .medium-cell-width{
     -fx-pref-width: 42px;
+}
+
+.dialog-pane {
+    -fx-pref-width: 500px;
+}
+
+.dialog-pane > .header-panel > .label {
+    -fx-font-size: 17px;
 }

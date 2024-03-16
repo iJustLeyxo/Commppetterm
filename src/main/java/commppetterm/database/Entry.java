@@ -5,6 +5,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Period;
 
 /**
  * Calendar entry class
@@ -18,7 +20,7 @@ import java.time.LocalDateTime;
 public record Entry(
         @Nullable Long id,
         @NotNull String title, @NotNull String info,
-        @NotNull LocalDateTime start, @Nullable LocalDateTime end,
+        @NotNull LocalDateTime start, @NotNull LocalDateTime end,
         @Nullable Entry.Recurring recurring
 ) {
     /**
@@ -47,9 +49,134 @@ public record Entry(
     public Recurring recurring() { return this.recurring; }
 
     /**
+     * @return {@code true} if the entry occurs only once
+     */
+    public boolean recurs() { return this.recurring != null; }
+
+    /**
+     * @return {@code true} if the entry is timed
+     */
+    public boolean untimed() {
+        return this.start.toLocalTime().equals(LocalTime.of(0 ,0)) && this.end.toLocalTime().equals(LocalTime.of(23, 59));
+    }
+
+    /**
      * @return the entry id
      */
     public Long id() { return this.id; }
+
+    /**
+     * Determines whether the entry lies on a date
+     * @param date The date to test for
+     * @return {@code true} if the entry is on the date, otherwise {@code false}
+     */
+    public boolean on(LocalDate date) {
+        date = this.diff(date);
+
+        return !(this.start.toLocalDate().isAfter(date) || this.end.toLocalDate().isBefore(date));
+    }
+
+    /**
+     * Returns true if an entry is fully on a date
+     * @param date The date to check
+     * @return {@code true} if the entry is fully on the date
+     */
+    public boolean whole(@NotNull LocalDate date) {
+        return whole(date, date); /* Logic is managed by whole(start, end) method */
+    }
+
+    /**
+     * Returns true if an entry is fully in a timeframe
+     * @param start The start date to check
+     * @param end The end date to check
+     * @return {@code true} if the entry is fully on the date
+     */
+    public boolean whole(@NotNull LocalDate start, @NotNull LocalDate end) {
+        start = this.diff(start);
+        end = this.diff(end);
+
+        return !this.start.toLocalDate().isAfter(start) && this.start.toLocalTime().equals(LocalTime.of(0, 0)) &&
+                !this.end.toLocalDate().isBefore(end) && this.end.toLocalTime().equals(LocalTime.of(23, 59));
+
+    }
+
+    /**
+     * Returns the start of the event on a specific day
+     * @param date The date to get the start time for
+     * @return the time on the date where the event starts
+     */
+    public @Nullable LocalTime start(@NotNull LocalDate date) {
+        date = this.diff(date);
+
+        if (this.start.toLocalDate().isBefore(date)) {
+            return LocalTime.of(0, 0);
+        } else if (this.start.toLocalDate().isEqual(date)) {
+            return this.start.toLocalTime();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Returns the end of the event on a specific day
+     * @param date The date to get the end time for
+     * @return the time on the date where the event ends
+     */
+    public @Nullable LocalTime end(@NotNull LocalDate date) {
+        date = this.diff(date);
+
+        if (this.end.toLocalDate().isAfter(date)) {
+            return LocalTime.of(23, 59);
+        } else if (this.end.toLocalDate().isEqual(date)) {
+            return this.end.toLocalTime();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Calculates the relative difference between a date and this entry
+     * @param date The reference date
+     * @return the relative date
+     */
+    private @NotNull LocalDate diff(@NotNull LocalDate date) {
+        if (this.recurs()) {
+            long diff = 0;
+            LocalDate rel;
+
+            switch (this.recurring.type) {
+                case DAY -> {
+                    diff += Period.between(this.start.toLocalDate(), date).getDays() % recurring.frequency;
+                    return this.start.toLocalDate().plusDays(diff);
+                }
+
+                case WEEK -> {
+                    diff = date.getDayOfWeek().getValue() - this.start.getDayOfWeek().getValue();
+                    if (diff < 0) { diff += 7; }
+                    diff += (Period.between(this.start.toLocalDate().plusDays(diff), date).getDays() / 7) % recurring.frequency * 7;
+                    return this.start.toLocalDate().plusDays(diff);
+                }
+
+                case MONTH -> {
+                    diff = date.getDayOfMonth() - this.start.getDayOfMonth();
+                    if (diff < 0) { diff += date.lengthOfMonth(); }
+                    diff %= this.start.toLocalDate().lengthOfMonth();
+                    rel = this.start.toLocalDate().plusDays(diff);
+                    return rel.plusMonths(Period.between(rel, date).getMonths() % recurring.frequency);
+                }
+
+                case YEAR -> {
+                    diff = date.getDayOfYear() - this.start.getDayOfYear();
+                    if (diff < 0) { diff += date.lengthOfYear(); }
+                    diff %= this.start.toLocalDate().lengthOfYear();
+                    rel = this.start.toLocalDate().plusDays(diff);
+                    return rel.plusYears(Period.between(rel, date).getYears() % recurring.frequency);
+                }
+            }
+        }
+
+        return date;
+    }
 
     /**
      * Repeat profile class
@@ -75,24 +202,5 @@ public record Entry(
         public byte frequency() {
             return frequency;
         }
-    }
-
-    /**
-     * Determines whether the entry lies on a date
-     * @param date The date to test for
-     * @return {@code true} if the entry is on the date, otherwise {@code false}
-     */
-    public boolean on(LocalDate date) {
-        LocalDate startDate = this.start.toLocalDate();
-
-        if (this.end != null) {
-            LocalDate endDate = this.end.toLocalDate();
-
-            return (!(startDate.isAfter(date) || endDate.isBefore(date)));
-        } else {
-            return this.start.toLocalDate().isEqual(date);
-        }
-
-        // TODO: Add recurring logic
     }
 }
