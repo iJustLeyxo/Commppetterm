@@ -43,7 +43,7 @@
       <TextField fx:id="table" promptText="Tabelle" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <Label fx:id="error" text="Error" GridPane.columnIndex="1" GridPane.rowIndex="5" visible="false" managed="false" wrapText="true">
          <padding>
-            <Insets left="7.5" right="7.5" />
+            <Insets left="8.75" right="8.75" />
          </padding>
       </Label>
       <columnConstraints>
