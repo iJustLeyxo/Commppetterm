@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Period;
 
 /**
  * Calendar entry class
@@ -140,43 +141,45 @@ public record Entry(
      */
     private @NotNull LocalDate diff(@NotNull LocalDate date) {
         if (!this.once()) {
-            long diff;
+            long diff = 0;
+            LocalDate rel;
+            Period dist;
 
             switch (this.recurring.type) {
+                case DAY -> {
+                    diff += Period.between(this.start.toLocalDate(), date).getDays() % recurring.frequency;
+                    return this.start.toLocalDate().plusDays(diff);
+                }
+
                 case WEEK -> {
                     diff = date.getDayOfWeek().getValue() - this.start.getDayOfWeek().getValue();
-
-                    if (diff < 0) {
-                        diff += 7;
-                    } else if (diff > 6) {
-                        diff -= 7;
-                    }
-
+                    if (diff < 0) { diff += 7; }
+                    diff += (Period.between(this.start.toLocalDate().plusDays(diff), date).getDays() / 7) % recurring.frequency * 7;
                     return this.start.toLocalDate().plusDays(diff);
                 }
 
                 case MONTH -> {
                     diff = date.getDayOfMonth() - this.start.getDayOfMonth();
-
-                    if (diff < 0) {
-                        diff += date.lengthOfMonth();
-                    } else if (diff > this.start.toLocalDate().lengthOfMonth() - this.start.getDayOfMonth()) {
-                        diff -=this.start.toLocalDate().lengthOfMonth();
-                    }
-
-                    return this.start.toLocalDate().plusDays(diff);
+                    if (diff < 0) { diff += date.lengthOfMonth(); }
+                    diff %= this.start.toLocalDate().lengthOfMonth();
+                    return this.start.toLocalDate()
+                            .plusDays(diff)
+                            .plusMonths(Period.between(
+                                    this.start.toLocalDate().plusDays(diff),
+                                    date
+                            ).getMonths() % recurring.frequency);
                 }
 
                 case YEAR -> {
                     diff = date.getDayOfYear() - this.start.getDayOfYear();
-
-                    if (diff < 0) {
-                        diff += date.lengthOfYear();
-                    } else if (diff > this.start.toLocalDate().lengthOfYear() - this.start.getDayOfYear()) {
-                        diff -= this.start.toLocalDate().lengthOfYear();
-                    }
-
-                    return this.start.toLocalDate().plusDays(diff);
+                    if (diff < 0) { diff += date.lengthOfYear(); }
+                    diff %= this.start.toLocalDate().lengthOfYear();
+                    return this.start.toLocalDate()
+                            .plusDays(diff)
+                            .plusYears(Period.between(
+                                    this.start.toLocalDate().plusDays(diff),
+                                    date
+                            ).getYears() % recurring.frequency);
                 }
             }
         }
