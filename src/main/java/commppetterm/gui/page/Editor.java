@@ -19,10 +19,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 
 import java.sql.SQLException;
-import java.time.DateTimeException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 
 
 /**
@@ -220,53 +217,63 @@ public final class Editor extends Controller {
      * Generates an entry from the editor contents
      * @return an entry object
      */
-    private @NotNull Entry entry() throws URLNotFoundException, FxmlLoadException, EditorException {
+    private @NotNull Entry entry() {
         /* Recurring */
         Entry.Recurring recurring = entryRecurrence();
 
+        /* Date */
         LocalDate startDate, endDate;
+
+        /* Start Date */
+        startDate = LocalDate.of(
+                Integer.parseInt(this.startYear.getText()),
+                Integer.parseInt(this.startMonth.getText()),
+                Integer.parseInt(this.startDay.getText())
+        );
+
+        /* End Date */
+        if (this.end.isSelected()) {
+            endDate = LocalDate.of(
+                    Integer.parseInt(this.endYear.getText()),
+                    Integer.parseInt(this.endMonth.getText()),
+                    Integer.parseInt(this.endDay.getText())
+            );
+        } else {
+            endDate = startDate;
+        }
+
+        if (recurring != null) {
+            if (
+                    recurring.type() == Entry.Recurring.Type.DAY && Period.between(startDate, endDate).getDays() >= recurring.frequency() ||
+                            recurring.type() == Entry.Recurring.Type.WEEK && Period.between(startDate, endDate).getDays() / 7 >= recurring.frequency() ||
+                            recurring.type() == Entry.Recurring.Type.MONTH && Period.between(startDate, endDate).getMonths() >= recurring.frequency() ||
+                            recurring.type() == Entry.Recurring.Type.YEAR && Period.between(startDate, endDate).getYears() >= recurring.frequency()
+            ) {
+                throw new EditorException("Entry cannot be longer than recurrence frequency.");
+            }
+        }
+
+        /* Time */
         LocalTime startTime, endTime;
 
-        try {
-            /* Start Date */
-            startDate = LocalDate.of(
-                    Integer.parseInt(this.startYear.getText()),
-                    Integer.parseInt(this.startMonth.getText()),
-                    Integer.parseInt(this.startDay.getText())
+        /* Start Time */
+        if (this.time.isSelected()) {
+            startTime = LocalTime.of(
+                    Integer.parseInt(this.startHour.getText()),
+                    Integer.parseInt(this.startMinute.getText())
             );
+        } else {
+            startTime = LocalTime.of(0, 0);
+        }
 
-            /* Start Time */
-            if (this.time.isSelected()) {
-                startTime = LocalTime.of(
-                        Integer.parseInt(this.startHour.getText()),
-                        Integer.parseInt(this.startMinute.getText())
-                );
-            } else {
-                startTime = LocalTime.of(0, 0);
-            }
-
-            /* End Date */
-            if (this.end.isSelected()) {
-                endDate = LocalDate.of(
-                        Integer.parseInt(this.endYear.getText()),
-                        Integer.parseInt(this.endMonth.getText()),
-                        Integer.parseInt(this.endDay.getText())
-                );
-            } else {
-                endDate = startDate;
-            }
-
-            /* End Time */
-            if (this.end.isSelected() && this.time.isSelected()) {
-                endTime = LocalTime.of(
-                        Integer.parseInt(this.endHour.getText()),
-                        Integer.parseInt(this.endMinute.getText())
-                );
-            } else {
-                endTime = LocalTime.of(23, 59);
-            }
-        } catch (DateTimeException | NumberFormatException e) {
-            throw new EditorException(e);
+        /* End Time */
+        if (this.end.isSelected() && this.time.isSelected()) {
+            endTime = LocalTime.of(
+                    Integer.parseInt(this.endHour.getText()),
+                    Integer.parseInt(this.endMinute.getText())
+            );
+        } else {
+            endTime = LocalTime.of(23, 59);
         }
 
         LocalDateTime startPoint = LocalDateTime.of(startDate, startTime);
@@ -334,9 +341,4 @@ public final class Editor extends Controller {
         node.setVisible(value);
         node.setManaged(value);
     }
-
-    /**
-     * Editor mode
-     */
-    public enum Mode {CREATE, EDIT}
 }
