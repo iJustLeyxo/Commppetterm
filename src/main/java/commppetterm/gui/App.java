@@ -1,6 +1,7 @@
 package commppetterm.gui;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Locale;
 import java.util.logging.Logger;
@@ -92,6 +93,7 @@ public final class App extends Application {
      */
     public App() {
         app = this;
+
         this.database = new Database("jdbc:mysql://sql11.freemysqlhosting.net/", "sql11688847", "calendar", "sql11688847", "RhiGnaQxx1");
     }
 
@@ -114,9 +116,10 @@ public final class App extends Application {
             this.stage.getIcons().add(icon);
         }
 
-        if (App.get().database().valid()) {
+        try {
+            App.get().database().init();
             this.controller(new Calendar());
-        } else {
+        } catch (SQLException e) {
             this.controller(new Settings());
         }
 

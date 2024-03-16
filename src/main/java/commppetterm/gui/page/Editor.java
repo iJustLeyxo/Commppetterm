@@ -18,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 
+import java.sql.SQLException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -118,7 +119,9 @@ public final class Editor extends Controller {
         try {
             App.get().database().save(this.entry());
             App.get().controller(new Calendar());
-        } catch (EditorException ignored) {}
+        } catch (SQLException e) {
+            App.get().LOGGER.warning(e.getMessage());
+        }
     }
 
     @FXML

@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
+import java.sql.SQLException;
+
 /**
  * Settings controller
  */
@@ -30,21 +32,27 @@ public final class Settings extends Controller {
 
     @FXML
     private void save() {
-        if (App.get().database().update(
-                this.url.getText(),
-                this.database.getText(),
-                this.table.getText(),
-                this.user.getText(),
-                this.password.getText()
-        )) {
+        try {
+            App.get().database().update(
+                    this.url.getText(),
+                    this.database.getText(),
+                    this.table.getText(),
+                    this.user.getText(),
+                    this.password.getText());
+
             App.get().controller(new Calendar());
+        } catch (SQLException e) {
+            App.get().LOGGER.warning(e.getMessage());
         }
     }
 
     @FXML
     private void cancel() throws URLNotFoundException, FxmlLoadException {
-        if (App.get().database().valid()) {
+        try {
+            App.get().database().test();
             App.get().controller(new Calendar());
+        } catch (SQLException e) {
+            App.get().controller(new Settings());
         }
     }
 }

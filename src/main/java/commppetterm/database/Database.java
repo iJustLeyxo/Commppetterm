@@ -33,7 +33,6 @@ public final class Database {
         this.table = table;
         this.user = user;
         this.password = password;
-        this.init();
     }
 
     /**
@@ -69,7 +68,7 @@ public final class Database {
      * @param user Login user
      * @param password Login password
      */
-    public void update(@NotNull String url, @NotNull String database, @NotNull String table, @NotNull String user, @NotNull String password) {
+    public void update(@NotNull String url, @NotNull String database, @NotNull String table, @NotNull String user, @NotNull String password) throws SQLException {
         this.url = url;
         this.database = database;
         this.table = table;
@@ -81,7 +80,7 @@ public final class Database {
     /**
      * Initializes the required tables
      */
-    private void init() {
+    public void init() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS " + this.table + " (" +
                 "id INTEGER AUTO_INCREMENT PRIMARY KEY," +
                 "title TEXT NOT NULL," +
@@ -136,7 +135,7 @@ public final class Database {
      * Creates or edits and entry
      * @param entry The entry to create or edit
      */
-    public void save(@Nullable Entry entry) {
+    public void save(@Nullable Entry entry) throws SQLException {
         if (entry == null) {
             return;
         }
@@ -269,31 +268,20 @@ public final class Database {
 
     /**
      * Checks whether connecting to a database is possible
-     * @return {@code true} if a connection could be established
      */
-    public boolean valid() {
-        try {
-            Connection conn = this.connection();
-            conn.close();
-            return true;
-        } catch (SQLException e) {
-            App.get().LOGGER.warning(e.getMessage());
-            return false;
-        }
+    public void test() throws SQLException {
+        Connection conn = this.connection();
+        conn.close();
     }
 
     /**
      * Executes a sql command
      * @param sql The command to execute
      */
-    public void execute(@NotNull String sql) {
-        try {
-            Statement stm = this.statement(this.connection());
-            stm.execute(sql);
-            this.close(stm);
-        } catch (SQLException e) {
-            App.get().LOGGER.warning(e.getMessage());
-        }
+    public void execute(@NotNull String sql) throws SQLException {
+        Statement stm = this.statement(this.connection());
+        stm.execute(sql);
+        this.close(stm);
     }
 
     /**
