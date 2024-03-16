@@ -38,7 +38,7 @@
       <TextField fx:id="table" promptText="Tabelle" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <FontIcon iconLiteral="mdrmz-storage" GridPane.rowIndex="3" />
       <FontIcon iconLiteral="mdrmz-table_chart" GridPane.rowIndex="4" />
-      <Label fx:id="error" GridPane.columnSpan="2" GridPane.rowIndex="5" visible="false" managed="false" />
+      <Label fx:id="error" GridPane.columnSpan="2" GridPane.rowIndex="5" visible="false" managed="false" textOverrun="WORD_ELLIPSIS" />
       <columnConstraints>
          <ColumnConstraints />
          <ColumnConstraints prefWidth="500.0" />

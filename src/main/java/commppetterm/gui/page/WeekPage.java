@@ -75,7 +75,7 @@ public final class WeekPage extends PageController {
         try {
             for (Entry entry : App.get().database().entries(start, end)) {
                 if (entry.whole(start, end) || entry.untimed()) {
-                    wholeEntries.add(new Triple<>(entry, -1, 0));
+                    wholeEntries.add(new Triple<>(entry, 0, 0));
                 } else {
                     singleEntries.add(entry);
                 }
@@ -87,7 +87,7 @@ public final class WeekPage extends PageController {
         do {
             for (Triple<Entry, Integer, Integer> entry : wholeEntries) {
                 if (entry.a().on(iter)) {
-                    if (entry.b() < 0) {
+                    if (entry.b() < 1) {
                         entry.b(colStep);
                         entry.c(1);
                     } else {
@@ -129,7 +129,7 @@ public final class WeekPage extends PageController {
         for (Triple<Entry, Integer, Integer> entry : wholeEntries) {
             parent = new EntryController(entry.a()).parent();
             this.contents.add(parent);
-            this.entries.add(parent, entry.b(), rowStep, entry.c(), 1);
+            this.entries.add(parent, entry.b(), rowStep, Math.max(entry.c(), 1), 1);
             rowStep++;
         }
     }

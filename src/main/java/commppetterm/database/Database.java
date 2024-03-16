@@ -107,14 +107,12 @@ public final class Database {
      * @return a list of entries
      */
     public List<Entry> entries(@NotNull LocalDate start, @NotNull LocalDate end) throws SQLException {
-        List<Entry> entries = new LinkedList<>();
-
         DateTimeFormatter queryFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String endPoint = queryFormatter.format(end) + " 23:59:99";
         String startPoint = queryFormatter.format(start) + " 00:00:00";
 
-        ResultSet set = this.query("SELECT * FROM " + this.table + " WHERE (start <= '" + endPoint + "' AND end >= '" + startPoint + "') OR recurringType = NULL;");
-        entries = this.parse(set);
+        ResultSet set = this.query("SELECT * FROM " + this.table + " WHERE (start <= '" + endPoint + "' AND end >= '" + startPoint + "') OR recurringType IS NOT NULL;");
+        List<Entry> entries = this.parse(set);
         this.close(set);
         return entries;
     }
