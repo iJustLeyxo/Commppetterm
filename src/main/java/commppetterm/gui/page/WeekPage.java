@@ -1,5 +1,6 @@
 package commppetterm.gui.page;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.TextStyle;
@@ -71,12 +72,16 @@ public final class WeekPage extends PageController {
         List<Entry> singleEntries = new LinkedList<>();
         List<Triple<Entry, Integer, Integer>> wholeEntries = new LinkedList<>();
 
-        for (Entry entry : App.get().database().entries(start, end)) {
-            if (entry.whole(start, end) || entry.untimed()) {
-                wholeEntries.add(new Triple<>(entry, -1, 0));
-            } else {
-                singleEntries.add(entry);
+        try {
+            for (Entry entry : App.get().database().entries(start, end)) {
+                if (entry.whole(start, end) || entry.untimed()) {
+                    wholeEntries.add(new Triple<>(entry, -1, 0));
+                } else {
+                    singleEntries.add(entry);
+                }
             }
+        } catch (SQLException e) {
+            App.get().controller(new Settings(e));
         }
 
         do {

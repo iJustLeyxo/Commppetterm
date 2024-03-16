@@ -1,5 +1,6 @@
 package commppetterm.gui.page;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.LinkedList;
@@ -48,12 +49,16 @@ public final class DayPage extends PageController {
         List<Entry> singleEntries = new LinkedList<>();
         List<Entry> wholeEntries = new LinkedList<>();
 
-        for (Entry entry : App.get().database().entries(date)) {
-            if (entry.whole(date)) {
-                wholeEntries.add(entry);
-            } else {
-                singleEntries.add(entry);
+        try {
+            for (Entry entry : App.get().database().entries(date)) {
+                if (entry.whole(date)) {
+                    wholeEntries.add(entry);
+                } else {
+                    singleEntries.add(entry);
+                }
             }
+        } catch (SQLException e) {
+            App.get().controller(new Settings(e));
         }
 
         for (Entry entry : singleEntries) {
@@ -70,6 +75,8 @@ public final class DayPage extends PageController {
                 colSpan++;
             }
         }
+
+        colSpan = Math.max(colSpan - 1, 1);
 
         for (Entry entry : wholeEntries) {
             parent = new EntryController(entry).parent();

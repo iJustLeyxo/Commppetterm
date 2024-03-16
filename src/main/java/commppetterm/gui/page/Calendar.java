@@ -50,12 +50,17 @@ public final class Calendar extends Controller {
 
     @FXML
     private void create() throws URLNotFoundException, FxmlLoadException {
-        App.get().controller(new Editor(Editor.Mode.CREATE));
+        App.get().entry(null);
+        App.get().controller(new Editor());
     }
 
     @FXML
     private void edit() throws URLNotFoundException, FxmlLoadException {
-        App.get().controller(new Editor(Editor.Mode.EDIT));
+        if (App.get().entry() != null) {
+            App.get().controller(new Editor());
+        } else {
+            this.edit.setDisable(true);
+        }
     }
 
     @FXML

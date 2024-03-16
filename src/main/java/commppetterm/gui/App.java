@@ -120,7 +120,7 @@ public final class App extends Application {
             App.get().database().init();
             this.controller(new Calendar());
         } catch (SQLException e) {
-            this.controller(new Settings());
+            this.controller(new Settings(e));
         }
 
         this.stage.show();

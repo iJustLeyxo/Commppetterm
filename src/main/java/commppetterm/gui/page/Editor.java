@@ -29,11 +29,6 @@ import java.time.LocalTime;
  * Controller for entry editor
  */
 public final class Editor extends Controller {
-    /**
-     * Edit mode or create mode
-     */
-    private final @NotNull Mode mode;
-
     @FXML
     private HBox startTime, endBox, endTime, recurringBox;
 
@@ -54,16 +49,11 @@ public final class Editor extends Controller {
 
     /**
      * Creates a new editor
-     * @param mode Edit or create mode?
      */
-    public Editor(@NotNull Mode mode) throws URLNotFoundException, FxmlLoadException {
-        this.mode = mode;
-
-        this.yearly.setSelected(true);
-        this.frequency.setText("1");
+    public Editor() throws URLNotFoundException, FxmlLoadException {
         this.delete.setDisable(true);
 
-        if (this.mode == Mode.EDIT && App.get().entry() != null) {
+        if (App.get().entry() != null && App.get().entry().id() != null) {
             Entry entry = App.get().entry();
 
             boolean end = entry.end() != null;
@@ -86,6 +76,11 @@ public final class Editor extends Controller {
             this.endHour.setText(Integer.toString(entry.end().getHour()));
             this.endMinute.setText(Integer.toString(entry.end().getMinute()));
 
+            this.yearly.setSelected(false);
+            this.monthly.setSelected(false);
+            this.weekly.setSelected(false);
+            this.daily.setSelected(false);
+
             if (recurring) {
                 switch (entry.recurring().type()) {
                     case DAY -> this.daily.setSelected(true);
@@ -95,6 +90,9 @@ public final class Editor extends Controller {
                 }
 
                 this.frequency.setText(Byte.toString(entry.recurring().frequency()));
+            } else {
+                this.yearly.setSelected(true);
+                this.frequency.setText("1");
             }
 
             this.enabled(this.startTime, time);
@@ -279,12 +277,10 @@ public final class Editor extends Controller {
         }
 
         /* ID */
-        Long id;
-        if (this.mode == Mode.EDIT) {
-            assert App.get().entry() != null;
+        Long id = null;
+
+        if (App.get().entry() != null) {
             id = App.get().entry().id();
-        } else {
-            id = null;
         }
 
         App.get().controller(new Calendar());

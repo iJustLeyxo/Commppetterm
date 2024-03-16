@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
+<?import javafx.scene.control.Label?>
 <VBox alignment="CENTER" spacing="10.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -37,6 +38,7 @@
       <TextField fx:id="table" promptText="Tabelle" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <FontIcon iconLiteral="mdrmz-storage" GridPane.rowIndex="3" />
       <FontIcon iconLiteral="mdrmz-table_chart" GridPane.rowIndex="4" />
+      <Label fx:id="error" GridPane.columnSpan="2" GridPane.rowIndex="5" visible="false" managed="false" />
       <columnConstraints>
          <ColumnConstraints />
          <ColumnConstraints prefWidth="500.0" />

@@ -98,9 +98,7 @@ public final class Database {
      * @param date The day to fetch the entries of
      * @return a list of entries
      */
-    public List<Entry> entries(@NotNull LocalDate date) {
-        return this.entries(date, date);
-    }
+    public List<Entry> entries(@NotNull LocalDate date) throws SQLException { return this.entries(date, date); }
 
     /**
      * Fetches the entries of a day
@@ -108,26 +106,16 @@ public final class Database {
      * @param end The last day to fetch entries of
      * @return a list of entries
      */
-    public List<Entry> entries(@NotNull LocalDate start, @NotNull LocalDate end) {
+    public List<Entry> entries(@NotNull LocalDate start, @NotNull LocalDate end) throws SQLException {
         List<Entry> entries = new LinkedList<>();
 
-        try {
-            DateTimeFormatter queryFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String endPoint = queryFormatter.format(end) + " 23:59:99";
-            String startPoint = queryFormatter.format(start) + " 00:00:00";
+        DateTimeFormatter queryFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String endPoint = queryFormatter.format(end) + " 23:59:99";
+        String startPoint = queryFormatter.format(start) + " 00:00:00";
 
-            ResultSet set = this.query("SELECT * FROM " + this.table + " WHERE (start <= '" + endPoint + "' AND end >= '" + startPoint + "') OR recurringType = NULL;");
-
-            if (set != null) {
-                entries = this.parse(set);
-                this.close(set);
-            } else {
-                App.get().LOGGER.warning("Reading entries from empty connection.");
-            }
-        } catch (SQLException e) {
-            App.get().LOGGER.warning(e.getMessage());
-        }
-
+        ResultSet set = this.query("SELECT * FROM " + this.table + " WHERE (start <= '" + endPoint + "' AND end >= '" + startPoint + "') OR recurringType = NULL;");
+        entries = this.parse(set);
+        this.close(set);
         return entries;
     }
 
