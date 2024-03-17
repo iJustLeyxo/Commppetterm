@@ -111,7 +111,9 @@ public final class WeekPage extends PageController {
                         boolean fits = true;
 
                         for (Triple<Entry, LocalTime, LocalTime> cell : column) {
-                            if (startTime.isAfter(cell.b()) && startTime.isBefore(cell.c()) || endTime.isAfter(cell.b()) && endTime.isBefore(cell.c()) || startTime.isBefore(cell.b()) && endTime.isAfter(cell.c())) {
+                            if (startTime.isAfter(cell.b()) && startTime.isBefore(cell.c()) ||
+                                    endTime.isAfter(cell.b()) && endTime.isBefore(cell.c()) ||
+                                    startTime.isBefore(cell.b()) && endTime.isAfter(cell.c())) {
                                 fits = false;
                                 break;
                             }
@@ -170,11 +172,47 @@ public final class WeekPage extends PageController {
             iterator = iterator.plusDays(1);
         } while (iterator.getDayOfWeek().getValue() != 1);
 
-        /* Place discrete entries */
+        /* Compact discrete entries */
+        List<List<Triple<Entry, Integer, Integer>>> rows = new LinkedList<>();
+        rows.add(new LinkedList<>());
+
+        /* Compact entries */
         for (Triple<Entry, Integer, Integer> entry : discreteEntries) {
-            parent = new EntryController(entry.a()).parent();
-            this.contents.add(parent);
-            this.entries.add(parent, entry.b(), rowStep, Math.max(entry.c(), 1), 1);
+            boolean fitted = false;
+
+            for (List<Triple<Entry, Integer, Integer>> row : rows) {
+                boolean fits = true;
+
+                for (Triple<Entry, Integer, Integer> cell : row) {
+                    if (entry.b() > cell.b() && entry.b() < cell.b() + cell.c() - 1 ||
+                            entry.c() > cell.b() && entry.c() < cell.b() + cell.c() - 1 ||
+                            entry.b() < cell.b() && entry.c() > cell.c()) {
+                        fits = false;
+                        break;
+                    }
+                }
+
+                if (fits) {
+                    row.add(entry);
+                    fitted = true;
+                }
+            }
+
+            if (!fitted) {
+                List<Triple<Entry, Integer, Integer>> row = new LinkedList<>();
+                rows.add(row);
+                row.add(entry);
+            }
+        }
+
+        /* Place discrete entries */
+        for (List<Triple<Entry, Integer, Integer>> row : rows) {
+            for (Triple<Entry, Integer, Integer> cell : row) {
+                parent = new EntryController(cell.a()).parent();
+                this.contents.add(parent);
+                this.entries.add(parent, cell.b(), rowStep, cell.c(), 1);
+            }
+
             rowStep++;
         }
     }
