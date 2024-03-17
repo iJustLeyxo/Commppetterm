@@ -74,7 +74,7 @@ public final class Editor extends Controller {
             this.daily.setSelected(false);
 
             if (recurring) {
-                switch (entry.recurring().type()) {
+                switch (entry.recurring().recurringType()) {
                     case DAY -> this.daily.setSelected(true);
                     case WEEK -> this.weekly.setSelected(true);
                     case MONTH -> this.monthly.setSelected(true);
@@ -100,7 +100,6 @@ public final class Editor extends Controller {
         } else {
             this.delete.setDisable(true);
             this.yearly.setSelected(true);
-            this.frequency.setText("1");
         }
 
         this.end();
@@ -265,10 +264,10 @@ public final class Editor extends Controller {
 
         if (recurring != null) {
             if (
-                    recurring.type() == Entry.Recurring.Type.DAY && Period.between(startDate, endDate).getDays() >= recurring.frequency() ||
-                            recurring.type() == Entry.Recurring.Type.WEEK && Period.between(startDate, endDate).getDays() / 7 >= recurring.frequency() ||
-                            recurring.type() == Entry.Recurring.Type.MONTH && Period.between(startDate, endDate).getMonths() >= recurring.frequency() ||
-                            recurring.type() == Entry.Recurring.Type.YEAR && Period.between(startDate, endDate).getYears() >= recurring.frequency()
+                    recurring.recurringType() == Entry.Recurring.RecurringType.DAY && Period.between(startDate, endDate).getDays() >= recurring.frequency() ||
+                            recurring.recurringType() == Entry.Recurring.RecurringType.WEEK && Period.between(startDate, endDate).getDays() / 7 >= recurring.frequency() ||
+                            recurring.recurringType() == Entry.Recurring.RecurringType.MONTH && Period.between(startDate, endDate).getMonths() >= recurring.frequency() ||
+                            recurring.recurringType() == Entry.Recurring.RecurringType.YEAR && Period.between(startDate, endDate).getYears() >= recurring.frequency()
             ) {
                 throw new EditorException("Entry cannot be longer than recurrence frequency.");
             }
@@ -332,15 +331,15 @@ public final class Editor extends Controller {
         Entry.Recurring recurring = null;
 
         if (this.recurring.isSelected()) {
-            Entry.Recurring.Type type;
+            Entry.Recurring.RecurringType recurringType;
             if (this.yearly.isSelected()) {
-                type = Entry.Recurring.Type.YEAR;
+                recurringType = Entry.Recurring.RecurringType.YEAR;
             } else if (this.monthly.isSelected()) {
-                type = Entry.Recurring.Type.MONTH;
+                recurringType = Entry.Recurring.RecurringType.MONTH;
             } else if (this.weekly.isSelected()) {
-                type = Entry.Recurring.Type.WEEK;
+                recurringType = Entry.Recurring.RecurringType.WEEK;
             } else {
-                type = Entry.Recurring.Type.DAY;
+                recurringType = Entry.Recurring.RecurringType.DAY;
             }
             byte freq = Byte.parseByte(this.frequency.getText());
 
@@ -348,7 +347,7 @@ public final class Editor extends Controller {
                 throw new EditorException("Negative recurrence frequency is not allowed.");
             }
 
-            recurring = new Entry.Recurring(type, freq);
+            recurring = new Entry.Recurring(recurringType, freq);
         }
         return recurring;
     }

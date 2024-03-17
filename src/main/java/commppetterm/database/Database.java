@@ -1,6 +1,5 @@
 package commppetterm.database;
 
-import commppetterm.gui.App;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,7 +13,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Database handler
@@ -140,7 +138,7 @@ public final class Database {
         }
 
         if (entry.recurs()) {
-            recurringType = "'" + entry.recurring().type().toString() + "'";
+            recurringType = "'" + entry.recurring().recurringType().toString() + "'";
             recurringFrequency = Integer.toString(entry.recurring().frequency());
         }
 
@@ -189,15 +187,15 @@ public final class Database {
             LocalDateTime eStart = LocalDateTime.parse(set.getString("start"), resultFormatter);
             LocalDateTime eEnd = LocalDateTime.parse(set.getString("end"), resultFormatter);
             Entry.Recurring recurring = null;
-            Entry.Recurring.Type recurringType = null;
+            Entry.Recurring.RecurringType recurringType = null;
             byte recurringFrequency = set.getByte("recurringFrequency");
 
             if (set.getString("recurringType") != null) {
                 switch (set.getString("recurringType")) {
-                    case "YEAR" -> recurringType = Entry.Recurring.Type.YEAR;
-                    case "MONTH" -> recurringType = Entry.Recurring.Type.MONTH;
-                    case "WEEK" -> recurringType = Entry.Recurring.Type.WEEK;
-                    case "DAY" -> recurringType = Entry.Recurring.Type.DAY;
+                    case "YEAR" -> recurringType = Entry.Recurring.RecurringType.YEAR;
+                    case "MONTH" -> recurringType = Entry.Recurring.RecurringType.MONTH;
+                    case "WEEK" -> recurringType = Entry.Recurring.RecurringType.WEEK;
+                    case "DAY" -> recurringType = Entry.Recurring.RecurringType.DAY;
                 }
             }
 

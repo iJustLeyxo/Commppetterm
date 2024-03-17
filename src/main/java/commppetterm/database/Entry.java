@@ -71,7 +71,7 @@ public record Entry(
      * @return {@code true} if the entry is on the date, otherwise {@code false}
      */
     public boolean on(LocalDate date) {
-        date = this.diff(date);
+        date = this.relative(date);
 
         return !(this.start.toLocalDate().isAfter(date) || this.end.toLocalDate().isBefore(date));
     }
@@ -92,8 +92,8 @@ public record Entry(
      * @return {@code true} if the entry is fully on the date
      */
     public boolean whole(@NotNull LocalDate start, @NotNull LocalDate end) {
-        start = this.diff(start);
-        end = this.diff(end);
+        start = this.relative(start);
+        end = this.relative(end);
 
         return !this.start.toLocalDate().isAfter(start) && this.start.toLocalTime().equals(LocalTime.of(0, 0)) &&
                 !this.end.toLocalDate().isBefore(end) && this.end.toLocalTime().equals(LocalTime.of(23, 59));
@@ -106,7 +106,7 @@ public record Entry(
      * @return the time on the date where the event starts
      */
     public @Nullable LocalTime start(@NotNull LocalDate date) {
-        date = this.diff(date);
+        date = this.relative(date);
 
         if (this.start.toLocalDate().isBefore(date)) {
             return LocalTime.of(0, 0);
@@ -123,7 +123,7 @@ public record Entry(
      * @return the time on the date where the event ends
      */
     public @Nullable LocalTime end(@NotNull LocalDate date) {
-        date = this.diff(date);
+        date = this.relative(date);
 
         if (this.end.toLocalDate().isAfter(date)) {
             return LocalTime.of(23, 59);
@@ -139,12 +139,12 @@ public record Entry(
      * @param date The reference date
      * @return the relative date
      */
-    private @NotNull LocalDate diff(@NotNull LocalDate date) {
+    private @NotNull LocalDate relative(@NotNull LocalDate date) {
         if (this.recurs()) {
             long diff = 0;
             LocalDate rel;
 
-            switch (this.recurring.type) {
+            switch (this.recurring.recurringType) {
                 case DAY -> {
                     diff += Period.between(this.start.toLocalDate(), date).getDays() % recurring.frequency;
                     return this.start.toLocalDate().plusDays(diff);
@@ -180,20 +180,20 @@ public record Entry(
 
     /**
      * Repeat profile class
-     * @param type Repeat timeframe
+     * @param recurringType Repeat timeframe
      * @param frequency Space between repetitions
      */
-    public record Recurring(@NotNull Type type, byte frequency) {
+    public record Recurring(@NotNull Entry.Recurring.RecurringType recurringType, byte frequency) {
         /**
          * Repeat timeframe
          */
-        public enum Type { YEAR, MONTH, WEEK, DAY}
+        public enum RecurringType { YEAR, MONTH, WEEK, DAY}
 
         /**
          * @return type of recurrence
          */
-        public Type type() {
-            return type;
+        public RecurringType recurringType() {
+            return recurringType;
         }
 
         /**
