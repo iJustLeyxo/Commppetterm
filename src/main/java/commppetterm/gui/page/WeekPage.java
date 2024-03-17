@@ -58,7 +58,7 @@ public final class WeekPage extends PageController {
         this.entries.getChildren().removeAll(contents);
         this.contents.clear();
 
-        /* Generate */
+        /* Utils */
         LocalDate start = App.get().date().minusDays(App.get().date().getDayOfWeek().getValue() - 1);
         LocalDate end = start.plusDays(6);
         LocalDate iterator = start;
@@ -69,16 +69,19 @@ public final class WeekPage extends PageController {
         int rowStart, rowSpan;
         int rowStep = 24 + rowOffset;
 
-        /* Generate entries */
-        List<Entry> singleEntries = new LinkedList<>();
-        List<Triple<Entry, Integer, Integer>> wholeEntries = new LinkedList<>();
+        /* Entries */
+        List<Entry> partialEntries = new LinkedList<>();
+        List<Triple<Entry, Integer, Integer>> discreteEntries = new LinkedList<>();
 
+        /* Get and sort entries */
         try {
             for (Entry entry : App.get().database().entries(start, end)) {
-                if (entry.whole(start, end) || entry.untimed()) {
-                    wholeEntries.add(new Triple<>(entry, 0, 0));
-                } else {
-                    singleEntries.add(entry);
+                if (entry.on(start, end)) {
+                    if (entry.whole(start, end) || entry.untimed()) {
+                        discreteEntries.add(new Triple<>(entry, 0, 0));
+                    } else {
+                        partialEntries.add(entry);
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -92,34 +95,68 @@ public final class WeekPage extends PageController {
         }
 
         do {
-            for (Triple<Entry, Integer, Integer> entry : wholeEntries) {
-                if (entry.a().on(iterator)) {
-                    if (entry.b() < 1) {
-                        entry.b(colStep);
-                        entry.c(1);
-                    } else {
-                        entry.c(entry.c() + 1);
+            /* Compact partial entries */
+            List<List<Triple<Entry, LocalTime, LocalTime>>> columns = new LinkedList<>();
+            columns.add(new LinkedList<>());
+
+            for (Entry entry : partialEntries) {
+                if (entry.on(iterator)) {
+                    LocalTime startTime = entry.start(iterator);
+                    LocalTime endTime = entry.end(iterator);
+
+                    boolean fitted = false;
+
+                    for (List<Triple<Entry, LocalTime, LocalTime>> column : columns) {
+                        boolean fits = true;
+
+                        for (Triple<Entry, LocalTime, LocalTime> cell : column) {
+                            if (startTime.isAfter(cell.b()) && startTime.isBefore(cell.c()) ||
+                                    endTime.isAfter(cell.b()) && endTime.isBefore(cell.c()) ||
+                                    startTime.isBefore(cell.b()) && endTime.isAfter(cell.c())) {
+                                fits = false;
+                                break;
+                            }
+                        }
+
+                        if (fits) {
+                            column.add(new Triple<>(entry, startTime, endTime));
+                            fitted = true;
+                        }
+                    }
+
+                    if (!fitted) {
+                        List<Triple<Entry, LocalTime, LocalTime>> column = new LinkedList<>();
+                        columns.add(column);
+                        column.add(new Triple<>(entry, startTime, endTime));
                     }
                 }
             }
 
-            for (Entry entry : singleEntries) {
-                LocalTime startTime = entry.start(iterator);
-                LocalTime endTime = entry.end(iterator);
-
-                if (startTime != null && endTime != null) {
-                    rowStart = startTime.getHour() + startTime.getMinute() / 30;
-                    rowSpan = Math.max(endTime.getHour() + endTime.getMinute() / 30 - rowStart, 1);
+            /* Place partial entries */
+            for (List<Triple<Entry, LocalTime, LocalTime>> column : columns) {
+                for (Triple<Entry, LocalTime, LocalTime> cell : column) {
+                    rowStart = cell.b().getHour() + cell.b().getMinute() / 30;
+                    rowSpan = Math.max(cell.c().getHour() + cell.c().getMinute() / 30 - rowStart, 1);
                     rowStart += rowOffset;
 
-                    parent = new EntryController(entry).parent();
+                    parent = new EntryController(cell.a()).parent();
                     this.contents.add(parent);
                     this.entries.add(parent, colStep + colSpan, rowStart, 1, rowSpan);
-                    colSpan++;
                 }
+
+                colSpan++;
             }
 
-            colSpan = Math.max(colSpan, 1);
+            /* Update discrete entries */
+            for (Triple<Entry, Integer, Integer> entry : discreteEntries) {
+                if (entry.a().on(iterator)) {
+                    if (entry.b() < 1) {
+                        entry.b(colStep);
+                    }
+
+                    entry.c(entry.c() + colSpan);
+                }
+            }
 
             /* Generate day cell */
             parent = new DayCellController(iterator).parent();
@@ -132,11 +169,46 @@ public final class WeekPage extends PageController {
             iterator = iterator.plusDays(1);
         } while (iterator.getDayOfWeek().getValue() != 1);
 
-        /* Generate whole day entries */
-        for (Triple<Entry, Integer, Integer> entry : wholeEntries) {
-            parent = new EntryController(entry.a()).parent();
-            this.contents.add(parent);
-            this.entries.add(parent, entry.b(), rowStep, Math.max(entry.c(), 1), 1);
+        /* Compact discrete entries */
+        List<List<Triple<Entry, Integer, Integer>>> rows = new LinkedList<>();
+        rows.add(new LinkedList<>());
+
+        for (Triple<Entry, Integer, Integer> entry : discreteEntries) {
+            boolean fitted = false;
+
+            for (List<Triple<Entry, Integer, Integer>> row : rows) {
+                boolean fits = true;
+
+                for (Triple<Entry, Integer, Integer> cell : row) {
+                    if (entry.b() > cell.b() && entry.b() < cell.b() + cell.c() - 1 ||
+                            entry.c() > cell.b() && entry.c() < cell.b() + cell.c() - 1 ||
+                            entry.b() < cell.b() && entry.c() > cell.c()) {
+                        fits = false;
+                        break;
+                    }
+                }
+
+                if (fits) {
+                    row.add(entry);
+                    fitted = true;
+                }
+            }
+
+            if (!fitted) {
+                List<Triple<Entry, Integer, Integer>> row = new LinkedList<>();
+                rows.add(row);
+                row.add(entry);
+            }
+        }
+
+        /* Place discrete entries */
+        for (List<Triple<Entry, Integer, Integer>> row : rows) {
+            for (Triple<Entry, Integer, Integer> cell : row) {
+                parent = new EntryController(cell.a()).parent();
+                this.contents.add(parent);
+                this.entries.add(parent, cell.b(), rowStep, cell.c(), 1);
+            }
+
             rowStep++;
         }
     }

@@ -100,7 +100,6 @@ public final class Editor extends Controller {
         } else {
             this.delete.setDisable(true);
             this.yearly.setSelected(true);
-            this.frequency.setText("1");
         }
 
         this.end();
@@ -245,30 +244,38 @@ public final class Editor extends Controller {
         /* Date */
         LocalDate startDate, endDate;
 
-        /* Start Date */
-        startDate = LocalDate.of(
-                Integer.parseInt(this.startYear.getText()),
-                Integer.parseInt(this.startMonth.getText()),
-                Integer.parseInt(this.startDay.getText())
-        );
-
-        /* End Date */
-        if (this.end.isSelected()) {
-            endDate = LocalDate.of(
-                    Integer.parseInt(this.endYear.getText()),
-                    Integer.parseInt(this.endMonth.getText()),
-                    Integer.parseInt(this.endDay.getText())
+        try {
+            /* Start Date */
+            startDate = LocalDate.of(
+                    Integer.parseInt(this.startYear.getText()),
+                    Integer.parseInt(this.startMonth.getText()),
+                    Integer.parseInt(this.startDay.getText())
             );
-        } else {
-            endDate = startDate;
+        } catch (NumberFormatException | DateTimeException e) {
+            throw new EditorException("Start date is invalid.");
+        }
+
+        try {
+            /* End Date */
+            if (this.end.isSelected()) {
+                endDate = LocalDate.of(
+                        Integer.parseInt(this.endYear.getText()),
+                        Integer.parseInt(this.endMonth.getText()),
+                        Integer.parseInt(this.endDay.getText())
+                );
+            } else {
+                endDate = startDate;
+            }
+        } catch (NumberFormatException | DateTimeException e) {
+            throw new EditorException("End date is invalid.");
         }
 
         if (recurring != null) {
             if (
-                    recurring.type() == Entry.Recurring.Type.DAY && Period.between(startDate, endDate).getDays() >= recurring.frequency() ||
-                            recurring.type() == Entry.Recurring.Type.WEEK && Period.between(startDate, endDate).getDays() / 7 >= recurring.frequency() ||
-                            recurring.type() == Entry.Recurring.Type.MONTH && Period.between(startDate, endDate).getMonths() >= recurring.frequency() ||
-                            recurring.type() == Entry.Recurring.Type.YEAR && Period.between(startDate, endDate).getYears() >= recurring.frequency()
+                    recurring.type() == Entry.Recurring.RecurringType.DAY && Period.between(startDate, endDate).getDays() >= recurring.frequency() ||
+                            recurring.type() == Entry.Recurring.RecurringType.WEEK && Period.between(startDate, endDate).getDays() / 7 >= recurring.frequency() ||
+                            recurring.type() == Entry.Recurring.RecurringType.MONTH && Period.between(startDate, endDate).getMonths() >= recurring.frequency() ||
+                            recurring.type() == Entry.Recurring.RecurringType.YEAR && Period.between(startDate, endDate).getYears() >= recurring.frequency()
             ) {
                 throw new EditorException("Entry cannot be longer than recurrence frequency.");
             }
@@ -277,24 +284,32 @@ public final class Editor extends Controller {
         /* Time */
         LocalTime startTime, endTime;
 
-        /* Start Time */
-        if (this.time.isSelected()) {
-            startTime = LocalTime.of(
-                    Integer.parseInt(this.startHour.getText()),
-                    Integer.parseInt(this.startMinute.getText())
-            );
-        } else {
-            startTime = LocalTime.of(0, 0);
+        try {
+            /* Start Time */
+            if (this.time.isSelected()) {
+                startTime = LocalTime.of(
+                        Integer.parseInt(this.startHour.getText()),
+                        Integer.parseInt(this.startMinute.getText())
+                );
+            } else {
+                startTime = LocalTime.of(0, 0);
+            }
+        } catch (NumberFormatException | DateTimeException e) {
+            throw new EditorException("Start time is invalid.");
         }
 
-        /* End Time */
-        if (this.end.isSelected() && this.time.isSelected()) {
-            endTime = LocalTime.of(
-                    Integer.parseInt(this.endHour.getText()),
-                    Integer.parseInt(this.endMinute.getText())
-            );
-        } else {
-            endTime = LocalTime.of(23, 59);
+        try {
+            /* End Time */
+            if (this.end.isSelected() && this.time.isSelected()) {
+                endTime = LocalTime.of(
+                        Integer.parseInt(this.endHour.getText()),
+                        Integer.parseInt(this.endMinute.getText())
+                );
+            } else {
+                endTime = LocalTime.of(23, 59);
+            }
+        } catch (NumberFormatException | DateTimeException e) {
+            throw new EditorException("End time is invalid.");
         }
 
         LocalDateTime startPoint = LocalDateTime.of(startDate, startTime);
@@ -332,23 +347,30 @@ public final class Editor extends Controller {
         Entry.Recurring recurring = null;
 
         if (this.recurring.isSelected()) {
-            Entry.Recurring.Type type;
+            Entry.Recurring.RecurringType recurringType;
             if (this.yearly.isSelected()) {
-                type = Entry.Recurring.Type.YEAR;
+                recurringType = Entry.Recurring.RecurringType.YEAR;
             } else if (this.monthly.isSelected()) {
-                type = Entry.Recurring.Type.MONTH;
+                recurringType = Entry.Recurring.RecurringType.MONTH;
             } else if (this.weekly.isSelected()) {
-                type = Entry.Recurring.Type.WEEK;
+                recurringType = Entry.Recurring.RecurringType.WEEK;
             } else {
-                type = Entry.Recurring.Type.DAY;
+                recurringType = Entry.Recurring.RecurringType.DAY;
             }
-            byte freq = Byte.parseByte(this.frequency.getText());
+
+            byte freq;
+
+            try {
+                freq = Byte.parseByte(this.frequency.getText());
+            } catch (NumberFormatException e) {
+                throw new EditorException("Frequency must be a number.");
+            }
 
             if (freq < 1) {
-                throw new EditorException("Negative recurrence frequency is not allowed.");
+                throw new EditorException("Frequency must be positive.");
             }
 
-            recurring = new Entry.Recurring(type, freq);
+            recurring = new Entry.Recurring(recurringType, freq);
         }
         return recurring;
     }

@@ -26,27 +26,27 @@ public record Entry(
     /**
      * @return the entry title
      */
-    public String title() { return this.title; }
+    public @NotNull String title() { return this.title; }
 
     /**
      * @return the entry info
      */
-    public String info() { return this.info; }
+    public @NotNull String info() { return this.info; }
 
     /**
      * @return the entry start
      */
-    public LocalDateTime start() { return this.start; }
+    public @NotNull LocalDateTime start() { return this.start; }
 
     /**
      * @return the entry end
      */
-    public LocalDateTime end() { return this.end; }
+    public @NotNull LocalDateTime end() { return this.end; }
 
     /**
      * @return the entry recurring profile
      */
-    public Recurring recurring() { return this.recurring; }
+    public @Nullable Recurring recurring() { return this.recurring; }
 
     /**
      * @return {@code true} if the entry occurs only once
@@ -71,9 +71,38 @@ public record Entry(
      * @return {@code true} if the entry is on the date, otherwise {@code false}
      */
     public boolean on(LocalDate date) {
-        date = this.diff(date);
+        date = this.relative(date);
 
         return !(this.start.toLocalDate().isAfter(date) || this.end.toLocalDate().isBefore(date));
+    }
+
+    /**
+     * Determines whether the entry lies in a time span
+     * @param start The first date to test for
+     * @param end The last date to test for
+     * @return {@code true} if the entry is on the date, otherwise {@code false}
+     */
+    public boolean on(@NotNull LocalDate start, @NotNull LocalDate end) {
+        if (this.recurs()) {
+            Period per = Period.between(start, end);
+
+            switch (this.recurring.type) {
+                case DAY -> { if (per.getDays() > 0) { return true; } }
+                case WEEK -> { if (per.getDays() > 6) { return true; } }
+                case MONTH -> { if (per.getMonths() > 0) { return true; } }
+                case YEAR -> { if (per.getYears() > 0) { return true; } }
+            }
+        }
+
+        Period per = Period.between(start, end);
+        start = this.relative(start);
+        end = this.relative(end);
+
+        if (end.isBefore(start)) {
+            return true;
+        } else {
+            return !(this.start.toLocalDate().isAfter(end) || this.end.toLocalDate().isBefore(start));
+        }
     }
 
     /**
@@ -92,8 +121,8 @@ public record Entry(
      * @return {@code true} if the entry is fully on the date
      */
     public boolean whole(@NotNull LocalDate start, @NotNull LocalDate end) {
-        start = this.diff(start);
-        end = this.diff(end);
+        start = this.relative(start);
+        end = this.relative(end);
 
         return !this.start.toLocalDate().isAfter(start) && this.start.toLocalTime().equals(LocalTime.of(0, 0)) &&
                 !this.end.toLocalDate().isBefore(end) && this.end.toLocalTime().equals(LocalTime.of(23, 59));
@@ -105,15 +134,15 @@ public record Entry(
      * @param date The date to get the start time for
      * @return the time on the date where the event starts
      */
-    public @Nullable LocalTime start(@NotNull LocalDate date) {
-        date = this.diff(date);
+    public @NotNull LocalTime start(@NotNull LocalDate date) {
+        date = this.relative(date);
 
         if (this.start.toLocalDate().isBefore(date)) {
             return LocalTime.of(0, 0);
         } else if (this.start.toLocalDate().isEqual(date)) {
             return this.start.toLocalTime();
         } else {
-            return null;
+            return LocalTime.of(0, 0);
         }
     }
 
@@ -122,15 +151,15 @@ public record Entry(
      * @param date The date to get the end time for
      * @return the time on the date where the event ends
      */
-    public @Nullable LocalTime end(@NotNull LocalDate date) {
-        date = this.diff(date);
+    public @NotNull LocalTime end(@NotNull LocalDate date) {
+        date = this.relative(date);
 
         if (this.end.toLocalDate().isAfter(date)) {
             return LocalTime.of(23, 59);
         } else if (this.end.toLocalDate().isEqual(date)) {
             return this.end.toLocalTime();
         } else {
-            return null;
+            return LocalTime.of(23, 59);
         }
     }
 
@@ -139,38 +168,44 @@ public record Entry(
      * @param date The reference date
      * @return the relative date
      */
-    private @NotNull LocalDate diff(@NotNull LocalDate date) {
+    private @NotNull LocalDate relative(@NotNull LocalDate date) {
         if (this.recurs()) {
-            long diff = 0;
+            long sam = 0;
             LocalDate rel;
 
             switch (this.recurring.type) {
                 case DAY -> {
-                    diff += Period.between(this.start.toLocalDate(), date).getDays() % recurring.frequency;
-                    return this.start.toLocalDate().plusDays(diff);
+                    sam += Period.between(this.start.toLocalDate(), date).getDays() % recurring.frequency;
+                    return this.start.toLocalDate().plusDays(sam);
                 }
 
                 case WEEK -> {
-                    diff = date.getDayOfWeek().getValue() - this.start.getDayOfWeek().getValue();
-                    if (diff < 0) { diff += 7; }
-                    diff += (Period.between(this.start.toLocalDate().plusDays(diff), date).getDays() / 7) % recurring.frequency * 7;
-                    return this.start.toLocalDate().plusDays(diff);
+                    sam = date.getDayOfWeek().getValue() - this.start.getDayOfWeek().getValue();
+                    if (sam < 0) { sam += 7; }
+                    sam += ((Period.between(this.start.toLocalDate().plusDays(sam), date).getDays() + 1) / 7) % recurring.frequency;
+                    return this.start.toLocalDate().plusDays(sam);
                 }
 
                 case MONTH -> {
-                    diff = date.getDayOfMonth() - this.start.getDayOfMonth();
-                    if (diff < 0) { diff += date.lengthOfMonth(); }
-                    diff %= this.start.toLocalDate().lengthOfMonth();
-                    rel = this.start.toLocalDate().plusDays(diff);
+                    sam = date.getDayOfMonth() - this.start.getDayOfMonth();
+                    if (sam < 0) { sam += date.lengthOfMonth(); }
+                    sam %= this.start.toLocalDate().lengthOfMonth();
+                    rel = this.start.toLocalDate().plusDays(sam);
                     return rel.plusMonths(Period.between(rel, date).getMonths() % recurring.frequency);
                 }
 
                 case YEAR -> {
-                    diff = date.getDayOfYear() - this.start.getDayOfYear();
-                    if (diff < 0) { diff += date.lengthOfYear(); }
-                    diff %= this.start.toLocalDate().lengthOfYear();
-                    rel = this.start.toLocalDate().plusDays(diff);
-                    return rel.plusYears(Period.between(rel, date).getYears() % recurring.frequency);
+                    /* Year */
+                    sam = date.getMonthValue() - this.start.getMonthValue();
+                    if (sam < 0) { sam += 12; }
+                    sam += (Period.between(this.start.toLocalDate().plusMonths(sam), date).getMonths() / 12) % recurring.frequency;
+                    rel = this.start.toLocalDate().plusMonths(sam);
+
+                    /* Month */
+                    sam = date.getDayOfMonth() - this.start.getDayOfMonth();
+                    if (sam < 0) { sam += rel.lengthOfMonth(); }
+                    sam %= rel.lengthOfMonth();
+                    return rel.plusDays(sam);
                 }
             }
         }
@@ -183,16 +218,16 @@ public record Entry(
      * @param type Repeat timeframe
      * @param frequency Space between repetitions
      */
-    public record Recurring(@NotNull Type type, byte frequency) {
+    public record Recurring(@NotNull Entry.Recurring.RecurringType type, byte frequency) {
         /**
          * Repeat timeframe
          */
-        public enum Type { YEAR, MONTH, WEEK, DAY}
+        public enum RecurringType { YEAR, MONTH, WEEK, DAY}
 
         /**
          * @return type of recurrence
          */
-        public Type type() {
+        public RecurringType type() {
             return type;
         }
 
