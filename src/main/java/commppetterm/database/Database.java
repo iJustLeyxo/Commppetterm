@@ -138,7 +138,7 @@ public final class Database {
         }
 
         if (entry.recurs()) {
-            recurringType = "'" + entry.recurring().recurringType().toString() + "'";
+            recurringType = "'" + entry.recurring().type().toString() + "'";
             recurringFrequency = Integer.toString(entry.recurring().frequency());
         }
 

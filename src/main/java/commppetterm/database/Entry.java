@@ -83,11 +83,26 @@ public record Entry(
      * @return {@code true} if the entry is on the date, otherwise {@code false}
      */
     public boolean on(@NotNull LocalDate start, @NotNull LocalDate end) {
-        Period per = Period.between(start, end);
-        start = this.unalignedRelative(start);
-        end = start.plus(per);
+        if (this.recurs()) {
+            Period per = Period.between(start, end);
 
-        return !(this.start.toLocalDate().isAfter(end) || this.end.toLocalDate().isBefore(start));
+            switch (this.recurring.type) {
+                case DAY -> { if (per.getDays() > 0) { return true; } }
+                case WEEK -> { if (per.getDays() > 6) { return true; } }
+                case MONTH -> { if (per.getMonths() > 0) { return true; } }
+                case YEAR -> { if (per.getYears() > 0) { return true; } }
+            }
+        }
+
+        Period per = Period.between(start, end);
+        start = this.relative(start);
+        end = this.relative(end);
+
+        if (end.isBefore(start)) {
+            return true;
+        } else {
+            return !(this.start.toLocalDate().isAfter(end) || this.end.toLocalDate().isBefore(start));
+        }
     }
 
     /**
@@ -158,7 +173,7 @@ public record Entry(
             long sam = 0;
             LocalDate rel;
 
-            switch (this.recurring.recurringType) {
+            switch (this.recurring.type) {
                 case DAY -> {
                     sam += Period.between(this.start.toLocalDate(), date).getDays() % recurring.frequency;
                     return this.start.toLocalDate().plusDays(sam);
@@ -199,60 +214,11 @@ public record Entry(
     }
 
     /**
-     * Calculates the relative difference between a date and this entry
-     * @param date The reference date
-     * @return the relative date
-     */
-    private @NotNull LocalDate unalignedRelative(@NotNull LocalDate date) {
-        if (this.recurs()) {
-            long sam = 0;
-            LocalDate rel;
-
-            switch (this.recurring.recurringType) {
-                case DAY -> {
-                    sam -= Period.between(this.start.toLocalDate(), date).getDays() % recurring.frequency;
-                    return this.start.toLocalDate().plusDays(sam);
-                }
-
-                case WEEK -> {
-                    sam = date.getDayOfWeek().getValue() - this.start.getDayOfWeek().getValue();
-                    if (sam > 0) { sam -= 7; }
-                    sam -= ((Period.between(this.start.toLocalDate().plusDays(sam), date).getDays() + 1) / 7) % recurring.frequency;
-                    return this.start.toLocalDate().plusDays(sam);
-                }
-
-                case MONTH -> {
-                    sam = date.getDayOfMonth() - this.start.getDayOfMonth();
-                    if (sam > 0) { sam -= date.lengthOfMonth(); }
-                    sam %= this.start.toLocalDate().lengthOfMonth();
-                    rel = this.start.toLocalDate().plusDays(sam);
-                    return rel.plusMonths(Period.between(rel, date).getMonths() % recurring.frequency);
-                }
-
-                case YEAR -> {
-                    /* Months */
-                    sam = date.getMonthValue() - this.start.getMonthValue();
-                    rel = this.start.toLocalDate().plusMonths(sam);
-                    sam = (Period.between(rel, date).getYears() % recurring.frequency) * 12;
-                    rel = rel.plusMonths(sam);
-
-                    /* Days */
-                    sam = date.getDayOfMonth() - this.start.getDayOfMonth();
-                    sam %= rel.lengthOfMonth();
-                    return rel.plusDays(sam);
-                }
-            }
-        }
-
-        return date;
-    }
-
-    /**
      * Repeat profile class
-     * @param recurringType Repeat timeframe
+     * @param type Repeat timeframe
      * @param frequency Space between repetitions
      */
-    public record Recurring(@NotNull Entry.Recurring.RecurringType recurringType, byte frequency) {
+    public record Recurring(@NotNull Entry.Recurring.RecurringType type, byte frequency) {
         /**
          * Repeat timeframe
          */
@@ -261,8 +227,8 @@ public record Entry(
         /**
          * @return type of recurrence
          */
-        public RecurringType recurringType() {
-            return recurringType;
+        public RecurringType type() {
+            return type;
         }
 
         /**

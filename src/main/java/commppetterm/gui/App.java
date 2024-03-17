@@ -129,6 +129,8 @@ public final class App extends Application {
 
             if (res.isPresent() && res.get().equals(ButtonType.YES)) {
                 App.get().provider(new Settings());
+            } else {
+                App.get().provider(new Calendar());
             }
         }
 

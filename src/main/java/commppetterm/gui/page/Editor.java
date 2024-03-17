@@ -74,7 +74,7 @@ public final class Editor extends Controller {
             this.daily.setSelected(false);
 
             if (recurring) {
-                switch (entry.recurring().recurringType()) {
+                switch (entry.recurring().type()) {
                     case DAY -> this.daily.setSelected(true);
                     case WEEK -> this.weekly.setSelected(true);
                     case MONTH -> this.monthly.setSelected(true);
@@ -272,10 +272,10 @@ public final class Editor extends Controller {
 
         if (recurring != null) {
             if (
-                    recurring.recurringType() == Entry.Recurring.RecurringType.DAY && Period.between(startDate, endDate).getDays() >= recurring.frequency() ||
-                            recurring.recurringType() == Entry.Recurring.RecurringType.WEEK && Period.between(startDate, endDate).getDays() / 7 >= recurring.frequency() ||
-                            recurring.recurringType() == Entry.Recurring.RecurringType.MONTH && Period.between(startDate, endDate).getMonths() >= recurring.frequency() ||
-                            recurring.recurringType() == Entry.Recurring.RecurringType.YEAR && Period.between(startDate, endDate).getYears() >= recurring.frequency()
+                    recurring.type() == Entry.Recurring.RecurringType.DAY && Period.between(startDate, endDate).getDays() >= recurring.frequency() ||
+                            recurring.type() == Entry.Recurring.RecurringType.WEEK && Period.between(startDate, endDate).getDays() / 7 >= recurring.frequency() ||
+                            recurring.type() == Entry.Recurring.RecurringType.MONTH && Period.between(startDate, endDate).getMonths() >= recurring.frequency() ||
+                            recurring.type() == Entry.Recurring.RecurringType.YEAR && Period.between(startDate, endDate).getYears() >= recurring.frequency()
             ) {
                 throw new EditorException("Entry cannot be longer than recurrence frequency.");
             }
