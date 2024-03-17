@@ -75,10 +75,14 @@ public final class WeekPage extends PageController {
 
         try {
             for (Entry entry : App.get().database().entries(start, end)) {
-                if (entry.whole(start, end) || entry.untimed()) {
-                    wholeEntries.add(new Triple<>(entry, 0, 0));
+                if (entry.on(start, end)) {
+                    if (entry.whole(start, end) || entry.untimed()) {
+                        wholeEntries.add(new Triple<>(entry, 0, 0));
+                    } else {
+                        singleEntries.add(entry);
+                    }
                 } else {
-                    singleEntries.add(entry);
+                    App.get().LOGGER.info(entry.title());
                 }
             }
         } catch (SQLException e) {
@@ -92,17 +96,6 @@ public final class WeekPage extends PageController {
         }
 
         do {
-            for (Triple<Entry, Integer, Integer> entry : wholeEntries) {
-                if (entry.a().on(iterator)) {
-                    if (entry.b() < 1) {
-                        entry.b(colStep);
-                        entry.c(1);
-                    } else {
-                        entry.c(entry.c() + 1);
-                    }
-                }
-            }
-
             for (Entry entry : singleEntries) {
                 LocalTime startTime = entry.start(iterator);
                 LocalTime endTime = entry.end(iterator);
@@ -116,6 +109,16 @@ public final class WeekPage extends PageController {
                     this.contents.add(parent);
                     this.entries.add(parent, colStep + colSpan, rowStart, 1, rowSpan);
                     colSpan++;
+                }
+            }
+
+            for (Triple<Entry, Integer, Integer> entry : wholeEntries) {
+                if (entry.a().on(iterator)) {
+                    if (entry.b() < 1) {
+                        entry.b(colStep);
+                    }
+
+                    entry.c(entry.c() + colSpan);
                 }
             }
 

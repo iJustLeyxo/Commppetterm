@@ -77,6 +77,20 @@ public record Entry(
     }
 
     /**
+     * Determines whether the entry lies in a time span
+     * @param start The first date to test for
+     * @param end The last date to test for
+     * @return {@code true} if the entry is on the date, otherwise {@code false}
+     */
+    public boolean on(@NotNull LocalDate start, @NotNull LocalDate end) {
+        Period per = Period.between(start, end);
+        start = this.unalignedRelative(start);
+        end = start.plus(per);
+
+        return !(this.start.toLocalDate().isAfter(end) || this.end.toLocalDate().isBefore(start));
+    }
+
+    /**
      * Returns true if an entry is fully on a date
      * @param date The date to check
      * @return {@code true} if the entry is fully on the date
@@ -153,7 +167,7 @@ public record Entry(
                 case WEEK -> {
                     sam = date.getDayOfWeek().getValue() - this.start.getDayOfWeek().getValue();
                     if (sam < 0) { sam += 7; }
-                    sam += (Period.between(this.start.toLocalDate().plusDays(sam), date).getDays() / 7) % (recurring.frequency * 7);
+                    sam += ((Period.between(this.start.toLocalDate().plusDays(sam), date).getDays() + 1) / 7) % recurring.frequency;
                     return this.start.toLocalDate().plusDays(sam);
                 }
 
@@ -169,12 +183,61 @@ public record Entry(
                     /* Year */
                     sam = date.getMonthValue() - this.start.getMonthValue();
                     if (sam < 0) { sam += 12; }
-                    sam += Period.between(this.start.toLocalDate().plusMonths(sam), date).getMonths() % (recurring.frequency * 12);
+                    sam += (Period.between(this.start.toLocalDate().plusMonths(sam), date).getMonths() / 12) % recurring.frequency;
                     rel = this.start.toLocalDate().plusMonths(sam);
 
                     /* Month */
                     sam = date.getDayOfMonth() - this.start.getDayOfMonth();
                     if (sam < 0) { sam += rel.lengthOfMonth(); }
+                    sam %= rel.lengthOfMonth();
+                    return rel.plusDays(sam);
+                }
+            }
+        }
+
+        return date;
+    }
+
+    /**
+     * Calculates the relative difference between a date and this entry
+     * @param date The reference date
+     * @return the relative date
+     */
+    private @NotNull LocalDate unalignedRelative(@NotNull LocalDate date) {
+        if (this.recurs()) {
+            long sam = 0;
+            LocalDate rel;
+
+            switch (this.recurring.recurringType) {
+                case DAY -> {
+                    sam -= Period.between(this.start.toLocalDate(), date).getDays() % recurring.frequency;
+                    return this.start.toLocalDate().plusDays(sam);
+                }
+
+                case WEEK -> {
+                    sam = date.getDayOfWeek().getValue() - this.start.getDayOfWeek().getValue();
+                    if (sam > 0) { sam -= 7; }
+                    sam -= ((Period.between(this.start.toLocalDate().plusDays(sam), date).getDays() + 1) / 7) % recurring.frequency;
+                    return this.start.toLocalDate().plusDays(sam);
+                }
+
+                case MONTH -> {
+                    sam = date.getDayOfMonth() - this.start.getDayOfMonth();
+                    if (sam > 0) { sam -= date.lengthOfMonth(); }
+                    sam %= this.start.toLocalDate().lengthOfMonth();
+                    rel = this.start.toLocalDate().plusDays(sam);
+                    return rel.plusMonths(Period.between(rel, date).getMonths() % recurring.frequency);
+                }
+
+                case YEAR -> {
+                    /* Months */
+                    sam = date.getMonthValue() - this.start.getMonthValue();
+                    rel = this.start.toLocalDate().plusMonths(sam);
+                    sam = (Period.between(rel, date).getYears() % recurring.frequency) * 12;
+                    rel = rel.plusMonths(sam);
+
+                    /* Days */
+                    sam = date.getDayOfMonth() - this.start.getDayOfMonth();
                     sam %= rel.lengthOfMonth();
                     return rel.plusDays(sam);
                 }
