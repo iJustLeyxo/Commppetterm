@@ -26,27 +26,27 @@ public record Entry(
     /**
      * @return the entry title
      */
-    public String title() { return this.title; }
+    public @NotNull String title() { return this.title; }
 
     /**
      * @return the entry info
      */
-    public String info() { return this.info; }
+    public @NotNull String info() { return this.info; }
 
     /**
      * @return the entry start
      */
-    public LocalDateTime start() { return this.start; }
+    public @NotNull LocalDateTime start() { return this.start; }
 
     /**
      * @return the entry end
      */
-    public LocalDateTime end() { return this.end; }
+    public @NotNull LocalDateTime end() { return this.end; }
 
     /**
      * @return the entry recurring profile
      */
-    public Recurring recurring() { return this.recurring; }
+    public @Nullable Recurring recurring() { return this.recurring; }
 
     /**
      * @return {@code true} if the entry occurs only once
@@ -119,7 +119,7 @@ public record Entry(
      * @param date The date to get the start time for
      * @return the time on the date where the event starts
      */
-    public @Nullable LocalTime start(@NotNull LocalDate date) {
+    public @NotNull LocalTime start(@NotNull LocalDate date) {
         date = this.relative(date);
 
         if (this.start.toLocalDate().isBefore(date)) {
@@ -127,7 +127,7 @@ public record Entry(
         } else if (this.start.toLocalDate().isEqual(date)) {
             return this.start.toLocalTime();
         } else {
-            return null;
+            return LocalTime.of(0, 0);
         }
     }
 
@@ -136,7 +136,7 @@ public record Entry(
      * @param date The date to get the end time for
      * @return the time on the date where the event ends
      */
-    public @Nullable LocalTime end(@NotNull LocalDate date) {
+    public @NotNull LocalTime end(@NotNull LocalDate date) {
         date = this.relative(date);
 
         if (this.end.toLocalDate().isAfter(date)) {
@@ -144,7 +144,7 @@ public record Entry(
         } else if (this.end.toLocalDate().isEqual(date)) {
             return this.end.toLocalTime();
         } else {
-            return null;
+            return LocalTime.of(23, 59);
         }
     }
 
