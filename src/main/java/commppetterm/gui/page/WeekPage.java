@@ -94,12 +94,11 @@ public final class WeekPage extends PageController {
             }
         }
 
-        /* Place entries */
         do {
+            /* Compact partial entries */
             List<List<Triple<Entry, LocalTime, LocalTime>>> columns = new LinkedList<>();
             columns.add(new LinkedList<>());
 
-            /* Compact entries */
             for (Entry entry : partialEntries) {
                 if (entry.on(iterator)) {
                     LocalTime startTime = entry.start(iterator);
@@ -159,8 +158,6 @@ public final class WeekPage extends PageController {
                 }
             }
 
-            colSpan = Math.max(colSpan, 1);
-
             /* Generate day cell */
             parent = new DayCellController(iterator).parent();
             this.contents.add(parent);
@@ -176,7 +173,6 @@ public final class WeekPage extends PageController {
         List<List<Triple<Entry, Integer, Integer>>> rows = new LinkedList<>();
         rows.add(new LinkedList<>());
 
-        /* Compact entries */
         for (Triple<Entry, Integer, Integer> entry : discreteEntries) {
             boolean fitted = false;
 
