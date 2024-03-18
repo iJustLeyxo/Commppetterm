@@ -30,7 +30,7 @@ public final class WeekPage extends PageController {
     private GridPane entries;
 
     /**
-     * Initializes a new week page
+     * Creates a new week page
      */
     public WeekPage() {}
 

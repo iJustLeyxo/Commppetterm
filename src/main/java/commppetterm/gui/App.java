@@ -40,6 +40,7 @@ public final class App extends Application {
 
     /**
      * Returns the gui handler class
+     * @return the application
      */
     public static App get() { return app; }
 
@@ -145,36 +146,43 @@ public final class App extends Application {
     }
 
     /**
+     * Gets the application stage
      * @return the application stage
      */
     public Stage stage() { return this.stage; }
 
     /**
+     * Gets the application database interface
      * @return the application database interface
      */
     public Database database() { return this.database; }
 
     /**
+     * Gets the selected date
      * @return the selected date
      */
     public @NotNull LocalDate date() { return this.date; }
 
     /**
+     * Sets the selected date
      * @param date The new date to set
      */
     public void date(@NotNull LocalDate date) { this.date = date; }
 
     /**
+     * Gets the selected entry
      * @return the selected entry
      */
     public @Nullable Entry entry() { return this.entry; }
 
     /**
+     * Sets the selected entry
      * @param entry The new entry to set
      */
     public void entry(@Nullable Entry entry) { this.entry = entry; }
 
     /**
+     * Gets the current controller
      * @return the current controller
      */
     public @Nullable Provider provider() { return this.provider; }
@@ -191,7 +199,11 @@ public final class App extends Application {
 
     /**
      * Creates an alert
+     * @param e Alert cause
      * @param type The alert type
+     * @param action User action options
+     * @param buttons Buttons to show
+     * @return the pressed button
      */
     public Optional<ButtonType> alert(@NotNull Exception e, @NotNull Alert.AlertType type, @Nullable String action, @NotNull ButtonType... buttons) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

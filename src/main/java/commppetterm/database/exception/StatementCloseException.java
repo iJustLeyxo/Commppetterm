@@ -2,6 +2,9 @@ package commppetterm.database.exception;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Exception when closing a statement
+ */
 public class StatementCloseException extends StatementException {
     /**
      * Creates a new settings exception

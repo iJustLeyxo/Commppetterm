@@ -1,3 +1,6 @@
+/**
+ * Project module
+ */
 module commppetterm {
     requires javafx.controls;
     requires javafx.fxml;

@@ -39,14 +39,16 @@ public final class Database {
     }
 
     /**
+     * Gets the settings
      * @return the setting
      */
     public @NotNull Settings settings() { return this.settings; }
 
     /**
      * Loads the database settings
+     * @throws SettingsException when settings could not be loaded
      */
-    public void load() throws SettingsException, DatabaseException {
+    public void load() throws SettingsException {
         this.settings = Settings.load();
     }
 
@@ -60,6 +62,7 @@ public final class Database {
 
     /**
      * Initializes the required tables
+     * @throws DatabaseException if initialization failed
      */
     public void init() throws DatabaseException {
         String sql = "CREATE TABLE IF NOT EXISTS " + this.settings.table + " (" +
@@ -77,6 +80,7 @@ public final class Database {
      * Fetches the entries of a day
      * @param date The day to fetch the entries of
      * @return a list of entries
+     * @throws DatabaseException if querying entries failed
      */
     public List<Entry> entries(@NotNull LocalDate date) throws DatabaseException { return this.entries(date, date); }
 
@@ -85,6 +89,7 @@ public final class Database {
      * @param start The first day to fetch the entries of
      * @param end The last day to fetch entries of
      * @return a list of entries
+     * @throws DatabaseException if querying entries failed
      */
     public List<Entry> entries(@NotNull LocalDate start, @NotNull LocalDate end) throws DatabaseException {
         DateTimeFormatter queryFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -100,6 +105,7 @@ public final class Database {
     /**
      * Creates or edits and entry
      * @param entry The entry to create or edit
+     * @throws DatabaseException if saving the entry failed
      */
     public void save(@Nullable Entry entry) throws DatabaseException {
         if (entry == null) {
@@ -154,6 +160,7 @@ public final class Database {
     /**
      * Deletes an entry
      * @param entry The entry to delete
+     * @throws DatabaseException if deleting the entry failed
      */
     public void delete(@Nullable Entry entry) throws DatabaseException {
         if (entry == null || entry.id() == null) { return; }
@@ -161,6 +168,12 @@ public final class Database {
         this.execute("DELETE FROM " + this.settings.table + " WHERE id = '" + entry.id() + "';");
     }
 
+    /**
+     * Parses a result set
+     * @param set The set to parse
+     * @return a list of entries from the result set
+     * @throws ParseException if parsing the entries failed
+     */
     private List<Entry> parse(ResultSet set) throws ParseException {
         try {
             List<Entry> entries = new LinkedList<>();
@@ -198,6 +211,7 @@ public final class Database {
     /**
      * Connects to a database
      * @return a database connection
+     * @throws ConnectException if connecting failed
      */
     public @NotNull Connection connection() throws ConnectException {
         try {
@@ -211,6 +225,7 @@ public final class Database {
      * Creates a statement from a connection
      * @param connection The connection to create a statement from
      * @return a sql statement
+     * @throws StatementCreationException if creating the statement failed
      */
     public @NotNull Statement statement(@NotNull Connection connection) throws StatementCreationException {
         try {
@@ -223,6 +238,7 @@ public final class Database {
     /**
      * Closes a sql statement's connection
      * @param statement The statement to close
+     * @throws StatementCloseException if closing the statement failed
      */
     public void close(@NotNull Statement statement) throws StatementCloseException {
         try {
@@ -235,6 +251,7 @@ public final class Database {
     /**
      * Closes a sql result set's connection
      * @param set The result set to close
+     * @throws ResultSetCloseException if closing the result set failed
      */
     public void close(@NotNull ResultSet set) throws ResultSetCloseException {
         try {
@@ -246,6 +263,7 @@ public final class Database {
 
     /**
      * Checks whether connecting to a database is possible
+     * @throws ConnectionException if connecting failed
      */
     public void test() throws ConnectionException {
         Connection conn = this.connection();
@@ -260,6 +278,7 @@ public final class Database {
     /**
      * Executes a sql command
      * @param sql The command to execute
+     * @throws DatabaseException if executing the command failed
      */
     public void execute(@NotNull String sql) throws DatabaseException {
         try {
@@ -275,6 +294,7 @@ public final class Database {
      * Queries a sql command
      * @param sql The command to query
      * @return the result set of the query
+     * @throws DatabaseException if querying failed
      */
     public ResultSet query(@NotNull String sql) throws DatabaseException {
         try {
@@ -312,6 +332,7 @@ public final class Database {
         /**
          * Loads the settings
          * @return a settings object
+         * @throws SettingsException if loading the settings failed
          */
         public static @NotNull Settings load() throws SettingsException {
             File file = new File(FILENAME);
@@ -334,6 +355,7 @@ public final class Database {
 
         /**
          * Saves the settings
+         * @throws SettingsSaveException if saving the settings failed
          */
         public void save() throws SettingsSaveException {
             File file = new File(FILENAME);

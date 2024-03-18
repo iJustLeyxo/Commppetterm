@@ -2,6 +2,9 @@ package commppetterm.database.exception;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Exception when creating a statement
+ */
 public class StatementCreationException extends StatementException {
     /**
      * Creates a new settings exception

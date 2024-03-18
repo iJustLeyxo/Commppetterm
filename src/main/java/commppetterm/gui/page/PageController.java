@@ -45,6 +45,7 @@ public abstract class PageController extends Controller {
 
     /**
      * Returns the label text to show in the calendar
+     * @return the label text to be shown in the calendar
      */
     public @NotNull String label() {
         return this.formatter.format(App.get().date());
@@ -71,8 +72,19 @@ public abstract class PageController extends Controller {
      * @param contents Element contents
      */
     public record DtfElement(@NotNull Type type, @NotNull String contents) {
+        /**
+         * Date time formatter element type
+         */
         public enum Type {
-            LITERAL, PATTERN
+            /**
+             * Literal element type
+             */
+            LITERAL,
+
+            /**
+             * Pattern element type
+             */
+            PATTERN
         }
     }
 
@@ -87,6 +99,7 @@ public abstract class PageController extends Controller {
 
         /**
          * Creates a new cell controller
+         * @param element the button to create a cell controller of
          */
         public CellController(@NotNull Button element) {
             this.element = element;

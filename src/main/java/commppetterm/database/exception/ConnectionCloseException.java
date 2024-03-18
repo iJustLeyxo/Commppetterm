@@ -2,6 +2,9 @@ package commppetterm.database.exception;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Exception when closing a connection
+ */
 public class ConnectionCloseException extends ConnectionException {
     /**
      * Creates a new connection close exception

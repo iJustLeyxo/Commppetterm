@@ -26,6 +26,11 @@ public final class DayPage extends PageController {
     @FXML
     private GridPane entries;
 
+    /**
+     * Creates a new day page
+     */
+    public DayPage() {}
+
     @Override
     @NotNull LocalDate prev(@NotNull LocalDate date) {
         return date.minusDays(1);

@@ -18,6 +18,11 @@ public final class MonthPage extends PageController {
     @FXML
     private GridPane grid;
 
+    /**
+     * Creates a new month page
+     */
+    public MonthPage() {}
+
     @Override
     @NotNull LocalDate prev(@NotNull LocalDate date) {
         return date.minusMonths(1);
@@ -94,6 +99,7 @@ public final class MonthPage extends PageController {
     public static class WeekCellController extends CellController {
         /**
          * Creates a new day cell controller
+         * @param date The date to associate to the week cell
          */
         public WeekCellController(@NotNull LocalDate date) {
             super(new Button(Integer.toString(date.get(WeekFields.ISO.weekOfYear()))));

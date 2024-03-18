@@ -24,36 +24,43 @@ public record Entry(
         @Nullable Entry.Recurring recurring
 ) {
     /**
+     * Gets the entry title
      * @return the entry title
      */
     public @NotNull String title() { return this.title; }
 
     /**
+     * Gets the entry info
      * @return the entry info
      */
     public @NotNull String info() { return this.info; }
 
     /**
+     * Gets the entry start point
      * @return the entry start
      */
     public @NotNull LocalDateTime start() { return this.start; }
 
     /**
+     * Gets the entry end point
      * @return the entry end
      */
     public @NotNull LocalDateTime end() { return this.end; }
 
     /**
+     * Gets the entry recurrence profile
      * @return the entry recurring profile
      */
     public @Nullable Recurring recurring() { return this.recurring; }
 
     /**
-     * @return {@code true} if the entry occurs only once
+     * Gets whether the entry is recurring
+     * @return {@code true} if the entry reoccurs
      */
     public boolean recurs() { return this.recurring != null; }
 
     /**
+     * Gets whether the entry is timed
      * @return {@code true} if the entry is timed
      */
     public boolean untimed() {
@@ -61,6 +68,7 @@ public record Entry(
     }
 
     /**
+     * Gets the entry id
      * @return the entry id
      */
     public Long id() { return this.id; }
@@ -222,9 +230,30 @@ public record Entry(
         /**
          * Repeat timeframe
          */
-        public enum RecurringType { YEAR, MONTH, WEEK, DAY}
+        public enum RecurringType {
+            /**
+             * Yearly recurrence
+             */
+            YEAR,
+
+            /**
+             * Monthly recurrence
+             */
+            MONTH,
+
+            /**
+             * Weekly recurrence
+             */
+            WEEK,
+
+            /**
+             * Daily recurrence
+             */
+            DAY
+        }
 
         /**
+         * Gets the type of recurrence
          * @return type of recurrence
          */
         public RecurringType type() {
@@ -232,6 +261,7 @@ public record Entry(
         }
 
         /**
+         * Gets the frequency of recurrence
          * @return frequency of recurrence
          */
         public byte frequency() {

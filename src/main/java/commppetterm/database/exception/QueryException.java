@@ -2,6 +2,9 @@ package commppetterm.database.exception;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Exception when executing a query
+ */
 public class QueryException extends DatabaseException {
     /**
      * Creates a new database exception
