@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import commppetterm.database.Entry;
+import commppetterm.database.exception.DatabaseException;
 import commppetterm.gui.App;
 import commppetterm.util.Triple;
 import javafx.scene.Parent;
@@ -84,7 +85,7 @@ public final class WeekPage extends PageController {
                     }
                 }
             }
-        } catch (SQLException e) {
+        } catch (DatabaseException e) {
             Optional<ButtonType> res = App.get().alert(e, Alert.AlertType.ERROR, "Go to settings?", ButtonType.YES, ButtonType.NO);
 
             if (res.isPresent() && res.get().equals(ButtonType.YES)) {

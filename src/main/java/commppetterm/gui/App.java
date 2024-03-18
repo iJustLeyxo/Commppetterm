@@ -9,6 +9,10 @@ import java.util.logging.Logger;
 
 import commppetterm.database.Database;
 import commppetterm.database.Entry;
+import commppetterm.database.exception.DatabaseException;
+import commppetterm.database.exception.SettingsException;
+import commppetterm.database.exception.SettingsLoadException;
+import commppetterm.database.exception.SettingsSaveException;
 import commppetterm.gui.exception.URLNotFoundException;
 import commppetterm.gui.page.Provider;
 import commppetterm.gui.page.Settings;
@@ -17,7 +21,6 @@ import javafx.scene.control.ButtonType;
 import org.jetbrains.annotations.NotNull;
 
 import commppetterm.gui.page.Calendar;
-import commppetterm.gui.page.Controller;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -99,7 +102,7 @@ public final class App extends Application {
     public App() {
         app = this;
 
-        this.database = new Database("jdbc:mysql://sql11.freemysqlhosting.net/", "sql11688847", "calendar", "sql11688847", "RhiGnaQxx1");
+        this.database = new Database();
     }
 
     /**
@@ -122,9 +125,10 @@ public final class App extends Application {
         }
 
         try {
+            App.get().database().load();
             App.get().database().init();
-            this.provider(new Calendar());
-        } catch (SQLException e) {
+            App.get().provider(new Calendar());
+        } catch (DatabaseException e) {
             Optional<ButtonType> res = App.get().alert(e, Alert.AlertType.ERROR, "Go to settings?", ButtonType.YES, ButtonType.NO);
 
             if (res.isPresent() && res.get().equals(ButtonType.YES)) {
@@ -132,6 +136,9 @@ public final class App extends Application {
             } else {
                 App.get().provider(new Calendar());
             }
+        } catch (SettingsException e) {
+            App.get().alert(e, Alert.AlertType.ERROR, null, ButtonType.OK);
+            App.get().provider(new Calendar());
         }
 
         this.stage.show();
@@ -191,7 +198,6 @@ public final class App extends Application {
         URL url = App.get().getClass().getResource("style.css");
 
         FontIcon icon = new FontIcon(Material2AL.ERROR);
-        icon.setIconSize(17);
 
         alert.setTitle(type.toString());
         alert.setHeaderText(e.getClass().getCanonicalName() + ":");
