@@ -1,6 +1,7 @@
 package commppetterm.gui.page;
 
 import commppetterm.database.Entry;
+import commppetterm.database.exception.DatabaseException;
 import commppetterm.gui.exception.EditorException;
 import javafx.scene.control.*;
 import org.jetbrains.annotations.NotNull;
@@ -112,7 +113,7 @@ public final class Editor extends Controller {
         try {
             App.get().database().save(this.entry());
             App.get().provider(new Calendar());
-        } catch (SQLException e) {
+        } catch (DatabaseException e) {
             Optional<ButtonType> res = App.get().alert(e, Alert.AlertType.ERROR, "Go to settings?", ButtonType.YES, ButtonType.NO);
 
             if (res.isPresent() && res.get().equals(ButtonType.YES)) {
@@ -132,7 +133,7 @@ public final class Editor extends Controller {
         try {
             App.get().database().delete(this.entry());
             App.get().provider(new Calendar());
-        } catch (SQLException e) {
+        } catch (DatabaseException e) {
             Optional<ButtonType> res = App.get().alert(e, Alert.AlertType.ERROR, "Go to settings?", ButtonType.YES, ButtonType.NO);
 
             if (res.isPresent() && res.get().equals(ButtonType.YES)) {

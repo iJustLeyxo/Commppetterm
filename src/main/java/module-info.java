@@ -7,6 +7,7 @@ module commppetterm {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.ikonli.material2;
     requires java.sql;
+    requires com.fasterxml.jackson.databind;
 
     exports commppetterm.gui;
     opens commppetterm.gui to javafx.fxml;
@@ -16,5 +17,7 @@ module commppetterm {
     opens commppetterm.gui.exception to javafx.fxml;
     exports commppetterm.database;
     opens commppetterm.database to javafx.fxml;
+    exports commppetterm.database.exception;
+    opens commppetterm.database.exception to javafx.fxml;
 }
 
