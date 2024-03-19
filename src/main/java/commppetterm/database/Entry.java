@@ -102,7 +102,6 @@ public record Entry(
             }
         }
 
-        Period per = Period.between(start, end);
         start = this.relative(start);
         end = this.relative(end);
 
@@ -145,9 +144,7 @@ public record Entry(
     public @NotNull LocalTime start(@NotNull LocalDate date) {
         date = this.relative(date);
 
-        if (this.start.toLocalDate().isBefore(date)) {
-            return LocalTime.of(0, 0);
-        } else if (this.start.toLocalDate().isEqual(date)) {
+        if (this.start.toLocalDate().isEqual(date)) {
             return this.start.toLocalTime();
         } else {
             return LocalTime.of(0, 0);
@@ -162,9 +159,7 @@ public record Entry(
     public @NotNull LocalTime end(@NotNull LocalDate date) {
         date = this.relative(date);
 
-        if (this.end.toLocalDate().isAfter(date)) {
-            return LocalTime.of(23, 59);
-        } else if (this.end.toLocalDate().isEqual(date)) {
+        if (this.end.toLocalDate().isEqual(date)) {
             return this.end.toLocalTime();
         } else {
             return LocalTime.of(23, 59);
