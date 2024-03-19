@@ -96,7 +96,7 @@ public final class Database {
         String endPoint = queryFormatter.format(end) + " 23:59:99";
         String startPoint = queryFormatter.format(start) + " 00:00:00";
 
-        ResultSet set = this.query("SELECT * FROM " + this.settings.table + " WHERE (start <= '" + endPoint + "' AND end >= '" + startPoint + "') OR recurringType IS NOT NULL;");
+        ResultSet set = this.query("SELECT * FROM " + this.settings.table + " WHERE start <= '" + endPoint + "' OR end >= '" + startPoint + "' OR recurringType IS NOT NULL;");
         List<Entry> entries = this.parse(set);
         this.close(set);
         return entries;
