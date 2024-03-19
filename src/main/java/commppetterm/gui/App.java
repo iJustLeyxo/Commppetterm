@@ -73,6 +73,11 @@ public final class App extends Application {
     public final @NotNull Logger LOGGER = Logger.getLogger(App.class.getName());
 
     /**
+     * Icon file name
+     */
+    public final URL ICON = App.class.getResource("icon.png");
+
+    /**
      * The application stage
      */
     private @Nullable Stage stage;
@@ -115,13 +120,11 @@ public final class App extends Application {
         /* GUI setup */
         this.stage = stage;
         this.stage.setTitle(this.NAME + " " + this.VERSION);
-        String iconFile = "icon.png";
-        URL iconUrl = App.class.getResource(iconFile);
 
-        if (iconUrl == null) {
-            this.LOGGER.warning("Failed to load icon " + iconFile + " from " + App.class.getCanonicalName());
+        if (ICON == null) {
+            this.LOGGER.warning("Failed to load icon.");
         } else {
-            Image icon = new Image(iconUrl.toString());
+            Image icon = new Image(ICON.toString());
             this.stage.getIcons().add(icon);
         }
 
@@ -226,6 +229,13 @@ public final class App extends Application {
             alert.setContentText(e.getMessage() + "\n\n" + action);
         } else {
             alert.setContentText(e.getMessage());
+        }
+
+        if (ICON == null) {
+            this.LOGGER.warning("Failed to load icon.");
+        } else {
+            Image windowIcon = new Image(ICON.toString());
+            ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(windowIcon);
         }
 
         return alert.showAndWait();
