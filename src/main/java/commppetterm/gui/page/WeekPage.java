@@ -111,9 +111,7 @@ public final class WeekPage extends PageController {
                         boolean fits = true;
 
                         for (Triple<Entry, LocalTime, LocalTime> cell : column) {
-                            if (startTime.isAfter(cell.b()) && startTime.isBefore(cell.c()) ||
-                                    endTime.isAfter(cell.b()) && endTime.isBefore(cell.c()) ||
-                                    startTime.isBefore(cell.b()) && endTime.isAfter(cell.c())) {
+                            if (!startTime.isAfter(cell.c()) && !endTime.isBefore(cell.b())) {
                                 fits = false;
                                 break;
                             }
@@ -122,6 +120,7 @@ public final class WeekPage extends PageController {
                         if (fits) {
                             column.add(new Triple<>(entry, startTime, endTime));
                             fitted = true;
+                            break;
                         }
                     }
 
@@ -181,9 +180,7 @@ public final class WeekPage extends PageController {
                 boolean fits = true;
 
                 for (Triple<Entry, Integer, Integer> cell : row) {
-                    if (entry.b() > cell.b() && entry.b() < cell.b() + cell.c() - 1 ||
-                            entry.c() > cell.b() && entry.c() < cell.b() + cell.c() - 1 ||
-                            entry.b() < cell.b() && entry.c() > cell.c()) {
+                    if (entry.b() < cell.c() + cell.b()  && entry.c() + entry.b() > cell.b()) {
                         fits = false;
                         break;
                     }
@@ -192,6 +189,7 @@ public final class WeekPage extends PageController {
                 if (fits) {
                     row.add(entry);
                     fitted = true;
+                    break;
                 }
             }
 
